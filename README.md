@@ -1,2 +1,2 @@
-# CSC332-Project
-CSC 332 Project
+# CSC322-Project
+CSC 322 Project
