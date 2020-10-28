@@ -1,0 +1,24 @@
+.container{
+    background-color: lightgray;
+    width: 100%;
+}
+input.login-input-field{
+    width: 100%;
+    border: 1px solid black;
+    outline: none;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.login-box{
+    font-family: cursive;
+    display: flex;
+    margin: 0 1%;
+}
+.login-title{
+    font-family: cursive;
+    font-size: larger;
+    font-weight: bold;
+}
+.background-boi{
+    background-color: lightgray
+}
