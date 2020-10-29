@@ -4,10 +4,23 @@
 }
 input.login-input-field{
     width: 100%;
-    border: 1px solid black;
+    
     outline: none;
     padding: 10px;
     margin-bottom: 10px;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+}
+input.login-input-field:hover{
+    width: 100%;
+    
+    outline: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    -webkit-box-shadow: 0px 0px 4px #4195fc;
+       -moz-box-shadow: 0px 0px 4px #4195fc;
+            box-shadow: 0px 0px 4px #4195fc;
 }
 .login-box{
     font-family: cursive;
@@ -21,4 +34,16 @@ input.login-input-field{
 }
 .background-boi{
     background-color: lightgray
+}
+.sign-up {
+    background-color: skyblue;
+}
+.sign-up:hover{
+    background-color: rgba(8, 125, 221, 0.24);
+}
+.sign-in{
+    background-color: lightcoral;
+}
+.sign-in:hover{
+    background-color: rgba(211, 36, 23, 0.568);
 }

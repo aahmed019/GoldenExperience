@@ -45,22 +45,17 @@ li, a, button{
   font-size: 16px;
   
 }
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite .50s linear;
-  }
-}
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+
 button{
   padding:9px 25px;
   border:none;
   border-radius: 50px;
   background-color: red;
+}
+div.resturant-logo{
+    width:25%; /*width of your image*/
+   height:25%; /*height of your image*/
+   background-image:url('./images/logoforschool.png');
+   margin:0; /* If you want no margin */
+   padding:0; /*if your want to padding */
 }
