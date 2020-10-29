@@ -11,6 +11,7 @@ function App() {
       <Nav/> {/* Navigation component, the file directory for this is located above, every component will follow this format*/}
       <Switch>
             <Route exact path = '/Login' component = {Login}/>
+            {/* <Route exact path = '/home' component = {}/> */}
       </Switch>
     </div>
     </Router>

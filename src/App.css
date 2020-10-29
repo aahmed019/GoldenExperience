@@ -18,6 +18,7 @@ header{
   
 }
 .navItems li{
+
   display: inline-block;
   padding-right:30px;
 }
@@ -30,6 +31,9 @@ header{
 }
 .navItems li a:hover{
   color:cyan;
+}
+.wtf{
+  text-align: right;
 }
 
 
@@ -58,4 +62,14 @@ div.resturant-logo{
    background-image:url('./images/logoforschool.png');
    margin:0; /* If you want no margin */
    padding:0; /*if your want to padding */
+}
+.site-header__wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
