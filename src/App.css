@@ -1,10 +1,10 @@
 .App{
-  background-color: green;
+  
 }
 
 .nav{
   box-sizing: border-box;
-  background-color: #282c34;
+  background-color: #161616;
   position: relative;
 }
 
@@ -15,6 +15,7 @@ header{
 }
 .navItems{
   list-style: none;
+  color: #9C9523;
   
 }
 .navItems li{
@@ -30,7 +31,7 @@ header{
   transition: all 0.3s ease 0s;
 }
 .navItems li a:hover{
-  color:cyan;
+  color:rgb(250, 250, 250);
 }
 .wtf{
   text-align: right;
@@ -42,9 +43,9 @@ header{
   padding-right:10%;
 }
 
-li, a, button{
-  font-family: cursive;
-  color:white;
+li, a{
+  font-family: Playfair Display;
+  color: #9C9523;
   font-weight: 500;
   font-size: 16px;
   

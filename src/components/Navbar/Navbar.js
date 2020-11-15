@@ -5,16 +5,17 @@ import { Link} from 'react-router-dom';
 function navigationBar(){
     return(
     <div className="nav">
-      <header class = "site-header">
-      <Link classname = "home-page" to = "/home">
+      <header className = "site-header">
+      <Link className = "home-page" to = "/home">
       <img className="App-logo" src={logo}></img></Link> 
         <nav>
           <div>
           <ul className="navItems">
+            <li><Link to="/Home">Home</Link></li>
             <li><a>Orders</a></li>
-            <li><a>Test</a></li>
             <li><a>Menus</a></li>
-            <li><Link className="login" to="/Login"><button>Login</button></Link></li>
+            <li><a>Discussion</a></li>
+            <li><Link className="login" to="/Login">Login</Link></li>
           </ul>
           </div>
         </nav>
