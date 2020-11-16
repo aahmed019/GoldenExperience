@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import {Row, Col} from "react-bootstrap";
 import './Login.css'
 import {Link} from 'react-router-dom';
-import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 import Footer from '../Footer/Footer.js'
 
 class Login extends Component{
     constructor(props) {
         super(props);
-        this.state = {value: '', passw: ''};
+        this.state = {value: '', passw: '', validlogin: false};
     
         this.handleChange = this.handleChange.bind(this);
         this.handleChangepassw = this.handleChangepassw.bind(this);
@@ -28,6 +27,7 @@ class Login extends Component{
     
     validateForm(){
         //checks if password and user are correct
+        
     }
 
     render(){
@@ -42,7 +42,7 @@ class Login extends Component{
                                 <div className ="login-title">Login</div><br></br>
                             </Col>
                             <Col md = {12} lg= {12}>
-                                <div className = "user">Username *<br/></div>
+                                <div className = "user">Username*<br/></div>
                                 <input type = "user-input" className="login-input-field" value ={this.state.value} onChange={this.handleChange} />
                             </Col>
                             <Col md = {12} lg= {12}>
@@ -51,7 +51,7 @@ class Login extends Component{
                             </Col>
                             <Col md = {12} lg= {12}>
                                 <button className = "sign-in" disabled={!this.validateForm()}><Link to ={{pathname: "/" }}>Sign in </Link></button>&nbsp;&nbsp;
-                                <button className ="sign-up" style={{color:"white"}}><Link to ={{pathname: "/" }} >Sign Up</Link><br/></button>
+                                <button className ="sign-up" style={{color:"white"}}><Link to ={{pathname: "/Register" }} >Sign Up</Link><br/></button>
                             </Col>
                 
                         </Row>

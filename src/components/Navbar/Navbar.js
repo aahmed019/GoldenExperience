@@ -7,14 +7,14 @@ function navigationBar(){
     <div className="nav">
       <header className = "site-header">
       <Link className = "home-page" to = "/home">
-      <img className="App-logo" src={logo}></img></Link> 
+      <img className="App-logo" src={logo} alt = "The Golden Experience Logo"></img></Link> 
         <nav>
           <div>
           <ul className="navItems">
             <li><Link to="/Home">Home</Link></li>
-            <li><a>Orders</a></li>
-            <li><a>Menus</a></li>
-            <li><a>Discussion</a></li>
+            <li><Link to="/">Orders</Link></li>
+            <li><Link to="/">Menus</Link></li>
+            <li><Link to="/">Discussion</Link></li>
             <li><Link className="login" to="/Login">Login</Link></li>
           </ul>
           </div>

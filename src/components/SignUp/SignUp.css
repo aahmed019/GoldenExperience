@@ -1,7 +1,8 @@
 .container{
+    text-align: center;
     /* Rectangle 1 */
 }
-input.login-input-field{
+input.user-input{
     width: 100%;
     background-color: #b6b6b3;
     outline: none;
@@ -11,7 +12,7 @@ input.login-input-field{
        -moz-border-radius: 4px;
             border-radius: 4px;
 }
-input.login-input-field:hover{
+input.user-input:hover{
     width: 100%;
     
     outline: none;
@@ -21,28 +22,21 @@ input.login-input-field:hover{
        -moz-box-shadow: 0px 0px 4px #4195fc;
             box-shadow: 0px 0px 4px #4195fc;
 }
-.login-box{
-    padding-top: 10%;
-    font-family: PlayFair Display;
+div.register-box{
+    text-align: left;
+    font-family: Playfair Display;
     display: flex;
     position: relative;
-    text-align: left;
     width: 25%;
-    height: 38%;
-    left: 43%;
-    top: 20%;
+    left: 43.4%;
     margin: 0 1%;
     
 }
-.login-title{
-    font-family: Playfair Display;
-    font-size: larger;
-    font-weight: bold;
-}
 .user{
+    font-size: 20px;
     font-family: Playfair Display;
     color: Black;
-    font-weight: 700;
+    font-weight: bold;
 }
 .password{
     font-family: Playfair Display;
@@ -55,16 +49,42 @@ input.login-input-field:hover{
     height: 750px;
     background: linear-gradient(180deg, rgba(204, 177, 177, 0) 0%, #424242 100%), linear-gradient(180deg, #666565 0%, rgba(255, 255, 255, 0) 100%), radial-gradient(50% 50% at 50% 50%, rgba(238, 215, 12, 0.979) 80.37%, rgba(251, 224, 84, 0) 100%);
 }
-button.sign-up {
-    background-color:#161616;
+.sign-up {
+    background-color: rgb(95, 95, 95);
 }
-button.sign-up:hover{
-    background-color: white;
+.sign-up:hover{
+    background-color: #161616;
 
 }
-button.sign-in{
-    background-color:#161616;
+.sign-in{
+    background-color: rgb(255, 249, 249);
 }
-button.sign-in:hover{
-    background-color: white;
+.sign-in:hover{
+    background-color: rgba(90, 89, 89, 0.568);
+}
+.first-set{
+    padding-bottom: 10px;
+}
+.second-set{
+    padding-bottom: 10px;
+}
+.signup-title{
+    position: relative;
+    text-align: center;
+    font-family: Playfair Display;
+    color: Black;
+    font-size: 40px;
+    font-weight: 1000;
+}
+
+.reg-button{
+    position: relative;
+    font-size: 40px;
+}
+.button-options{
+    margin-left: 10px;
+    position: relative;
+    background-color: #161616;
+    color: #9C9523;
+    font-size: 25px;
 }
