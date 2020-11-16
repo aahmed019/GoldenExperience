@@ -1,0 +1,72 @@
+/* Welcome Template */
+.welcome-template{
+position: relative;
+width: 1903px;
+height: 750px;
+background: url("../../images/resturant-test.jpg");
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+
+}
+
+
+/* resturant test 1 */
+.resturant.test1{
+    position: absolute;
+    width: 1917px;
+    height: 1030px;
+    left: 4px;
+    top: 81px;
+    background: url("../../images/resturant-test.jpg");
+   
+}
+/* resturant test 1 */
+
+
+
+
+
+/* Welcome Comment */
+.welcome-comment{
+    text-align: center;
+    position: relative;
+    width: 26%;
+    height: 38%;
+    left: 38%;
+    top: 20%;
+    color: tomato;
+    background: #1D1313;
+
+}
+
+
+
+/* Rectangle 8 */
+.rectangle{
+    position: relative;
+    
+    background: #1D1313;
+    }
+
+/* WELCOME */
+.welcome{
+text-align: center;
+position: relative;
+font-family: Playfair Display;
+font-style: normal;
+font-weight: normal;
+font-size: 78px;
+line-height: 104px;
+text-align: center;
+
+color: #9C9523;
+
+}
+
+/* logoforschool 3 */
+.logoforschool3{
+position: relative
+
+
+}

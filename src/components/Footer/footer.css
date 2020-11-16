@@ -1,0 +1,30 @@
+.background-footer{
+    background-color: #161616;
+}
+.footer-all {
+    position: relative;
+    bottom: 0;
+    background-color: black;
+    box-sizing: border-box;
+    width: 100%;
+    font-family: Playfair Display;
+    text-align: center;
+    font-weight: bold;
+    color: #9C9523;
+}
+
+.footer-info {
+    position: relative;
+    bottom: 0;
+    background-color: black;
+    box-sizing: border-box;
+    width: 100%;
+    font-family: Playfair Display;
+    text-align: center;
+    font-weight: bold;
+    color: #9C9523;
+}
+
+.footer-all .footer-left, .footer-distributed .footer-right {
+text-align: center;
+}

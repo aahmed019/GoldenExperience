@@ -1,10 +1,10 @@
 .App{
-  background-color: green;
+  
 }
 
 .nav{
   box-sizing: border-box;
-  background-color: #282c34;
+  background-color: #161616;
   position: relative;
 }
 
@@ -15,9 +15,11 @@ header{
 }
 .navItems{
   list-style: none;
+  color: #9C9523;
   
 }
 .navItems li{
+
   display: inline-block;
   padding-right:30px;
 }
@@ -29,7 +31,10 @@ header{
   transition: all 0.3s ease 0s;
 }
 .navItems li a:hover{
-  color:cyan;
+  color:rgb(250, 250, 250);
+}
+.wtf{
+  text-align: right;
 }
 
 
@@ -38,29 +43,34 @@ header{
   padding-right:10%;
 }
 
-li, a, button{
-  font-family: cursive;
-  color:white;
+li, a{
+  font-family: Playfair Display;
+  color: #9C9523;
   font-weight: 500;
   font-size: 16px;
   
 }
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite .50s linear;
-  }
-}
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+
 button{
   padding:9px 25px;
   border:none;
   border-radius: 50px;
   background-color: red;
+}
+div.resturant-logo{
+    width:25%; /*width of your image*/
+   height:25%; /*height of your image*/
+   background-image:url('./images/logoforschool.png');
+   margin:0; /* If you want no margin */
+   padding:0; /*if your want to padding */
+}
+.site-header__wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
