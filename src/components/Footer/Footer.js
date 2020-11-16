@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col} from "react-bootstrap";
 import { Link } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
 import '../../App.css';
 
 import './footer.css';
@@ -18,11 +16,11 @@ class Footer extends Component{
                             <p>
                             <li><Link to="/Home">Home</Link></li>
                             
-                            <li><a>Orders</a></li>
+                            <li><Link to="/Home">Orders</Link></li>
                             
-                            <li><a>Menu</a></li>
+                            <li><Link to="/Home">Menu</Link></li>
                             
-                            <li><a>Discussion</a></li>
+                            <li><Link to="/Home">Discussion</Link></li>
                             
                             </p>
                             </ul>
