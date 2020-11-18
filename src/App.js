@@ -20,7 +20,6 @@ function App() {
             <Route exact path = '/Home' component = {LandingPage}/>
             <Route exact path = '/Register' component = {SignUp}/>
             <Route exact path = '/Confirmation' component = {ConfirmationPage}/>
-            {/* <Route exact path = '/home' component = {}/> */}
       </Switch>
       </div>
     </div>

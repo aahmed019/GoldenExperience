@@ -3,6 +3,7 @@ import {Row, Col} from "react-bootstrap";
 import './Login.css'
 import {Link} from 'react-router-dom';
 import Footer from '../Footer/Footer.js'
+import Fire from '../../firebaseConfig';
 
 class Login extends Component{
     constructor(props) {
@@ -12,13 +13,19 @@ class Login extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleChangepassw = this.handleChangepassw.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.db = Fire.db
       }
+
+    handleClick(e){
+        console.log(e)
+    }
     
     handleChange(event) {
         this.setState({value: event.target.value});
     }
     handleChangepassw(event) {
-        this.setState({passw: event.target.passw});
+        this.setState({passw: event.target.value});
     }
     handleSubmit(event) {
         alert('A name was submitted: ' + this.state.value);
@@ -28,6 +35,12 @@ class Login extends Component{
     validateForm(){
         //checks if password and user are correct
         
+    }
+    
+    //For manager 
+    async getMarker() {
+        const snapshot = await this.db.getCollection('SignUp').get()
+        console.log(snapshot.docs.map(doc => doc.data()))
     }
 
     render(){
@@ -52,12 +65,14 @@ class Login extends Component{
                             <Col md = {12} lg= {12}>
                                 <button className = "sign-in" disabled={!this.validateForm()}><Link to ={{pathname: "/" }}>Sign in </Link></button>&nbsp;&nbsp;
                                 <button className ="sign-up" style={{color:"white"}}><Link to ={{pathname: "/Register" }} >Sign Up</Link><br/></button>
+                                <button className ="sign-up" onClick={() => {this.tryingNew()} } style={{color:"red"}}>test</button>
                             </Col>
                 
                         </Row>
                     </div>
                 </div>
             </div>
+            
             <Footer/>
             </div>
         )
