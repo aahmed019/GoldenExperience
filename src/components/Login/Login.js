@@ -65,7 +65,7 @@ class Login extends Component{
                             <Col md = {12} lg= {12}>
                                 <button className = "sign-in" disabled={!this.validateForm()}><Link to ={{pathname: "/" }}>Sign in </Link></button>&nbsp;&nbsp;
                                 <button className ="sign-up" style={{color:"white"}}><Link to ={{pathname: "/Register" }} >Sign Up</Link><br/></button>
-                                <button className ="sign-up" onClick={() => {this.tryingNew()} } style={{color:"red"}}>test</button>
+                                <button className ="sign-up" onClick={() => {this.getMarker()} } style={{color:"red"}}>test</button>
                             </Col>
                 
                         </Row>

@@ -19,7 +19,7 @@ var firebaseConfig = {
       constructor() {
           firebase.initializeApp(firebaseConfig);
       }
-      
+
       getCollection = (collection) => {
           return firebase.firestore().collection(collection);
       }
@@ -32,14 +32,6 @@ var firebaseConfig = {
       off() {
           this.ref.off();
       }
-  
-     // async logEvent(eventName, properties) {
-          //await Analytics.logEvent(eventName, properties);
-      //}
-  
-     // async logScreen(screenName) {
-         // await Analytics.setCurrentScreen(screenName);
-     // }
   }
   
   Fire.db = new Fire();
