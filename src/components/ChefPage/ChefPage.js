@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './ChefPage.css'
 import Footer from '../Footer/Footer.js';
-import Fire, { TestsFire } from '../../firebaseConfig';
+import Fire from '../../firebaseConfig';
 
 class ChefPage extends Component {
     constructor(props) {
