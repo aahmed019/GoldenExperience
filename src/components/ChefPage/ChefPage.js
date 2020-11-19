@@ -6,8 +6,6 @@ import {Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css';
 import Menu from '../Menu/Menu';
 
-const storage = Fire.db.getStorage();
-
 class ChefPage extends Component {
     constructor(props) {
         super(props);
@@ -49,41 +47,31 @@ class ChefPage extends Component {
                             <Tab>Disputes</Tab>
                         </TabList>
                         <TabPanel>
-
                             <div className='container'>
                                 <br />
                                 <br />
                                 <input type="file" onChange={this.uploadFile}></input>
-                                <div>
-                                    <img id="imgTest" style={{ paddingTop: '20px', width: '800px', height: '600px' }} src='' alt="" />
-                                </div>
-
                             </div>
-
-                            <Footer />
+                            
                         </TabPanel>
 
                         <TabPanel>
                             <Menu />
-                            <Footer />
+                            
                         </TabPanel>
 
                         <TabPanel>
                             <h1>Orders</h1>
-                            <Footer />
+                            
                         </TabPanel>
 
                         <TabPanel>
                         <h1>Disputes</h1>
-                            <Footer />
+                            
                         </TabPanel>
-
-
-
-
-
                     </Tabs>
                 </div>
+                <Footer />
             </div>
 
         );
