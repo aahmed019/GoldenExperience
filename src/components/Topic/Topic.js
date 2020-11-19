@@ -6,7 +6,6 @@ import {Link} from 'react-router-dom';
 
 class Topic extends Component{
     render(){
-        var topics = ["Menu", "Delivery", "Random/Misc"];
         return(
         <Row>
             <p><Link to ={{pathname: "/Posts", state: {
