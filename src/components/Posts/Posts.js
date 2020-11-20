@@ -33,6 +33,7 @@ class Posts extends Component{
     render(){
         if(this.props.location.state){
             const {data} = this.props.location.state;
+            const {id} = this.props.location.state;
         return(
             <div>
                 <div>{data.posts && data.posts.map(post => {
@@ -42,7 +43,7 @@ class Posts extends Component{
                     )})}
                 </div>
                 <div><Button className="newpost" onClick={this.handleShow}>Create New Post</Button></div>
-                <PostModal show={this.state.show} handleClose={this.handleClose}></PostModal>
+                <PostModal data={data} id={id} show={this.state.show} handleClose={this.handleClose}></PostModal>
             </div>
         );
         }

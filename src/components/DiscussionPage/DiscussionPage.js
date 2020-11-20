@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Footer from '../Footer/Footer.js'
-import {Row} from "react-bootstrap";
 import Topic from '../Topic/Topic';
 import Fire from '../../firebaseConfig';
 import './DiscussionPage.css'
@@ -21,7 +20,8 @@ class DiscussionPage extends Component{
             const topics = [];
             snapshot.forEach(doc => {
                 const data = doc.data();
-                topics.push(data);
+                topics.push([data, doc.id]);
+
             })
             this.setState({topics: topics});
         }).catch(error => console.log(error))
@@ -33,7 +33,7 @@ class DiscussionPage extends Component{
         <h1>Welcome to the discussion forum</h1>
         {this.state.topics && this.state.topics.map(topic => {
             return(
-                <Topic name={topic.name} data={topic}></Topic> 
+                <Topic name={topic[0].name} data={topic[0]} id={topic[1]}></Topic> 
             )})}
                 </div>
             <Footer/>
