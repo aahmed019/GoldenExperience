@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Footer from '../Footer/Footer.js'
 import {Row} from "react-bootstrap";
 import Topic from '../Topic/Topic';
-import {db} from '../Firebase/firebase'
+import Fire from '../../firebaseConfig';
 import './DiscussionPage.css'
 
 class DiscussionPage extends Component{
@@ -14,9 +14,10 @@ class DiscussionPage extends Component{
             topics : []
         }
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.db = Fire.db;
     }
         componentDidMount(){
-        db.collection("Topics").get().then(snapshot => {
+        this.db.getCollection("Topics").get().then(snapshot => {
             const topics = [];
             snapshot.forEach(doc => {
                 const data = doc.data();

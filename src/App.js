@@ -8,6 +8,8 @@ import SignUp from './components/SignUp/Signup';
 import ConfirmationPage from './components/ConfirmationPage/ConfirmationPage.js'
 import DiscussionPage from './components/DiscussionPage/DiscussionPage';
 import Posts from './components/Posts/Posts';
+import ChefPage from './components/ChefPage/ChefPage';
+import ManagerPage from './components/Manager/Manager';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
             <Route exact path = '/Discussion' component = {DiscussionPage}/>
             <Route exact path = '/Posts' component = {Posts}/>
             {/* <Route exact path = '/home' component = {}/> */}
+            <Route exact path = '/Chef' component={ChefPage}/>
+            <Route exact path = '/Manager' component={ManagerPage}/>
       </Switch>
       </div>
     </div>
