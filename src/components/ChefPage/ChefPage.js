@@ -79,15 +79,3 @@ class ChefPage extends Component {
     }
 }
 export default ChefPage;
-
-/* <div className ='background-boi'>
-                    <div className ='container'>
-                    <br/>
-                            <br/>
-                        <input type ="file" onChange = {this.uploadFile}></input>
-                        <div>
-                        <img id="imgTest" style ={{paddingTop:'20px' ,width: '800px', height:'600px'}} src='' alt ="You have not uploaded any menus yet"/>
-                        </div>
-                    </div>
-                </div>
-                <Footer />  */

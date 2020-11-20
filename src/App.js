@@ -7,6 +7,7 @@ import { HashRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import SignUp from './components/SignUp/Signup';
 import ConfirmationPage from './components/ConfirmationPage/ConfirmationPage.js'
 import ChefPage from './components/ChefPage/ChefPage';
+import ManagerPage from './components/Manager/Manager';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route exact path = '/Register' component = {SignUp}/>
             <Route exact path = '/Confirmation' component = {ConfirmationPage}/>
             <Route exact path = '/Chef' component={ChefPage}/>
+            <Route exact path = '/Manager' component={ManagerPage}/>
       </Switch>
       </div>
     </div>
