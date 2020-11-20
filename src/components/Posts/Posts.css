@@ -1,0 +1,14 @@
+.newpost{
+    padding:1% !important;
+    margin-left:65% !important;
+    margin-top:2% !important;
+}
+.modal-dialog{
+    max-width: 60% !important;
+    background-color: black !important;
+
+}
+.modal-content{
+    background-color: black !important;
+    border: 1px solid white !important;
+}

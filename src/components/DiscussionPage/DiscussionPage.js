@@ -3,6 +3,7 @@ import Footer from '../Footer/Footer.js'
 import {Row} from "react-bootstrap";
 import Topic from '../Topic/Topic';
 import {db} from '../Firebase/firebase'
+import './DiscussionPage.css'
 
 class DiscussionPage extends Component{
     
@@ -27,13 +28,13 @@ class DiscussionPage extends Component{
     render(){
         return(
             <div>
-                <Row>
-        <p>Welcome to the discussion forum</p>
+                <div>
+        <h1>Welcome to the discussion forum</h1>
         {this.state.topics && this.state.topics.map(topic => {
             return(
                 <Topic name={topic.name} data={topic}></Topic> 
             )})}
-                </Row>
+                </div>
             <Footer/>
             </div>
            
