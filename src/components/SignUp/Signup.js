@@ -30,7 +30,7 @@ class SignUp extends Component{
     alert('One or more fields are empty! Please fill it out')
     }
     else{
-    this.db.getCollection('SignUp').doc().set({
+    this.db.getCollection('SignUp').doc(this.state.user).set({
         username: this.state.user,
         password: this.state.passw,
         name: this.state.fullName,
