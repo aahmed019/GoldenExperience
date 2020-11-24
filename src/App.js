@@ -8,6 +8,7 @@ import SignUp from './components/SignUp/Signup';
 import ConfirmationPage from './components/ConfirmationPage/ConfirmationPage.js'
 import ChefPage from './components/ChefPage/ChefPage';
 import ManagerPage from './components/Manager/Manager';
+import ProfilePage from './components/ProfilePage/ProfilePage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route exact path = '/Confirmation' component = {ConfirmationPage}/>
             <Route exact path = '/Chef' component={ChefPage}/>
             <Route exact path = '/Manager' component={ManagerPage}/>
+            <Route exact path = '/Profile' component ={ProfilePage}/>
       </Switch>
       </div>
     </div>
