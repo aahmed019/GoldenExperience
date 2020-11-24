@@ -8,7 +8,10 @@ import Fire from '../../firebaseConfig';
 class Login extends Component{
     constructor(props) {
         super(props);
-        this.state = {value: '', passw: '', validlogin: false};
+        this.state = {
+            value: '', 
+            passw: '', 
+            validlogin: false};
     
         this.handleChange = this.handleChange.bind(this);
         this.handleChangepassw = this.handleChangepassw.bind(this);
