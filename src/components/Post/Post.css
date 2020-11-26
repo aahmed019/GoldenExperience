@@ -1,0 +1,56 @@
+body{
+    background-color: black !important;
+    color: #9C9523 !important;
+    font-family: Playfair Display !important;
+}
+button{
+    background-color:#161616 !important;
+    color: #9C9523 !important;
+    border: 1px solid white !important;
+}
+button:hover{
+    background-color: white !important;
+    cursor: pointer !important;
+}
+.card{
+    width: 50%;
+    border:1px solid white !important;
+    margin-top: 2%;
+    justify-content: center;
+    padding:1%;
+    font-size: 20px;
+    border-radius: 20px;
+    font-weight:bold !important;
+    background-color: black !important;
+    
+}
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+input{
+    border: 1px solid black;
+    width:85%;
+    background-color: grey;
+    color:white;
+}
+.comment-editor{
+    height: 0%;
+}
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: white;
+;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: white;
+  }
+  
+  
+  

@@ -34,6 +34,9 @@ var firebaseConfig = {
       off() {
           this.ref.off();
       }
+      getTime = () =>{
+          return firebase.firestore.Timestamp.now();
+      }
   }
   
   Fire.db = new Fire();
