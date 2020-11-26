@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Card, Row } from 'react-bootstrap';
 import './Post.css'
+import {Link} from 'react-router-dom';
 
 class Post extends Component{
     render(){
@@ -9,7 +10,12 @@ class Post extends Component{
             <div className="center">
                 <Card>
                     <Card.Body>
-                    <div><p>{this.props.text} by {this.props.username}</p></div>
+                    <div><p><Link to ={{pathname: "/Comments", state: {
+    comments: this.props.comments,
+    text:this.props.text,
+    username:this.props.username,
+    id: this.props.id,
+    data: this.props.data   } } }>{this.props.text} by {this.props.username}</Link></p></div>
                     </Card.Body>
                 </Card>
             </div>

@@ -1,0 +1,20 @@
+.commentBox{
+    margin: auto;
+    width: 50%;
+    margin-top:2% !important;
+}
+.formComment{
+    display:flex;
+    margin-top:2% !important;
+}
+.inputComment{
+    width: 80%;
+    display:inline-block;
+}
+.buttonComment{
+    width: 20%;
+    display:inline-block;
+}
+.postTextDiv{
+    border: 1px solid white;
+}

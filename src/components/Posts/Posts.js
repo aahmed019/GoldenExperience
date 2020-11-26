@@ -36,10 +36,10 @@ class Posts extends Component{
             const {id} = this.props.location.state;
         return(
             <div>
-                <div>{data.posts && data.posts.map(post => {
+                <div>{data.posts && data.posts.map((post, i) => {
                     const date = post.time.toDate().toString();
                     return(
-                        <Post username={post.username} text={post.text} time={date}></Post> 
+                        <Post data={data} comments={post.comments} id={id} key={i} username={post.username} text={post.text} time={date}></Post> 
                     )})}
                 </div>
                 <div><Button className="newpost" onClick={this.handleShow}>Create New Post</Button></div>

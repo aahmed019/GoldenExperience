@@ -10,6 +10,7 @@ import DiscussionPage from './components/DiscussionPage/DiscussionPage';
 import Posts from './components/Posts/Posts';
 import ChefPage from './components/ChefPage/ChefPage';
 import ManagerPage from './components/Manager/Manager';
+import CommentSection from './components/CommentSection/CommentSection';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             {/* <Route exact path = '/home' component = {}/> */}
             <Route exact path = '/Chef' component={ChefPage}/>
             <Route exact path = '/Manager' component={ManagerPage}/>
+            <Route exact path = '/Comments' component={CommentSection}/>
       </Switch>
       </div>
     </div>

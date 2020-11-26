@@ -18,7 +18,10 @@ class PostModal extends Component{
     }
     handleSubmit(){
         if(this.state.value.length > 0){
-            const prevData = this.props.data.posts;
+            const prevData = [];
+            if(this.props.data.posts){
+                const prevData = this.props.data.posts;
+            }
             const newData = {
                 "text": this.state.value,
                 "username": "eram",
