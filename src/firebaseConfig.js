@@ -1,8 +1,9 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
-import 'firebase/storage'
+import 'firebase/storage';
+import "firebase/auth";
 
-var firebaseConfig = {
+var firebaseConfig = firebase.initializeApp({
     apiKey: "AIzaSyAJngE6b-uhhnPR6UV1YnnBrwKldqKlrE8",
     authDomain: "csc322-group-p.firebaseapp.com",
     databaseURL: "https://csc322-group-p.firebaseio.com",
@@ -11,12 +12,10 @@ var firebaseConfig = {
     messagingSenderId: "784129974552",
     appId: "1:784129974552:web:1a4c41f03663cf58e4be6d",
     measurementId: "G-32H9T882JH"
-  };
+  });
   
   class Fire {
-      constructor() {
-          firebase.initializeApp(firebaseConfig);
-      }
+    
 
       getCollection = (collection) => {
           return firebase.firestore().collection(collection);
@@ -37,5 +36,6 @@ var firebaseConfig = {
   }
   
   Fire.db = new Fire();
+  export const auth = firebaseConfig.auth();
   export default Fire;
   //export const TestsFire = firebase.initializeApp(firebaseConfig);
