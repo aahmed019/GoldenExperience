@@ -11,7 +11,7 @@ import Posts from './components/Posts/Posts';
 import ChefPage from './components/ChefPage/ChefPage';
 import ManagerPage from './components/Manager/Manager';
 import CommentSection from './components/CommentSection/CommentSection';
-
+import OrderPage from './components/OrderPage/OrderPage';
 function App() {
   return (
     <div>
@@ -31,6 +31,7 @@ function App() {
             <Route exact path = '/Chef' component={ChefPage}/>
             <Route exact path = '/Manager' component={ManagerPage}/>
             <Route exact path = '/Comments' component={CommentSection}/>
+            <Route exact path = '/OrderPage' component ={OrderPage}/>
       </Switch>
       </div>
     </div>

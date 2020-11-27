@@ -12,7 +12,7 @@ function navigationBar(){
           <div>
           <ul className="navItems">
             <li><Link to="/Home">Home</Link></li>
-            <li><Link to="/">Orders</Link></li>
+            <li><Link to="/OrderPage">Orders</Link></li>
             <li><Link to="/">Menus</Link></li>
             <li><Link to="/Discussion">Discussion</Link></li>
             <li><Link className="login" to="/Login">Login</Link></li>
