@@ -5,7 +5,6 @@ import Footer from '../Footer/Footer.js';
 
 class LandingPage extends Component{
     render(){
-        console.log(this.state)
 
         return(
             <div>

@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import {Row, Col} from "react-bootstrap";
 import './Login.css'
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import Footer from '../Footer/Footer.js'
 import Fire from '../../firebaseConfig';
-import { getQueriesForElement } from '@testing-library/react';
-import ProfilePage from '../ProfilePage/ProfilePage';
 
 class Login extends Component{
     constructor(props) {
@@ -37,19 +35,19 @@ class Login extends Component{
         event.preventDefault();
     }
     
-    validateForm(user, pass){
-        //checks if password and user are correct
-        // console.log('testing', this.state.value , user)
-        if(this.state.value == user && this.state.passw == pass){
-            return true;
-        }
-        else{
-            return false;
-        }
+    // validateForm(user, pass){
+    //     //checks if password and user are correct
+    //     // console.log('testing', this.state.value , user)
+    //     if(this.state.value == user && this.state.passw == pass){
+    //         return true;
+    //     }
+    //     else{
+    //         return false;
+    //     }
 
 
         
-    }
+    // }
     
     //For manager 
     async getMarker() {
@@ -81,12 +79,13 @@ class Login extends Component{
                 
                 for(let i = 0; i < snapshot.docs.length; i++){
                     let index = snapshot.docs[i]
-                    if(userLogin == index.data().username){
+                    if(userLogin === index.data().username){
                         console.log("success c:")
-                        if(passLogin == index.data().password){
+                        if(passLogin === index.data().password){
                             console.log("password correct");
-                            this.state.validlogin = true;
-                            break;
+                            this.setState({validlogin: true});
+                            return true;
+                            
                         }
                         else{
                             console.log("wrong password")
@@ -141,8 +140,10 @@ class Login extends Component{
                                     <input type = "password-input" className="login-input-field" passw ={this.state.passw} onChange={this.handleChangepassw} />
                                 </Col>
                                 <Col md = {12} lg= {12}>
-                                    <button className = "sign-in">
-                                        <Link to ={!this.state.validlogin ? "/": '#' } onClick = {() => {this.signIn()}}>Sign in </Link></button>&nbsp;&nbsp;
+                                    <button className = "sign-in" onClick = {() => {this.signIn()} }>Sign In
+                                        {/* <Link to ={this.state.validlogin ? "/Home": '/Login' } onClick = {() => {this.signIn()}}>Sign in </Link> */}
+                                        </button>&nbsp;&nbsp;
+                                        {this.state.validlogin ? <Redirect to ={'/Home'} /> : ''}
                                     <button className ="sign-up" style={{color:"white"}}><Link to ={{pathname: "/Register" }} >Sign Up</Link><br/></button>
                                     {/* <button className ="sign-up" onClick={() => {this.getMarker()} } style={{color:"red"}}>test</button> */}
                                 </Col>
