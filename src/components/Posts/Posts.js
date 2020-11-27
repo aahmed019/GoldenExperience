@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {Row, Button, Modal} from "react-bootstrap";
 import Post from "../Post/Post"
 import './Posts.css'
-import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap.css';
 import PostModal from '../PostModal/PostModal'
 class Posts extends Component{
     constructor(props) { 
