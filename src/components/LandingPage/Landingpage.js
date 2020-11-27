@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './LandingPage.css'
 import logo from '../../images/logoforschool.png';
+import Footer from '../Footer/Footer.js';
 
 class LandingPage extends Component{
     render(){
@@ -15,6 +16,7 @@ class LandingPage extends Component{
                 </div>
 
             </div>
+            <Footer/>
             </div>
             
         )
