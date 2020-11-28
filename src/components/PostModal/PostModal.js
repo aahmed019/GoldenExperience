@@ -18,26 +18,46 @@ class PostModal extends Component{
     }
     handleSubmit(){
         if(this.state.value.length > 0){
-            const prevData = [];
-            if(this.props.data.posts){
-                const prevData = this.props.data.posts;
+            let prevData = [];
+            let tabooList = ["fuck", "shit"];
+            let violation_count = 0;
+            for(let i = 0; i < tabooList.length; i++){
+                let ast_str = "";
+                for(let j = 0; j < tabooList[i].length; j++){
+                    ast_str += "*";
+                }
+                // temp = tabooList[i];
+                let count = this.state.value.split(tabooList[i]).length - 1;;
+                violation_count += count;
+                this.state.value = this.state.value.replaceAll(tabooList[i], ast_str);
+                // console.log(violation_count, this.state.value);
             }
-            const newData = {
-                "text": this.state.value,
-                "username": "eram",
-                time: this.db.getTime(),
-                comments : [] 
-
+            if(violation_count <= 3){
+                console.log("no violation");
+                if(this.props.data.posts){
+                    prevData = this.props.data.posts;
+                }
+                const newData = {
+                    "text": this.state.value,
+                    "username": "eram",
+                    time: this.db.getTime(),
+                    comments : [] 
+    
+                }
+                prevData.push(newData);
+                console.log(prevData);
+                this.db.getCollection("Topics").doc(this.props.id).update({
+                    "posts": prevData
+                }).then(() =>{
+                console.log("New Post Added to Database")
+                }).catch(function(error) { //broke down somewhere
+                console.error("Error: ", error);
+                });
             }
-            prevData.push(newData);
-            console.log(prevData);
-            this.db.getCollection("Topics").doc(this.props.id).update({
-                "posts": prevData
-            }).then(() =>{
-            console.log("New Post Added to Database")
-            }).catch(function(error) { //broke down somewhere
-            console.error("Error: ", error);
-            });
+            else{
+                console.log("violation");
+            }
+            
               
                           
         }
