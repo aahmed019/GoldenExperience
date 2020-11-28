@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './OrderPage.css'
 import Fire from '../../firebaseConfig';
-import Form from 'react-bootstrap/Form'
-import CheckOutPage from './CheckOutPage/CheckOutPage.js'
-import ConfirmPage from './ConfirmPage/ConfirmPage.js'
-import SuccessPage from './SuccessPage/SuccessPage.js'
-
+import {Row,Col} from 'react-bootstrap';
+import CounterInput from 'react-bootstrap-counter';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button'
 const storage = Fire.db.getStorage();
 
 export default class OrderPage extends React.Component{
@@ -34,49 +33,68 @@ export default class OrderPage extends React.Component{
 
 
 render(){
-    const {step} = this.state;
-    const{ order }  = this.state;
-      switch(step){
-          case 0: return (
-              <div className="Order">
-                <Form  >
+   return (
+            <div className="background-boi">
+                  <div class="Order" >
+                  <Form className="FormControl" >
+                      <Form.Row className="Rows">
+                      <Form.Group as={Col} class="Cols" xs={3}>
+                            <Form.Label>Meal:</Form.Label>
+                            <Form.Control as="select" custom  >
+                                <option id="mealID">1</option>
+                            </Form.Control>
+                       </Form.Group>
 
-                <Form.Group controlId="meal">
-                    <Form.Label>Meal</Form.Label>
-                    <Form.Control as="select">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    </Form.Control>
-                </Form.Group>
-                <Form.Group controlId="exampleForm.ControlSelect1">
-                    <Form.Label>Example select</Form.Label>
-                    <Form.Control as="select">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    </Form.Control>
-                </Form.Group>
-                <Form.Group controlId="exampleForm.ControlTextarea1">
-                    <Form.Label>Example textarea</Form.Label>
-                    <Form.Control as="textarea" rows={3} />
-                </Form.Group>
-                </Form>
+                       <Form.Group as={Col}  xs={3}>
+                            <Form.Label>Quantity:</Form.Label>
+                            <Form.Control type="number"  min="1" max="100"  id="mealQuantity"  />
+                       </Form.Group>
 
-              </div>
+                        <Form.Group as={Col} xs="auto" className="ButtonCols">
+                        <Button variant="primary" type="submit" > Add  to Cart</Button>
+                        </Form.Group>
+
+                      </Form.Row>
+                    
+                      <Form.Row className="Rows">
+                      <Form.Group as={Col} class="Cols" xs={3}>
+                            <Form.Label>Drink:</Form.Label>
+                            <Form.Control as="select" custom  >
+                                <option id="drinkId">1</option>
+                            </Form.Control>
+                       </Form.Group>
+
+                       <Form.Group as={Col}  xs={3}>
+                            <Form.Label>Quantity:</Form.Label>
+                            <Form.Control type="number"  min="1" max="100" id="drinkQunatity" />
+                       </Form.Group>
+
+                        <Form.Group as={Col}  xs="auto" className="ButtonCols"  >
+                            <Button variant="primary" type="submit" > Add to Cart </Button>
+                        </Form.Group>
+
+                      </Form.Row>
+                      
+                      <Form.Row className="Rows">
+                          <Form.Group as={Col} xs="11" >
+                          <Form.Control as="textarea" placeholder="Notes">
+                            </Form.Control>
+                          </Form.Group>
+
+                      </Form.Row>
+                      <Form.Row className="Rows">
+                          
+                          <Button variant="primary" type="submit">Check Out</Button>
+                            
+                         
+
+                      </Form.Row>
+                  </Form>
+                  </div>
+                  
+            </div>
            
-          )
-          case 1: return (<CheckOutPage nextStep ={this.nextStep} 
-          handleChange ={this.handleChange}
-          order={order}/>)
-         
-          case 2: return (<ConfirmPage/>)
-          case 3: return (<SuccessPage />)
-      }
+   )
     
 }
 }

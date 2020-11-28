@@ -1,19 +1,46 @@
-.orderButton{
-    margin: auto;
-    width: 25%;
-    height: 10%;
-}
-.Order{
-    padding: 20px 20px; 
-    margin: 10px 10px;
+.background-boi{
+    display: flex;
+    flex-direction: row;
+    align-items:center;
     justify-content: center;
-    width: 100%;
-    background-color: red;
+    
 
 }
-label{
-    display: block;
+.Order{
+    max-width:100%;
+    padding: 10px;
+    border-radius: 25px;    
+    background-color: black;
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+   
+    
+
 }
-.meal,.drink,.notes{
-    margin-bottom: 10px;
+
+.FormControl{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+}   
+
+.Rows{
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items:flex-end;
+    width: 100%;
+    height: auto;
+    
+}
+.ButtonCols{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    
 }

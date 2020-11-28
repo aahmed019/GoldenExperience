@@ -11,6 +11,7 @@
     "firebase": "^8.0.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.4.0",
+    "react-bootstrap-counter": "^1.0.1",
     "react-credit-cards": "^0.8.3",
     "react-dom": "^16.13.1",
     "react-grid-system": "^7.1.1",

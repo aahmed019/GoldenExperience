@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Nav from './components/Navbar/Navbar.js'
 import Login from './components/Login/Login.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import LandingPage from './components/LandingPage/Landingpage.js'
 import { HashRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import SignUp from './components/SignUp/Signup';
