@@ -49,6 +49,76 @@ class Login extends Component{
         
     // }
     
+    //For manager 
+    async getMarker() {
+        const snapshot = await this.db.getCollection('SignUp').get()
+        console.log(snapshot.docs.map(doc => doc.data()))
+    }
+
+    //shitty attempt at gettingusers 
+    // getUsers(doc){
+    //     let li= {};
+    //     let userLogin = {};
+    //     let passLogin = {};
+
+    //     //li.setAttribute('data-id', doc.id);
+    //     userLogin = doc.data().username;
+    //     passLogin = doc.data().password;
+    //     // console.log("this is the user",userLogin);
+    //     // console.log("this is the pass",passLogin);
+
+    //     this.validateForm(userLogin, passLogin);
+
+    // }
+
+    signIn(){
+        this.db.getCollection('Users').get().then((snapshot) => {
+            let userLogin = this.state.value;
+            let passLogin = this.state.passw;
+                // console.log("this is the username: ", snapshot.docs[1].data().username)
+                
+                for(let i = 0; i < snapshot.docs.length; i++){
+                    let index = snapshot.docs[i]
+                    if(userLogin === index.data().username){
+                        console.log("success c:")
+                        if(passLogin === index.data().password){
+                            console.log("password correct");
+                            this.setState({validlogin: true});
+                            return true;
+                            
+                        }
+                        else{
+                            console.log("wrong password")
+                            alert('Wrong password, please try again.')
+                            break;
+                        }
+                    }
+                    else{
+                        console.log("wrong credentials")
+                        alert('Wrong username, please try again.')
+                        break;
+                    }
+                }
+                
+                
+            
+        })
+    }
+    // getUserByUser(value) {
+    //     // Make the initial query
+    //     const query = this.db.getCollection('Users').where('username', '==', value).get();
+      
+    //      if (!query.empty) {
+    //       const snapshot = query.docs[0];
+    //       const data = snapshot.data();
+    //       console.log(data);
+      
+    //     } else {
+    //       // not found
+    //     }
+    //   }
+
+
     render(){
         //this.getUserByUser(this.state.value);
         
@@ -70,16 +140,20 @@ class Login extends Component{
                                     <input type = "password-input" className="login-input-field" passw ={this.state.passw} onChange={this.handleChangepassw} />
                                 </Col>
                                 <Col md = {12} lg= {12}>
-                                    <button className = "sign-in" disabled={!this.validateForm()}><Link to ={{pathname: "/" }}>Sign in </Link></button>&nbsp;&nbsp;
-                                    <button className ="sign-up" style={{color:"white"}}><Link to ={{pathname: "/Register" }} >Sign Up</Link><br/></button>
+                                    <button className = "sign-in" onClick = {() => {this.signIn()} }>Sign In
+                                        {/* <Link to ={this.state.validlogin ? "/Home": '/Login' } onClick = {() => {this.signIn()}}>Sign in </Link> */}
+                                        </button>&nbsp;&nbsp;
+                                        {this.state.validlogin ? <Redirect to ={'/Home'} /> : ''}
+                                    <button className ="sign-up" style={{color:"white"}}><Link to ={{pathname: "/SignUpV2" }} >Sign Up</Link><br/></button>
+                                    {/* <button className ="sign-up" onClick={() => {this.getMarker()} } style={{color:"red"}}>test</button> */}
                                 </Col>
                     
                             </Row>
                         </div>
-                </div>
-                
-                <Footer/>
-                </div>
+                    </div>
+            </div>
+            
+            <Footer/>
             </div>
         )
     }

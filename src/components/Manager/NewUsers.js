@@ -61,7 +61,6 @@ export default function NewUsers() {
     return (     
         <div style={{textAlign:'center'}}>
             <h1>New users</h1>
-            <div style={{display:'flex', flexDirection:'row'}}>
             {newUsers.map(function(item, i){
                 console.log(item);
                 return <div key={i}>
@@ -76,7 +75,6 @@ export default function NewUsers() {
                 <br/>
                 </div>
             })}
-            </div>
         </div>
    
 

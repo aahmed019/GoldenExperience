@@ -17,8 +17,6 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import UpdateProfile from './components/UpdateProfile/UpdateProfile';
 
-import CommentSection from './components/CommentSection/CommentSection';
-import Deposit from './components/Deposit/Deposit';
 
 function App() {
   return (
@@ -48,12 +46,9 @@ function App() {
               <Route exact path = '/Profile' component ={ProfilePage}/>
               <Route exact path = '/SignUpV2' component = {SignUpV2}/>
               <Route path = "/forgot-password" component = {ForgotPassword}/>
-              <Route exact path = '/Comments' component={CommentSection}/>
-              <Route exact path = '/Deposit' component={Deposit}/>
               
         </Switch>
         </AuthProvider>
-      {/* </Switch> */}
       </div>
     </div>
     </Router>
