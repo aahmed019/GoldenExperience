@@ -34,9 +34,6 @@ export default function NewUsers() {
             password: password,
             name: name,
             email: email,
-            orderHistory: [],
-            warnings: 0,
-            Balance: 0
             })
             .then(function() {// went through
                 console.log("Approved!");
@@ -67,7 +64,7 @@ export default function NewUsers() {
             {newUsers.map(function(item, i){
                 console.log(item);
                 return <div key={i}>
-                <h1>Application number: {i + 1}</h1>
+                <h1>User number: {i + 1}</h1>
                 <h2>Name: {item.name}</h2>
                 <h2>Email: {item.email}</h2>
                 <h2>Username: {item.username}</h2>
