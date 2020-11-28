@@ -29,9 +29,11 @@ header{
 
 .navItems li a{
   transition: all 0.3s ease 0s;
+  color: #9C9523;
 }
 .navItems li a:hover{
   color:rgb(250, 250, 250);
+  color: #9C9523;
 }
 .wtf{
   text-align: right;

@@ -144,7 +144,7 @@ class Login extends Component{
                                         {/* <Link to ={this.state.validlogin ? "/Home": '/Login' } onClick = {() => {this.signIn()}}>Sign in </Link> */}
                                         </button>&nbsp;&nbsp;
                                         {this.state.validlogin ? <Redirect to ={'/Home'} /> : ''}
-                                    <button className ="sign-up" style={{color:"white"}}><Link to ={{pathname: "/Register" }} >Sign Up</Link><br/></button>
+                                    <button className ="sign-up" style={{color:"white"}}><Link to ={{pathname: "/SignUpV2" }} >Sign Up</Link><br/></button>
                                     {/* <button className ="sign-up" onClick={() => {this.getMarker()} } style={{color:"red"}}>test</button> */}
                                 </Col>
                     
