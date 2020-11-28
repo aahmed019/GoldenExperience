@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import Navbar from './components/Navbar/Navbar.js'
-import Login from './components/Login/Login.js';
 import LandingPage from './components/LandingPage/Landingpage.js'
 import { BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import SignUp from './components/SignUp/Signup';
@@ -12,7 +11,6 @@ import ProfilePage from './components/ProfilePage/ProfilePage';
 import SignUpV2 from './components/SignUpV2/SignUpV2';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginV2 from './components/LoginV2/LoginV2';
-import PrviateRoute from './components/PrivateRoute/PrivateRoute';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import UpdateProfile from './components/UpdateProfile/UpdateProfile';
