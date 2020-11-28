@@ -37,12 +37,6 @@ class Login extends Component{
         
     }
     
-    //For manager 
-    async getMarker() {
-        const snapshot = await this.db.getCollection('SignUp').get()
-        console.log(snapshot.docs.map(doc => doc.data()))
-    }
-
     render(){
         console.log(this.state)
         return(
@@ -65,7 +59,6 @@ class Login extends Component{
                             <Col md = {12} lg= {12}>
                                 <button className = "sign-in" disabled={!this.validateForm()}><Link to ={{pathname: "/" }}>Sign in </Link></button>&nbsp;&nbsp;
                                 <button className ="sign-up" style={{color:"white"}}><Link to ={{pathname: "/Register" }} >Sign Up</Link><br/></button>
-                                <button className ="sign-up" onClick={() => {this.getMarker()} } style={{color:"red"}}>test</button>
                             </Col>
                 
                         </Row>
