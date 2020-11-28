@@ -12,6 +12,8 @@ import ChefPage from './components/ChefPage/ChefPage';
 import ManagerPage from './components/Manager/Manager';
 import CommentSection from './components/CommentSection/CommentSection';
 import OrderPage from './components/OrderPage/OrderPage';
+import Deposit from './components/Deposit/Deposit';
+
 function App() {
   return (
     <div>
@@ -32,7 +34,9 @@ function App() {
             <Route exact path = '/Manager' component={ManagerPage}/>
             <Route exact path = '/Comments' component={CommentSection}/>
             <Route exact path = '/OrderPage' component ={OrderPage}/>
+            <Route exact path = '/Deposit' component={Deposit}/>
       </Switch>
+      {/* </Switch> */}
       </div>
     </div>
     </Router>
