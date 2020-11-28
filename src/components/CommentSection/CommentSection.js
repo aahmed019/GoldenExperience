@@ -26,27 +26,42 @@ class CommentSection extends Component{
         this.setState({value: e.target.value});
     }
     handleSubmit(){
-        if(this.state.value.length > 0){
+        let tabooList = ["fuck", "shit"];
+        let violation_count = 0;
+        for(let i = 0; i < tabooList.length; i++){
+            let ast_str = "";
+            for(let j = 0; j < tabooList[i].length; j++){
+                ast_str += "*";
+            }
+            // temp = tabooList[i];
+            let count = this.state.value.split(tabooList[i]).length - 1;;
+            violation_count += count;
+            this.state.value = this.state.value.replaceAll(tabooList[i], ast_str);
+        }
+        if(this.state.value.length > 0 && violation_count <= 3){
            let prevData = this.props.location.state.data.posts;
            console.log(prevData);
             for(let i = 0; i < prevData.length; i++){
                 if(prevData[i].text == this.props.location.state.text && prevData[i].username == this.props.location.state.username){
-                    prevData[i].comments.push({
-                        "text": this.state.value,
-                        "username": "rudeuser",
-                        time: this.db.getTime()
-                    })
+                    
+                        prevData[i].comments.push({
+                            "text": this.state.value,
+                            "username": "rudeuser",
+                            time: this.db.getTime()
+                        })    
                 }
             }
-            console.log(prevData);
-            console.log(this.props.location.state.id);
-            this.db.getCollection("Topics").doc(this.props.location.state.id).update({
-                "posts": prevData
-            }).then(() =>{
-            console.log("New Post Added to Database");
-            }).catch(function(error) { //broke down somewhere
-            console.error("Error: ", error);
-            });
+                this.db.getCollection("Topics").doc(this.props.location.state.id).update({
+                    "posts": prevData
+                }).then(() =>{
+                console.log("New Post Added to Database");
+                }).catch(function(error) { //broke down somewhere
+                console.error("Error: ", error);
+                });    
+            
+        }
+        else{
+            console.log(violation_count, "violations");
         }
     }
 
