@@ -1,0 +1,43 @@
+
+
+/* .card{
+    width: 50%;
+    border:1px solid white !important;
+    margin-top: 2%;
+    justify-content: center;
+    padding:1%;
+    font-size: 20px;
+    border-radius: 20px;
+    font-weight:bold !important;
+    background-color: black !important;
+    
+}
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+input{
+    border: 1px solid black;
+    width:85%;
+    background-color: grey;
+    color:white;
+}
+.comment-editor{
+    height: 0%;
+}
+
+::placeholder { 
+    color: white;
+    opacity: 1; 
+  }
+  
+  :-ms-input-placeholder { 
+    color: white;
+;
+  }
+  
+  ::-ms-input-placeholder {
+    color: white;
+  }
+   */

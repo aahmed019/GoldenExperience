@@ -1,0 +1,23 @@
+.newpost{
+    padding:1% !important;
+    margin-left:65% !important;
+    margin-top:2% !important;
+}
+.modal-dialog{
+    max-width: 60% !important;
+    background-color: black !important;
+
+}
+.modal-content{
+    background-color: black !important;
+    border: 1px solid white !important;
+}
+button.newpost{
+    background-color:#161616 !important;
+    color: #9C9523 !important;
+    border: 1px solid white !important;
+}
+button.newpost:hover{
+    background-color: white !important;
+    cursor: pointer !important;
+}
