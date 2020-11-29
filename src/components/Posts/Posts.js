@@ -35,7 +35,7 @@ class Posts extends Component{
             const {data} = this.props.location.state;
             const {id} = this.props.location.state;
         return(
-            <div>
+            <div className='background-boi'>
                 <div>{data.posts && data.posts.map((post, i) => {
                     const date = post.time.toDate().toString();
                     return(

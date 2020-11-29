@@ -62,5 +62,4 @@ export default function ManagerPage() {
 
 /*
  
-
 */

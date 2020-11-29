@@ -8,7 +8,7 @@ class Topic extends Component{
     render(){
         return(
         <div>
-            <p><Link to ={{pathname: "/Posts", state: {
+            <p><Link className = "topic-link"to ={{pathname: "/Posts", state: {
     data: this.props.data,
     id : this.props.id
   } } }>{this.props.name}</Link></p>

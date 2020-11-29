@@ -32,7 +32,7 @@ export default class Deposit extends React.Component {
           name={this.state.name}
           number={this.state.number}
         />
-        <form onSubmit={this.handleSubmit}>
+        <form className = "deposit-form"onSubmit={this.handleSubmit}>
             <input
                 type="text"
                 name="amount"
