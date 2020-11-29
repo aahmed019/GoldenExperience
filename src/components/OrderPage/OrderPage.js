@@ -1,100 +1,96 @@
-import React, { useEffect, useState } from 'react';
+import React, {  Component } from 'react';
 import './OrderPage.css'
-import Fire from '../../firebaseConfig';
-import {Row,Col} from 'react-bootstrap';
-import CounterInput from 'react-bootstrap-counter';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button'
+import Order from './Order/Order.js'
+import CheckOut from './CheckOutPage/CheckOutPage'
+import Confirm from './ConfirmPage/ConfirmPage'
+import Success from './SuccessPage/SuccessPage'
+import Fire from '../../firebaseConfig.js'
+import Footer from '../Footer/Footer'
 const storage = Fire.db.getStorage();
 
-export default class OrderPage extends React.Component{
-    constructor(props)
-    {
-        super(props);
-        this.state= {
-            step : 0,
-            meal:'' /*[{meal_id:0, meal_name:'', meal_descript:'', rating:0, price:0.0}]*/,
-            order:'' /* [{meal_id:0, quantity: 0}]*/
-        }  
-    }
-    //proceed to the next step
-    nextStep= ()=>{
-        const {step} =this.state;
-        this.setState({
-            step: step + 1
-        })
-    }
-    handleChange = input => e => {
-        this.setState({
-            [input]: e.target.value
-        });
-    }
+
+export default class OrderPage extends Component{
  
+    state={
+        step: 1,
+        cart: [],
+        MID: 'm1',
+        MNum: 1,
+        DID: 'd1',
+        Dnum: 1,
+        notes: ""
 
+    }
+    AddToCart=(fid,fquantity)=> {
 
-render(){
-   return (
-            <div className="background-boi">
-                  <div class="Order" >
-                  <Form className="FormControl" >
-                      <Form.Row className="Rows">
-                      <Form.Group as={Col} class="Cols" xs={3}>
-                            <Form.Label>Meal:</Form.Label>
-                            <Form.Control as="select" custom  >
-                                <option id="mealID">1</option>
-                            </Form.Control>
-                       </Form.Group>
+        let newCart = this.state.cart;
+        newCart.push({id: fid, quantity: fquantity})
+        this.setState({cart: newCart});
+        console.log(JSON.stringify(this.state.cart));
+        
+    }
+    NextStep=()=>{
+        const{step} =this.state;
+        this.setState({step: step+1});
+    }
+    PrevStep=()=>{
+        const{step} =this.state;
+        this.setState({step: step-1});
+    }
+    handleChange =input => e =>{
+        this.setState({[input] : e.target.value})
+    }
+    render(){
+        const{step}=this.state;
+        const{MID,MNum,DID,DNum,notes} = this.state;
+        const values= {MID,MNum,DID,DNum,notes}
+        switch(step)
+    {
+        case 1: return ( <div><Order 
+                            NextStep={this.NextStep}
+                            handleChange={this.handleChange}
+                            AddToCart={this.AddToCart}
+                            values={values}
+                        /><Footer/></div>)
+        case 2: return(     <div>
+                            <CheckOut 
+                            NextStep={this.NextStep}
+                            PrevStep={this.PrevStep}
+                            handleChange={this.handleChange}
+                        /> <Footer/></div>)
+        case 3: return(     <div>
+                            <Confirm
+                            NextStep={this.NextStep}
+                            PrevStep={this.PrevStep}
+                            handleChange={this.handleChange}
+        /><Footer/></div>
+        )
+        case 4: return(
+                    <div>
+                <Success
+            PrevStep={this.PrevStep}
+            handleChange={this.handleChange}
+                        /><Footer/>
+                        </div>
+                        )
+        default: return(
+        <div>
+            <Order 
+            NextStep={this.NextStep}
+            handleChange={this.handleChange}
+            AddToCart={this.AddToCart}
+            values={values}
+        />
+        <Footer/>
+        </div>
+        )
+    }
 
-                       <Form.Group as={Col}  xs={3}>
-                            <Form.Label>Quantity:</Form.Label>
-                            <Form.Control type="number"  min="1" max="100"  id="mealQuantity"  />
-                       </Form.Group>
-
-                        <Form.Group as={Col} xs="auto" className="ButtonCols">
-                        <Button variant="primary" type="submit" > Add  to Cart</Button>
-                        </Form.Group>
-
-                      </Form.Row>
-                    
-                      <Form.Row className="Rows">
-                      <Form.Group as={Col} class="Cols" xs={3}>
-                            <Form.Label>Drink:</Form.Label>
-                            <Form.Control as="select" custom  >
-                                <option id="drinkId">1</option>
-                            </Form.Control>
-                       </Form.Group>
-
-                       <Form.Group as={Col}  xs={3}>
-                            <Form.Label>Quantity:</Form.Label>
-                            <Form.Control type="number"  min="1" max="100" id="drinkQunatity" />
-                       </Form.Group>
-
-                        <Form.Group as={Col}  xs="auto" className="ButtonCols"  >
-                            <Button variant="primary" type="submit" > Add to Cart </Button>
-                        </Form.Group>
-
-                      </Form.Row>
-                      
-                      <Form.Row className="Rows">
-                          <Form.Group as={Col} xs="11" >
-                          <Form.Control as="textarea" placeholder="Notes">
-                            </Form.Control>
-                          </Form.Group>
-
-                      </Form.Row>
-                      <Form.Row className="Rows">
-                          
-                          <Button variant="primary" type="submit">Check Out</Button>
-                            
-                         
-
-                      </Form.Row>
-                  </Form>
-                  </div>
-                  
-            </div>
-           
-   )
+    }
     
-}
+
+
+   
+    
+
 }
