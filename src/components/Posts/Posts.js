@@ -37,11 +37,19 @@ class Posts extends Component{
         return(
             <div className='background-boi'>
                 <div>{data.posts && data.posts.map((post, i) => {
-                    const date = post.time.toDate().toString();
+                    let date = ""
+                    if(post.time){
+                        // SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        // sfd.format(new Date(timestamp));
+                        date = new Date(post.time.seconds*1000).toString()
+                        // console.log(post.time.toString());
+                        // date = post.time.toDate().toString();
+                    }
                     return(
                         <Post data={data} comments={post.comments} id={id} key={i} username={post.username} text={post.text} time={date}></Post> 
                     )})}
                 </div>
+                
                 <div><Button className="newpost" onClick={this.handleShow}>Create New Post</Button></div>
                 <PostModal data={data} id={id} show={this.state.show} handleClose={this.handleClose}></PostModal>
             </div>
