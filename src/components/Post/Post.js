@@ -7,7 +7,7 @@ class Post extends Component{
     render(){
         return(
         // <div style="border: 1px solid black">
-            <div className="center">
+            <div className="center background-boi">
                 <Card>
                     <Card.Body>
                     <div><p><Link to ={{pathname: "/Comments", state: {

@@ -18,8 +18,9 @@ export default class OrderPage extends Component{
         MNum: 1,
         DID: 'd1',
         Dnum: 1,
-        notes: ""
-
+        notes: "",
+        address: "",
+        balance: this.props.balance
     }
     AddToCart=(fid,fquantity)=> {
 
@@ -30,7 +31,7 @@ export default class OrderPage extends Component{
         
     }
     NextStep=()=>{
-        const{step} =this.state;
+        const{step, cart} =this.state;
         this.setState({step: step+1});
     }
     PrevStep=()=>{
@@ -41,9 +42,11 @@ export default class OrderPage extends Component{
         this.setState({[input] : e.target.value})
     }
     render(){
-        const{step}=this.state;
+        const{step, cart, address, balance}=this.state;
         const{MID,MNum,DID,DNum,notes} = this.state;
         const values= {MID,MNum,DID,DNum,notes}
+        const checkoutvalues={cart,address,balance}
+        
         switch(step)
     {
         case 1: return ( <div><Order 
@@ -54,6 +57,7 @@ export default class OrderPage extends Component{
                         /><Footer/></div>)
         case 2: return(     <div>
                             <CheckOut 
+                            checkoutvalues={this.checkoutvalues}
                             NextStep={this.NextStep}
                             PrevStep={this.PrevStep}
                             handleChange={this.handleChange}

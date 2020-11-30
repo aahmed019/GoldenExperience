@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Menu.css'
 import Fire from '../../firebaseConfig';
+import Footer from '../Footer/Footer';
 
 const storage = Fire.db.getStorage();
 
@@ -17,12 +18,21 @@ export default function Menu(){
     })
 
     return(
-        <div className ='container'>
-            <div>
-                <h2>Menu</h2>
-                <img id="menu" style ={{paddingTop:'20px' ,width: '800px', height:'600px'}} src={menu} alt =""/>
+        <div className = "background-boi"> 
+            <div className ='container'>
+                <div>
+                    <h2>Menu</h2>
+                    <img id="menu" style ={{paddingTop:'20px' ,width: '800px', height:'600px'}} src={menu} alt =""/>
+                </div>
+                            
             </div>
-                       
+            <div>
+                &nbsp; <br/>   
+                <br/>  <br/>  
+                
+            </div>
+            
+            <Footer/>
         </div>
     )
 }
