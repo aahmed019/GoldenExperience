@@ -21,3 +21,6 @@ button.newpost:hover{
     background-color: white !important;
     cursor: pointer !important;
 }
+.black-background{
+    background-color: black;
+}

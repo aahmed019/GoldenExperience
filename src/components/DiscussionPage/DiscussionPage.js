@@ -28,7 +28,7 @@ class DiscussionPage extends Component{
     }        
     render(){
         return(
-            <div>
+            <div className="discussion-background">
                 <div>
         <h1>Welcome to the discussion forum</h1>
         {this.state.topics && this.state.topics.map((topic, i) => {

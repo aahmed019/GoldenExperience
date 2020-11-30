@@ -3,7 +3,7 @@ import {Button, Form} from "react-bootstrap";
 import Fire from '../../firebaseConfig';
 import Comment from "../Comment/Comment"
 import './CommentSection.css'
-
+import Footer from "../Footer/Footer"
 class CommentSection extends Component{
     constructor(props) { 
         super(props);
@@ -68,6 +68,7 @@ class CommentSection extends Component{
     render(){
         if(this.props.location.state){
             return(
+                <div className="black-background">
                 <div className="commentBox">
                     <div className="postTextDiv">
                         <p>{this.props.location.state.text} by {this.props.location.state.username}</p>
@@ -75,13 +76,15 @@ class CommentSection extends Component{
                     <Form>
                         <div className="formComment">
                             <input className="inputComment" value={this.state.value} onChange={this.handleChange}/>
-                            <Button className="buttonComment" onClick={this.handleSubmit}>Post Comment</Button>
+                            <Button className="buttonComment gold-text" onClick={this.handleSubmit}>Post Comment</Button>
                         </div>
                     </Form>
                     {this.state.comments && this.state.comments.map((comment, i) => {
                         return(
                             <Comment key={i} username={comment.username} text={comment.text}></Comment> 
                         )})}
+                </div>
+                <Footer/>
                 </div>
             );
         }
