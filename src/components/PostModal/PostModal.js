@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Button, Modal, Form} from "react-bootstrap";
 import Fire from '../../firebaseConfig';
-
+import "./PostModal.css"
 class PostModal extends Component{
     constructor(props) { 
         super(props);
@@ -74,15 +74,15 @@ class PostModal extends Component{
                         <Form onSubmit={this.props.handleSubmit}>
                                 <div>
                                     <h6>Post:</h6>
-                                <input type="text" onChange={this.handleChange} value={this.state.value}/>
+                                <input type="text" className="post-modal-input" onChange={this.handleChange} value={this.state.value}/>
                             </div>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                    <Button variant="secondary" onClick={this.props.handleClose}>
+                    <Button variant="secondary post-modal-button" onClick={this.props.handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={this.handleSubmit}>
+                    <Button variant="primary post-modal-button" onClick={this.handleSubmit}>
                         Save Changes
                     </Button>
                     </Modal.Footer>

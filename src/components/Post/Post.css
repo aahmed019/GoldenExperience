@@ -1,4 +1,23 @@
 
+.post-card{
+  width: 50%;
+    margin-top: 2%;
+    justify-content: center;
+    /* padding:1%; */
+    font-size: 20px;
+    border-radius: 20px;
+    font-weight:bold !important;
+    color: #9C9523 !important;
+
+}
+a{
+  color: #9C9523 !important;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /* .card{
     width: 50%;

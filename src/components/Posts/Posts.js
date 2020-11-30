@@ -5,6 +5,8 @@ import Post from "../Post/Post"
 import './Posts.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import PostModal from '../PostModal/PostModal'
+import Footer from '../Footer/Footer';
+
 class Posts extends Component{
     constructor(props) { 
         super(props);
@@ -35,7 +37,7 @@ class Posts extends Component{
             const {data} = this.props.location.state;
             const {id} = this.props.location.state;
         return(
-            <div className='background-boi'>
+            <div className="black-background">
                 <div>{data.posts && data.posts.map((post, i) => {
                     let date = ""
                     if(post.time){
@@ -52,6 +54,7 @@ class Posts extends Component{
                 
                 <div><Button className="newpost" onClick={this.handleShow}>Create New Post</Button></div>
                 <PostModal data={data} id={id} show={this.state.show} handleClose={this.handleClose}></PostModal>
+                <Footer/>
             </div>
         );
         }
