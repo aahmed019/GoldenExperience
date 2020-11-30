@@ -15,7 +15,8 @@ export default class Order extends Component {
 
 
 render(){
-    const{ values, handleChange, AddToCart }=this.props;
+    const{CalculateTotal, values, handleChange, AddToCart,meal, drink }=this.props;
+
 
    return (
             <div className="background-boi">
@@ -24,11 +25,12 @@ render(){
                       <Form.Row className="Rows" >
                       <Form.Group as={Col} className="Cols" xs={3}>
                             <Form.Label>Meal:</Form.Label>
-                            <Form.Control as="select" custom onChange={()=>handleChange('MID')}>
-                                <option id="mealID" value="m1">m1</option>
-                                <option id="mealID" value="m2">m2</option>
-                                <option id="mealID" value="m3">m3</option>
-                                <option id="mealID" value="m4">m4</option>
+                            <Form.Control as="select" custom onChange={handleChange('MID')} >
+                            <option></option>
+                            {meal && meal.map((food, i) => {
+                                 return(
+                            <option key={i} value={food[0].id} >{food[0].name}</option> 
+                                     )})}
                             </Form.Control>
                        </Form.Group>
 
@@ -47,10 +49,11 @@ render(){
                       <Form.Group as={Col} className="Cols" xs={3}>
                             <Form.Label>Drink:</Form.Label>
                             <Form.Control as="select" custom  onChange={handleChange('DID')} >
-                                <option id="drinkId" value="d1">d1</option>
-                                <option id="drinkId" value="d2">d2</option>
-                                <option id="drinkId" value="d3">d3</option>
-                                <option id="drinkId" value="d4">d4</option>
+                            <option> </option>
+                            {drink && drink.map((food, i) => {
+                                 return(
+                            <option key={i} value={food[0].id}>{food[0].name}</option> 
+                                     )})}
                             </Form.Control>
                        </Form.Group>
 

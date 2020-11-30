@@ -3,4 +3,24 @@
     flex-direction:column;
     justify-content: center;
     align-items:center;
+
+    width: 100%;
+    height: 750px;
+}
+h1{
+    padding: 10px;
+    margin: 10px;
+}
+.Orderlist{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 50%;  
+  
+}
+.Rows{
+    padding: 5px;
+    margin: 5px;
 }
