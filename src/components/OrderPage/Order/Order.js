@@ -6,8 +6,13 @@ import Button from 'react-bootstrap/Button'
 
 
 export default class Order extends Component {
- 
-    
+    constructor(props){
+        super(props);
+        this.state={ 
+            OptionPage:(<div></div>)
+        }
+        
+    }
     continue = e =>{
         e.preventDefault();
         this.props.NextStep();
@@ -15,8 +20,56 @@ export default class Order extends Component {
 
 
 render(){
-    const{CalculateTotal, values, handleChange, AddToCart,meal, drink }=this.props;
+    const{ values, handleChange, AddToCart,meal, drink }=this.props;
 
+    function DineIn() {
+        return(<Form.Row className="Rows ">
+        <Form.Group as={Col} xs={10}> 
+              <Form.Label>Seat Number:</Form.Label>
+              <Form.Control type="text" onChange={handleChange('seatNum')}></Form.Control>
+              </Form.Group>
+              <Form.Group as={Col} xs={10}> 
+              <Form.Label>Time:</Form.Label>
+              <Form.Control type="text" onChange={handleChange('time') } placeholder="Time in HH:MM"></Form.Control>
+              </Form.Group>
+        </Form.Row>)
+     }
+    
+     function Delivery(){
+        return(<Form.Row>
+            <Form.Row className="Rows ">
+            <Form.Group as={Col} xs={6}> 
+                  <Form.Label>Address:</Form.Label>
+                  <Form.Control type="text" onChange={handleChange('address')}></Form.Control>
+                  </Form.Group>
+            </Form.Row>
+            <Form.Row className="Rows ">
+                  <Form.Group as={Col} xs={2}>
+                      <Form.Label>City</Form.Label>
+                      <Form.Control type="text" onChange={handleChange('city')}></Form.Control>
+                  </Form.Group>
+                  <Form.Group as={Col} xs={2}>
+                      <Form.Label>State</Form.Label>
+                      <Form.Control type="text" onChange={handleChange('state')}></Form.Control>
+                  </Form.Group>
+                  <Form.Group as={Col} xs={2}>
+                      <Form.Label>Postal Code</Form.Label>
+                      <Form.Control type="text" onChange={handleChange('postalCode')} ></Form.Control>
+                  </Form.Group>
+            </Form.Row>
+            </Form.Row>)
+    }
+
+    function PickUp(){
+        return (<Form.Row className="Rows ">
+        <Form.Group as={Col} xs={10}> 
+              <Form.Label>Pick Up:</Form.Label>
+              <Form.Control type="text" onChange={handleChange('time')} placeholder="Time (HH:MM)"></Form.Control>
+              </Form.Group>
+        </Form.Row>)
+    }
+
+  
 
    return (
             <div className="background-boi">
@@ -46,7 +99,7 @@ render(){
                       </Form.Row>
                     
                       <Form.Row className="Rows" >
-                      <Form.Group as={Col} className="Cols" xs={3}>
+                      <Form.Group as={Col}   xs={3}>
                             <Form.Label>Drink:</Form.Label>
                             <Form.Control as="select" custom  onChange={handleChange('DID')} >
                             <option> </option>
@@ -68,14 +121,50 @@ render(){
 
                       </Form.Row>
                       
-                      <Form.Row className="Rows"  >
-                          <Form.Group as={Col}  xs="10" className="ButtonCols" >
-                          <Form.Control as="textarea" placeholder="Notes" className="Notes" onChange={handleChange('notes')}> 
-                            </Form.Control>
-                          </Form.Group>
 
+                      <Form.Row className="Rows">
+                          
+                            <Form.Check
+                            inline
+                            type="radio"
+                            label="Dine In"
+                            name="EatOptions"
+                            id="EatOptions"
+                            onChange={()=> this.setState({OptionPage:  DineIn() })}
+                            />
+                            
+                           
+                            <Form.Check
+                            inline
+                            type="radio"
+                            label="Delivery"
+                            name="EatOptions"
+                            id="EatOptions"
+                            onChange={()=>this.setState({OptionPage:  Delivery() })}
+                            />
+
+                            <Form.Check
+                            inline
+                            type="radio"
+                            label="Pick Up"
+                            name="EatOptions"
+                            id="EatOptions"
+                            onChange={()=>this.setState({OptionPage: PickUp() })}
+                            />
                       </Form.Row>
-                      <Form.Row >                        
+                        {this.state.OptionPage}
+                        <Form.Row className="Rows">
+                            <Form.Group as={Col} >
+                                <Form.Control 
+                                as="textarea"
+                                onChange={handleChange('notes')}
+                                style={{height:'100px'}}
+                                 />
+
+                                
+                            </Form.Group>
+                        </Form.Row>
+                      <Form.Row className="Rows" >                        
                           <Button variant="primary" onClick={this.continue} >Check Out</Button>
                       </Form.Row>
                   </Form>

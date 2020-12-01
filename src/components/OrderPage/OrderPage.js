@@ -8,6 +8,7 @@ import Fire from '../../firebaseConfig.js'
 import Footer from '../Footer/Footer'
 
 
+
 export default class OrderPage extends Component{
  
     constructor(props){
@@ -22,7 +23,13 @@ export default class OrderPage extends Component{
         notes: "",
         address: "",
         balance: this.props.balance,
-        total:0
+        total:0,
+        address:"",
+        city:"",
+        state:"",
+        postalCode:"",
+        seatNum:"",
+        time: ""
     }
 
     this.AddToCart =this.AddToCart.bind(this);
@@ -104,7 +111,7 @@ export default class OrderPage extends Component{
         
     }
     NextStep=()=>{
-        const{step, cart} =this.state;
+        const{step} =this.state;
         this.setState({step: step+1});
     }
     PrevStep=()=>{
@@ -121,15 +128,16 @@ export default class OrderPage extends Component{
         
         switch(step)
     {
-        case 1: return ( <div><Order 
-                           
+        case 1: return ( <div>
+                            <Order 
                             NextStep={this.NextStep}
                             handleChange={this.handleChange}
                             AddToCart={this.AddToCart}
                             values={values}
                             meal={meal}
                             drink={drink}
-                        /><Footer/></div>)
+                            /><Footer/>
+                            </div>)
         case 2: return(     <div>
                             <CheckOut 
                             CalculateTotal={this.CalculateTotal}
@@ -139,13 +147,15 @@ export default class OrderPage extends Component{
                             NextStep={this.NextStep}
                             PrevStep={this.PrevStep}
                             handleChange={this.handleChange}
-                        /> <Footer/></div>)
+                            /> <Footer/>
+                            </div>)
         case 3: return(     <div>
                             <Confirm
                             NextStep={this.NextStep}
                             PrevStep={this.PrevStep}
                             handleChange={this.handleChange}
-        /><Footer/></div>
+                            /><Footer/>
+                            </div>
         )
         case 4: return(
                     <div>

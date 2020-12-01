@@ -44,7 +44,6 @@ render(){
                     cart.map((item)=>{
                         let name=""
                         let price=0;
-                       // alert(item)
                         let type=item.id[0];
                         if(type==='m')
                         {
