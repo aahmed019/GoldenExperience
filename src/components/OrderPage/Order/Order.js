@@ -157,6 +157,7 @@ render(){
                             <Form.Group as={Col} >
                                 <Form.Control 
                                 as="textarea"
+                                placeholder="Notes"
                                 onChange={handleChange('notes')}
                                 style={{height:'100px'}}
                                  />
