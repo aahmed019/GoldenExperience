@@ -29,7 +29,8 @@ export default class OrderPage extends Component{
         state:"",
         postalCode:"",
         seatNum:"",
-        time: ""
+        time: "12:00 PM",
+        option: 0
     }
 
     this.AddToCart =this.AddToCart.bind(this);
@@ -65,7 +66,7 @@ export default class OrderPage extends Component{
     AddToCart=(fid,fquantity)=> {
         let newCart = this.state.cart;
         if(fid ==="")
-        { alert("Please Choose something from the list ! ")}
+        { alert("Please choose something from the list ! ")}
         else{
         fquantity = parseInt( fquantity);
        
@@ -120,61 +121,91 @@ export default class OrderPage extends Component{
     }
     handleChange =input => e =>{
         this.setState({[input] : e.target.value})
+        
+    }
+    RemoveFromCart=(fid)=> {
+        let newCart = this.state.cart;
+        let Meal = this.state.meal;
+        let Drink = this.state.drink;
+        let reduce 
+        let totalnew= this.state.total;
+        if(fid[0]==="m")
+        {
+            reduce = Meal.find((food)=> fid===food[0].id  )[0].price
+        }
+        else{
+            reduce =  Drink.find((food)=> fid===food[0].id  )[0].price
+        }
+        totalnew = totalnew - reduce
+        console.log("fid :"+fid);
+        
+        newCart= newCart.filter((item) => item.id !== fid);
+
+        this.setState({cart: newCart, total: totalnew});
+        
+        
     }
     render(){
-        const{step, cart, address, balance, meal, drink,MID,MNum,DID,DNum,notes,total}=this.state;
-        const values= {MID,MNum,DID,DNum,notes}
-        const checkoutvalues={cart,address,balance,total}
+        const{step, cart, address, balance, meal, drink,MID,MNum,DID,DNum,time,notes,total,city,state,postalCode,seatNumber,option}=this.state;
+        const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,seatNumber,time,balance,total,notes}
+        const checkoutvalues={cart,address,city,state,postalCode,seatNumber,time,balance,total,option,notes}
         
         switch(step)
     {
-        case 1: return ( <div>
+        case 1: return (    <div>
                             <Order 
                             NextStep={this.NextStep}
+                            cart={cart}
                             handleChange={this.handleChange}
                             AddToCart={this.AddToCart}
                             values={values}
                             meal={meal}
                             drink={drink}
-                            /><Footer/>
+                            />
+                            <Footer/>
                             </div>)
         case 2: return(     <div>
                             <CheckOut 
                             CalculateTotal={this.CalculateTotal}
                             checkoutvalues={checkoutvalues}
+                            option={option}
                             meal ={meal}
                             drink={drink}
                             NextStep={this.NextStep}
                             PrevStep={this.PrevStep}
                             handleChange={this.handleChange}
-                            /> <Footer/>
+                            RemoveFromCart={this.RemoveFromCart}
+                            />
+                            <Footer/>
                             </div>)
         case 3: return(     <div>
                             <Confirm
                             NextStep={this.NextStep}
                             PrevStep={this.PrevStep}
                             handleChange={this.handleChange}
-                            /><Footer/>
+                            />
+                            <Footer/>
                             </div>
         )
         case 4: return(
-                    <div>
-                <Success
-            PrevStep={this.PrevStep}
-            handleChange={this.handleChange}
-                        /><Footer/>
-                        </div>
+                            <div>
+                            <Success
+                            PrevStep={this.PrevStep}
+                            handleChange={this.handleChange}
+                            />
+                            <Footer/>
+                            </div>
                         )
         default: return(
-        <div>
-            <Order 
-            NextStep={this.NextStep}
-            handleChange={this.handleChange}
-            AddToCart={this.AddToCart}
-            values={values}
-        />
-        <Footer/>
-        </div>
+                            <div>
+                                <Order 
+                                NextStep={this.NextStep}
+                                handleChange={this.handleChange}
+                                AddToCart={this.AddToCart}
+                                values={values}
+                            />
+                            <Footer/>
+                            </div>
         )
     }
 

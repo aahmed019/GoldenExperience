@@ -9,13 +9,18 @@ export default class Order extends Component {
     constructor(props){
         super(props);
         this.state={ 
-            OptionPage:(<div></div>)
+           
         }
         
     }
     continue = e =>{
         e.preventDefault();
+        const cart1 = this.props.cart.length;
+        if(cart1<=0)
+        { alert("Please add something to the cart")}
+        else{
         this.props.NextStep();
+        }
     }
 
 
@@ -23,34 +28,36 @@ render(){
     const{ values, handleChange, AddToCart,meal, drink }=this.props;
 
     function DineIn() {
-        return(<Form.Row className="Rows ">
+        return(
+        <Form.Row className="Rows ">
         <Form.Group as={Col} xs={10}> 
               <Form.Label>Seat Number:</Form.Label>
-              <Form.Control type="text" onChange={handleChange('seatNum')}></Form.Control>
+              <Form.Control type="text" onChange={handleChange('seatNumber')} values={values.seatNumber} ></Form.Control>
               </Form.Group>
               <Form.Group as={Col} xs={10}> 
               <Form.Label>Time:</Form.Label>
-              <Form.Control type="text" onChange={handleChange('time') } placeholder="Time in HH:MM"></Form.Control>
+              <Form.Control type="text" onChange={handleChange('time') } placeholder="Time in HH:MM" ></Form.Control>
               </Form.Group>
         </Form.Row>)
      }
     
      function Delivery(){
-        return(<Form.Row>
+        return(
+            <Form.Row>
             <Form.Row className="Rows ">
             <Form.Group as={Col} xs={6}> 
                   <Form.Label>Address:</Form.Label>
-                  <Form.Control type="text" onChange={handleChange('address')}></Form.Control>
+                  <Form.Control type="text" onChange={handleChange('address')} ></Form.Control>
                   </Form.Group>
             </Form.Row>
             <Form.Row className="Rows ">
                   <Form.Group as={Col} xs={2}>
                       <Form.Label>City</Form.Label>
-                      <Form.Control type="text" onChange={handleChange('city')}></Form.Control>
+                      <Form.Control type="text" onChange={handleChange('city')} ></Form.Control>
                   </Form.Group>
                   <Form.Group as={Col} xs={2}>
                       <Form.Label>State</Form.Label>
-                      <Form.Control type="text" onChange={handleChange('state')}></Form.Control>
+                      <Form.Control type="text" onChange={handleChange('state')} ></Form.Control>
                   </Form.Group>
                   <Form.Group as={Col} xs={2}>
                       <Form.Label>Postal Code</Form.Label>
@@ -61,10 +68,11 @@ render(){
     }
 
     function PickUp(){
-        return (<Form.Row className="Rows ">
+        return (
+        <Form.Row className="Rows ">
         <Form.Group as={Col} xs={10}> 
-              <Form.Label>Pick Up:</Form.Label>
-              <Form.Control type="text" onChange={handleChange('time')} placeholder="Time (HH:MM)"></Form.Control>
+              <Form.Label>Pick Up Time:</Form.Label>
+              <Form.Control type="text" onChange={handleChange('time')} placeholder="Time (HH:MM)" ></Form.Control>
               </Form.Group>
         </Form.Row>)
     }
@@ -73,12 +81,15 @@ render(){
 
    return (
             <div className="background-boi">
-                  <div className="Order" >
+                  <div className="Order">
                   <Form className="FormControl" >
+                      <Form.Row className="Rows">
+                          <h3>Place Order</h3>
+                      </Form.Row>
                       <Form.Row className="Rows" >
                       <Form.Group as={Col} className="Cols" xs={3}>
                             <Form.Label>Meal:</Form.Label>
-                            <Form.Control as="select" custom onChange={handleChange('MID')} >
+                            <Form.Control as="select" custom onChange={handleChange('MID')} value={values.MID} >
                             <option></option>
                             {meal && meal.map((food, i) => {
                                  return(
@@ -89,7 +100,7 @@ render(){
 
                        <Form.Group as={Col}  xs={3}>
                             <Form.Label>Quantity:</Form.Label>
-                            <Form.Control type="number"  min="1" max="100"  id="mealQuantity" onChange={handleChange('MNum')} />
+                            <Form.Control type="number"  min="1" max="100"  id="mealQuantity" onChange={handleChange('MNum')}  />
                        </Form.Group>
 
                         <Form.Group as={Col} xs="auto" className="ButtonCols">
@@ -101,7 +112,7 @@ render(){
                       <Form.Row className="Rows" >
                       <Form.Group as={Col}   xs={3}>
                             <Form.Label>Drink:</Form.Label>
-                            <Form.Control as="select" custom  onChange={handleChange('DID')} >
+                            <Form.Control as="select" custom  onChange={handleChange('DID')} value={values.DID} >
                             <option> </option>
                             {drink && drink.map((food, i) => {
                                  return(
@@ -112,7 +123,7 @@ render(){
 
                        <Form.Group as={Col}  xs={3}>
                             <Form.Label>Quantity:</Form.Label>
-                            <Form.Control type="number"  min="1" max="100" id="drinkQunatity"  onChange={handleChange('DNum')}/>
+                            <Form.Control type="number"  min="1" max="100" id="drinkQunatity"  onChange={handleChange('DNum')} />
                        </Form.Group>
 
                         <Form.Group as={Col}  xs="auto" className="ButtonCols"  >
@@ -130,6 +141,8 @@ render(){
                             label="Dine In"
                             name="EatOptions"
                             id="EatOptions"
+                            value={0}
+                            onClick={handleChange('option')}
                             onChange={()=> this.setState({OptionPage:  DineIn() })}
                             />
                             
@@ -140,7 +153,12 @@ render(){
                             label="Delivery"
                             name="EatOptions"
                             id="EatOptions"
-                            onChange={()=>this.setState({OptionPage:  Delivery() })}
+                            value={1}
+                            onClick={handleChange('option')}
+                            onChange={()=>
+                                this.setState({OptionPage:  Delivery() })
+                                
+                        }
                             />
 
                             <Form.Check
@@ -149,20 +167,27 @@ render(){
                             label="Pick Up"
                             name="EatOptions"
                             id="EatOptions"
-                            onChange={()=>this.setState({OptionPage: PickUp() })}
+                            value={2}
+                            onClick={handleChange('option')}
+                            onChange={()=>this.setState({OptionPage: PickUp()})}
                             />
                       </Form.Row>
                         {this.state.OptionPage}
                         <Form.Row className="Rows">
-                            <Form.Group as={Col} >
+                            <Form.Group as={Col}   style={{
+                                    
+                                    display:'flex', 
+                                    flexDirection:'row',
+                                    alignItems:'center',
+                                    justifyContent:'center'}}>
                                 <Form.Control 
                                 as="textarea"
                                 placeholder="Notes"
+                                style={{height:'100px' ,maxWidth:'500px'}}
                                 onChange={handleChange('notes')}
-                                style={{height:'100px'}}
-                                 />
-
-                                
+                                value={values.notes}
+                    
+                                 />  
                             </Form.Group>
                         </Form.Row>
                       <Form.Row className="Rows" >                        
