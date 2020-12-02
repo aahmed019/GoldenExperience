@@ -26,43 +26,54 @@ class CommentSection extends Component{
         this.setState({value: e.target.value});
     }
     handleSubmit(){
-        let tabooList = ["fuck", "shit"];
-        let violation_count = 0;
-        for(let i = 0; i < tabooList.length; i++){
-            let ast_str = "";
-            for(let j = 0; j < tabooList[i].length; j++){
-                ast_str += "*";
-            }
-            // temp = tabooList[i];
-            let count = this.state.value.split(tabooList[i]).length - 1;;
-            violation_count += count;
-            this.state.value = this.state.value.replaceAll(tabooList[i], ast_str);
-        }
-        if(this.state.value.length > 0 && violation_count <= 3){
-           let prevData = this.props.location.state.data.posts;
-           console.log(prevData);
-            for(let i = 0; i < prevData.length; i++){
-                if(prevData[i].text == this.props.location.state.text && prevData[i].username == this.props.location.state.username){
-                    
-                        prevData[i].comments.push({
-                            "text": this.state.value,
-                            "username": "rudeuser",
-                            time: this.db.getTime()
-                        })    
+        let tabooList = [];
+        this.db.getCollection('TabooWords').get()
+        .then(querySnapshot => {
+            querySnapshot.docs.forEach(doc => {
+                //let currentId = doc.id
+                tabooList.push(doc.id);
+                
+            });
+            let violation_count = 0;
+            for(let i = 0; i < tabooList.length; i++){
+                let ast_str = "";
+                for(let j = 0; j < tabooList[i].length; j++){
+                    ast_str += "*";
                 }
+                // temp = tabooList[i];
+                let count = this.state.value.split(tabooList[i]).length - 1;;
+                violation_count += count;
+                this.state.value = this.state.value.replaceAll(tabooList[i], ast_str);
             }
-                this.db.getCollection("Topics").doc(this.props.location.state.id).update({
-                    "posts": prevData
-                }).then(() =>{
-                console.log("New Post Added to Database");
-                }).catch(function(error) { //broke down somewhere
-                console.error("Error: ", error);
-                });    
-            
-        }
-        else{
-            console.log(violation_count, "violations");
-        }
+            if(this.state.value.length > 0 && violation_count <= 3){
+               let prevData = this.props.location.state.data.posts;
+               console.log(prevData);
+                for(let i = 0; i < prevData.length; i++){
+                    if(prevData[i].text == this.props.location.state.text && prevData[i].username == this.props.location.state.username){
+                        
+                            prevData[i].comments.push({
+                                "text": this.state.value,
+                                "username": "rudeuser",
+                                time: this.db.getTime()
+                            })    
+                    }
+                }
+                    this.db.getCollection("Topics").doc(this.props.location.state.id).update({
+                        "posts": prevData
+                    }).then(() =>{
+                    console.log("New Post Added to Database");
+                    }).catch(function(error) { //broke down somewhere
+                    console.error("Error: ", error);
+                    });    
+                
+            }
+            else{
+                console.log(violation_count, "violations");
+            }
+    
+        }).catch(function(error){
+            console.log(error)
+        })
     }
 
     render(){
