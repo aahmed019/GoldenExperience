@@ -5,18 +5,25 @@ import Fire from '../../firebaseConfig';
 import {Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css';
 import Menu from '../Menu/Menu';
+import FoodItems from './FoodItems';
 
 class ChefPage extends Component {
+    
     constructor(props) {
         super(props);
-        this.state = {menu: ''};
         this.db = Fire.db;
+        this.state = {menu: ''};
+
       }
 
     async getMarker() {
         const snapshot = await this.db.getCollection('SignUp').get();
         console.log(snapshot.docs.map(doc => doc.data()));
     }
+    async getData(){
+
+    }
+
 
     async uploadFile(e){
         const file = e.target.files[0];
@@ -38,13 +45,14 @@ class ChefPage extends Component {
     render(){
         return (
             <div>
-                <div className='background-boi'>
+                <div className='chef-background-boi'>
                     <Tabs defaultIndex={1} onSelect={index => console.log(index)}>
                         <TabList>
                             <Tab>Upload Menu</Tab>
                             <Tab>Menu</Tab>
                             <Tab>Orders</Tab>
                             <Tab>Disputes</Tab>
+                            <Tab>Food Item</Tab>
                         </TabList>
                         <TabPanel>
                             <div className='container'>
@@ -68,6 +76,10 @@ class ChefPage extends Component {
                         <TabPanel>
                         <h1>Disputes</h1>
                             
+                        </TabPanel>
+                        <TabPanel>
+                        <h1>Food Item</h1>
+                           <FoodItems></FoodItems>
                         </TabPanel>
                     </Tabs>
                 </div>
