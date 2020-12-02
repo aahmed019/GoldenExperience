@@ -26,7 +26,7 @@ export default class Order extends Component {
 
 render(){
     const{ values, handleChange, AddToCart,meal, drink }=this.props;
-
+  // Only for Reserving Seats may need to be in other pages ( Restaurant Page)
     function DineIn() {
         return(
         <Form.Row className="Rows ">
@@ -40,7 +40,7 @@ render(){
               </Form.Group>
         </Form.Row>)
      }
-    
+ ///   
      function Delivery(){
         return(
             <Form.Row>
