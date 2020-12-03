@@ -3,16 +3,20 @@ import {Form, Button, Card, Alert} from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
 import { Container } from 'react-bootstrap';
 import {Link, useHistory} from 'react-router-dom'
+import Fire from '../../firebaseConfig';
+
 export default function SignUp(){
         const emailRef = useRef();
+        const userRef = useRef();
+        const nameRef = useRef();
         const passwordRef = useRef();
         const passwordConfirmRef = useRef();
         const {signup} = useAuth();
         const [error, setError] = useState('');
         const [loading, setLoading] = useState(false);
         const history = useHistory();
-        
-        
+        let db = Fire.db;
+
         async function handleSubmit(e){
             e.preventDefault()
 
@@ -24,7 +28,23 @@ export default function SignUp(){
                 setError('')
                 setLoading(true)
                 await signup(emailRef.current.value, passwordRef.current.value)
-                history.push('/Home')
+                db.getCollection('SignUp').doc(userRef.current.value).set({
+                    username: userRef.current.value,
+                    password: passwordRef.current.value,
+                    name: nameRef.current.value,
+                    email: emailRef.current.value,
+                    orderHistory: [],
+                    warnings: 0,
+                    Balance: 0
+                    }).then(function() {// went through
+                        console.log("Document successfully written!");
+                        
+                    })
+                    .catch(function(error) { //broke down somewhere
+                        console.error("Error writing document: ", error);
+                    });
+
+                history.push('/Confirmation')
             } catch{
                 setError('Failed to create account')
             }
@@ -41,6 +61,14 @@ export default function SignUp(){
                         <Form.Group id = "email">
                             <Form.Label>Email</Form.Label>
                             <Form.Control type = "email" ref={emailRef} required/>                 
+                        </Form.Group>
+                        <Form.Group id = "user">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control type = "text" ref={userRef} required/>                 
+                        </Form.Group>
+                        <Form.Group id = "Name">
+                            <Form.Label>Full Name</Form.Label>
+                            <Form.Control type = "text" ref={nameRef} required/>                 
                         </Form.Group>
                         <Form.Group id = "password">
                             <Form.Label>Password</Form.Label>
