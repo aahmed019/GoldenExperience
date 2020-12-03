@@ -54,7 +54,7 @@ input.login-input-field:hover{
     background: linear-gradient(180deg, rgba(204, 177, 177, 0) 0%, #424242 100%), linear-gradient(180deg, #666565 0%, rgba(255, 255, 255, 0) 100%), radial-gradient(50% 50% at 50% 50%, rgba(238, 215, 12, 0.979) 80.37%, rgba(251, 224, 84, 0) 100%)
 }
 button.sign-up {
-    background-color:#161616;
+    background-color:#9C9523;
     color:  #9C9523;
 }
 button.sign-up:hover{
@@ -64,7 +64,7 @@ button.sign-up:hover{
 }
 button.sign-in{
     background-color:#9C9523;
-    color:#161616;
+    color:#9C9523;
 }
 button.sign-in:hover{
     background-color: white;
@@ -72,4 +72,7 @@ button.sign-in:hover{
 
 .card-color{
     background:#161616;
+}
+.btn-primary{
+    background-color: #9C9523;
 }

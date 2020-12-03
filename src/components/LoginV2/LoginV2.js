@@ -30,7 +30,7 @@ export default function Login(){
         <div className = "background-boi">
         <Container className = "d-flex align-items-center justify-content-center " style ={{minHeight: "80vh"}}>
             <div className ="w-100 " style = {{ maxWidth: '400px'}}>
-                <Card classname = "card-color">
+                <Card className = "card-color">
                     <Card.Body className = "card-color"> 
                         <h2 className = "text-center mb-4 navItems">Log In</h2>
                             {error && <Alert variant ="danger">{error}</Alert>}

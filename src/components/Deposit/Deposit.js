@@ -32,7 +32,7 @@ export default class Deposit extends React.Component {
           name={this.state.name}
           number={this.state.number}
         />
-        <form className = "deposit-form"onSubmit={this.handleSubmit}>
+        <form className = "deposit-form "onSubmit={this.handleSubmit}>
             <input
                 type="text"
                 name="amount"
@@ -46,7 +46,7 @@ export default class Deposit extends React.Component {
               <input
                 type="tel"
                 name="number"
-                className="form-control"
+                className="form-control mt-1"
                 placeholder="Card Number"
                 pattern="[\d| ]{16,22}"
                 required
@@ -56,7 +56,7 @@ export default class Deposit extends React.Component {
               <input
                 type="text"
                 name="name"
-                className="form-control"
+                className="form-control mt-1"
                 placeholder="Name"
                 required
                 onChange={this.handleInputChange}
@@ -67,7 +67,7 @@ export default class Deposit extends React.Component {
                 <input
                   type="tel"
                   name="expiry"
-                  className="form-control"
+                  className="form-control mt-1"
                   placeholder="Valid Thru"
                   pattern="\d\d/\d\d"
                   required
@@ -79,7 +79,7 @@ export default class Deposit extends React.Component {
                 <input
                   type="tel"
                   name="cvc"
-                  className="form-control"
+                  className="form-control mt-1"
                   placeholder="CVC"
                   pattern="\d{3,4}"
                   required
@@ -89,7 +89,7 @@ export default class Deposit extends React.Component {
               </div>
             </Row>
             <div>
-              <button className="btn btn-primary btn-block">DEPOSIT</button>
+              <button className="btn btn-primary btn-block mt-3 font-text">DEPOSIT</button>
             </div>
           </form>
       </Row>

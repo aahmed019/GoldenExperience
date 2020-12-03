@@ -28,14 +28,15 @@ export default function SignUp(){
                 setError('')
                 setLoading(true)
                 await signup(emailRef.current.value, passwordRef.current.value)
-                db.getCollection('SignUp').doc(userRef.current.value).set({
+                db.getCollection('SignUp').doc(emailRef.current.value).set({
                     username: userRef.current.value,
                     password: passwordRef.current.value,
                     name: nameRef.current.value,
                     email: emailRef.current.value,
                     orderHistory: [],
                     warnings: 0,
-                    Balance: 0
+                    Balance: 0,
+                    Vip: "false"
                     }).then(function() {// went through
                         console.log("Document successfully written!");
                         

@@ -15,7 +15,7 @@ class ConfirmationPage extends Component{
                                 <div className ="signup-title">Thank you for Registering!</div><br></br>
                             </Row>
                             <Row  className = "second-set">
-                                <div className = "user">You will recieve an email confirmation for you account once our manager has approved your account!<br/></div>   
+                                <div className = "user">Please click profile to check the status on your account! Our manager is reviewing your account!<br/></div>   
                             </Row>
                         </Row>     
                         </div>
