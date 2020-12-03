@@ -9,7 +9,7 @@ import ChefPage from './components/ChefPage/ChefPage';
 import ManagerPage from './components/Manager/Manager';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 import SignUpV2 from './components/SignUpV2/SignUpV2';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 import LoginV2 from './components/LoginV2/LoginV2';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
