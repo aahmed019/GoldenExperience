@@ -1,79 +1,76 @@
-import React, {  Component } from 'react';
+import React, {  useState, useEffect } from 'react';
 import './OrderPage.css'
 import Order from './Order/Order.js'
 import CheckOut from './CheckOutPage/CheckOutPage'
 import Success from './SuccessPage/SuccessPage'
 import Fire from '../../firebaseConfig.js'
 import Footer from '../Footer/Footer'
-import { useRouteMatch } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext'
 
 
-
-export default class OrderPage extends Component{
+export default function OrderPage (){
  
-    constructor(props){
-        super(props);
-    this.state={
-        step: 1,
-        cart: [],
-        MID: "",
-        MNum: 1,
-        DID:"",
-        Dnum: 1,
-        notes: "",
-        address: "",
-        balance: 0,
-        total:0,
-        address:"",
-        city:"",
-        state:"",
-        postalCode:"",
-        seatNum:"",
-        time: "12:00 PM",
-        option: 0,
-        user: useRouteMatch()
-    }
 
-    this.AddToCart =this.AddToCart.bind(this);
-    this.NextStep= this.NextStep.bind(this);
-    this.PrevStep= this.PrevStep.bind(this);
-    this.handleChange= this.handleChange.bind(this);
-    this.CalculateTotal= this.CalculateTotal.bind(this);
+    const [step,setStep]= useState(1)
+    const [cart,setCart]= useState([])
+    const [MID,setMID]= useState("")
+    const [MNum,setMNum]= useState(1)
+    const [DID,setDID]= useState("")
+    const [DNum,setDNum]= useState(1)
+    const [notes,setNotes]= useState("")
+    const [address,setAddress]= useState("")
+    const [balance,setBalance]= useState(0)
+    const [total,setTotal]= useState(0)
+    const [city,setCity]= useState("")
+    const [state,setState]=useState("")
+    const [postalCode,setPostalCode]= useState("")
+    const [seatNumber,setSeatNumber]= useState("")
+    const [time,setTime]= useState("")
+    const [option,setOption]= useState(0)
+    const [meal,setMeal]= useState([])
+    const [drink,setDrink]= useState([])
+    const db =Fire.db;
 
-    this.db =Fire.db;
+    const{currentUser}=useAuth();
 
-    }
-    componentDidMount(){
-        this.db.getCollection("Food").get().then(snapshot => {
+    useEffect(()=>{
+
+        db.getCollection("Food").get().then(snapshot => {
             const meal = [];
             snapshot.forEach(doc => {
                 const data = doc.data();
                 meal.push([data, doc.id]);
 
             })
-            this.setState({meal: meal});
+            setMeal(meal);
         }).then(()=>{
-            this.db.getCollection("Drink").get().then(snapshot => {
+            db.getCollection("Drink").get().then(snapshot => {
                 const drink = [];
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     drink.push([data, doc.id]);
     
                 })
-                this.setState({drink: drink});
+                setDrink( drink);
         })}).then(()=>{
-            this.db.getCollection("Users").doc(this.state.user).get().then(doc => {
+            if(currentUser === null)
+            {console.log("NO USER")}
+            else{
+            db.getCollection("Users").doc(currentUser.email).get().then(doc => {
                 let usersbalance = 0;
                 const data = doc.data();
-                usersbalance= data.Balance;
-                alert(usersbalance);
-                this.setState({balance: usersbalance});
-            })
-        }).catch(error => console.log(error))
+                if(data){
+                    usersbalance= data.Balance;
+                }
 
-    }
-    AddToCart=(fid,fquantity)=> {
-        let newCart = this.state.cart;
+               // alert(usersbalance);
+                setBalance(usersbalance);
+            })
+        }}).catch(error => console.log(error))
+
+    },[])
+    function AddToCart(fid,fquantity) {
+        let newCart = cart;
         if(fid ==="")
         { alert("Please choose something from the list ! ")}
         else{
@@ -92,17 +89,17 @@ export default class OrderPage extends Component{
          
         }
        
-        this.setState({cart: newCart});
-        console.log(JSON.stringify(this.state.cart));
+        setCart( newCart);
+        console.log(JSON.stringify(cart));
         
     }
-    CalculateTotal=()=>
-    {   
+    function  CalculateTotal(){
+    
         let totalcost=0;
         let price = 0;
-        let meal = this.state.meal;
-        let drink = this.state.drink;
-        let cart= this.state.cart;
+        let meal = meal;
+        let drink = drink;
+        let cart= cart;
    
          cart.map(item=>{
             let type=item.id[0];
@@ -116,45 +113,45 @@ export default class OrderPage extends Component{
           
             totalcost = totalcost + (price* item.quantity)
             })
-        this.setState({total: totalcost} )
+        setTotal(totalcost)
         
         
     }
-    UpdateBalance=()=>{
-        if(this.state.balance < this.state.total)
+    function UpdateBalance(){
+        if(balance < total)
         {
             alert("Insufficient fund.")
         }
-        else if(this.state.balance === 0)
+        else if(balance === 0)
         {
             alert("Your balance is 0")
         }
         else{
-            let bal= this.state.balance;
-            let cost = this.state.total;
+            let bal= balance;
+            let cost = total;
             bal = bal- cost;
-            this.setState({balance: bal})
+            setBalance( bal)
             alert("Your order has been placed !")
         }
     }
-    NextStep=()=>{
-        const{step} =this.state;
-        this.setState({step: step+1});
+   function NextStep(){
+       
+        setStep( step+1);
     }
-    PrevStep=()=>{
-        const{step} =this.state;
-        this.setState({step: step-1});
+    function PrevStep(){
+       
+        setStep( step-1);
     }
-    handleChange =input => e =>{
-        this.setState({[input] : e.target.value})
+    /*const handleChange =input=> e=> {
+        setState({[input] : e.target.value})
         
-    }
-    RemoveFromCart=(fid)=> {
-        let newCart = this.state.cart;
-        let Meal = this.state.meal;
-        let Drink = this.state.drink;
+    }*/
+    function RemoveFromCart(fid){
+        let newCart = cart;
+        let Meal = meal;
+        let Drink = drink;
         let reduce 
-        let totalnew= this.state.total;
+        let totalnew= total;
         if(fid[0]==="m")
         {
             reduce = Meal.find((food)=> fid===food[0].id  )[0].price
@@ -167,40 +164,42 @@ export default class OrderPage extends Component{
         
         newCart= newCart.filter((item) => item.id !== fid);
 
-        this.setState({cart: newCart, total: totalnew});
+        setCart( newCart);
+        setTotal(totalnew);
         
         
     }
-    render(){
-        const{step, cart, address, balance, meal, drink,MID,MNum,DID,DNum,time,notes,total,city,state,postalCode,seatNumber,option}=this.state;
-        const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,seatNumber,notes}
-        const checkoutvalues={cart,address,city,state,postalCode,seatNumber,time,balance,total,option,notes,balance}
-        
+   
+      
+        const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,seatNumber}
+        const checkoutvalues={cart,address,city,state,postalCode,seatNumber,time,total,option,notes,balance}
+        const Change = {setMID,setMNum,setDID,setDNum,setNotes,setAddress,setCity,setState,setPostalCode,setSeatNumber,setCart,setTime,setTotal,setOption,setBalance}
         switch(step)
     {
         case 1: return (    <div>
                             <Order 
-                            NextStep={this.NextStep}
+                            NextStep={NextStep}
                             cart={cart}
-                            handleChange={this.handleChange}
-                            AddToCart={this.AddToCart}
+                            //handleChange={handleChange}
+                            AddToCart={AddToCart}
                             values={values}
+                            Change={Change}
                             meal={meal}
                             drink={drink}
                             />
                             <Footer/>
                             </div>)
-        case 2: return(     <div>
+       /* case 2: return(     <div>
                             <CheckOut 
-                            CalculateTotal={this.CalculateTotal}
+                            CalculateTotal={CalculateTotal}
                             checkoutvalues={checkoutvalues}
                             option={option}
                             meal ={meal}
                             drink={drink}
-                            NextStep={this.NextStep}
-                            PrevStep={this.PrevStep}
-                            handleChange={this.handleChange}
-                            RemoveFromCart={this.RemoveFromCart}
+                            NextStep={NextStep}
+                            PrevStep={PrevStep}
+                            //handleChange={handleChange}
+                            RemoveFromCart={RemoveFromCart}
                             />
                             <Footer/>
                             </div>)
@@ -208,18 +207,18 @@ export default class OrderPage extends Component{
                             <div>
                             <Success
                             checkoutvalues={checkoutvalues}
-                            UpdateBalance={this.UpdateBalance}
-                            handleChange={this.handleChange}
+                            UpdateBalance={UpdateBalance}
+                            //handleChange={handleChange}
                             />
                             <Footer/>
                             </div>
-                        )
+                        )*/ 
         default: return(
                             <div>
                                 <Order 
-                                NextStep={this.NextStep}
-                                handleChange={this.handleChange}
-                                AddToCart={this.AddToCart}
+                                NextStep={NextStep}
+                               // handleChange={handleChange}
+                                AddToCart={AddToCart}
                                 values={values}
                             />
                             <Footer/>
@@ -234,4 +233,3 @@ export default class OrderPage extends Component{
    
     
 
-}

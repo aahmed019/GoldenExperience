@@ -76,14 +76,14 @@ componentDidMount(){
   }
 
 
-        this.db.getCollection("Drink").get().then(snapshot => {
+        db.getCollection("Drink").get().then(snapshot => {
             const drink = [];
             snapshot.forEach(doc => {
                 const data = doc.data();
                 drink.push([data, doc.id]);
 
             })
-            this.setState({drink: drink});
+            this.setDrink({drink: drink});
         }).catch(error => console.log(error))
 }
 

@@ -3,40 +3,38 @@ import './Order.css'
 import {Col} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
+import {useState, setState} from 'react'
 
 
-export default class Order extends Component {
-    constructor(props){
-        super(props);
-        this.state={ 
-           
-        }
-        
-    }
-    continue = e =>{
+export default function Order (props) {
+
+    const{OptionPage, setOptionPage}=useState(<div></div>)
+    const Next = e =>{
         e.preventDefault();
-        const cart1 = this.props.cart.length;
+        const cart1 = props.cart.length;
         if(cart1<=0)
         { alert("Please add something to the cart")}
         else{
-        this.props.NextStep();
+        props.NextStep();
         }
     }
 
 
-render(){
-    const{ values, handleChange, AddToCart,meal, drink }=this.props;
+
+    const{ values, AddToCart,meal, drink }=props;
+    const {setMID,setMNum,setDID,setDNum,setNotes,setAddress,setCity,setState,setPostalCode,setSeatNumber,setTime}=props.Change
+
   // Only for Reserving Seats may need to be in other pages ( Restaurant Page)
     function DineIn() {
         return(
         <Form.Row className="Rows ">
         <Form.Group as={Col} xs={10}> 
               <Form.Label>Seat Number:</Form.Label>
-              <Form.Control type="text" onChange={handleChange('seatNumber')} values={values.seatNumber} ></Form.Control>
+              <Form.Control type="text" onChange={setSeatNumber} values={values.seatNumber} ></Form.Control>
               </Form.Group>
               <Form.Group as={Col} xs={10}> 
               <Form.Label>Time:</Form.Label>
-              <Form.Control type="text" onChange={handleChange('time') } placeholder="Time in HH:MM" ></Form.Control>
+              <Form.Control type="text" onChange={setTime } placeholder="Time in HH:MM" ></Form.Control>
               </Form.Group>
         </Form.Row>)
      }
@@ -47,21 +45,21 @@ render(){
             <Form.Row className="Rows ">
             <Form.Group as={Col} xs={6}> 
                   <Form.Label>Address:</Form.Label>
-                  <Form.Control type="text" onChange={handleChange('address')} ></Form.Control>
+                  <Form.Control type="text" onChange={setAddress} ></Form.Control>
                   </Form.Group>
             </Form.Row>
             <Form.Row className="Rows ">
                   <Form.Group as={Col} xs={3}>
                       <Form.Label>City</Form.Label>
-                      <Form.Control type="text" onChange={handleChange('city')} ></Form.Control>
+                      <Form.Control type="text" onChange={setCity} ></Form.Control>
                   </Form.Group>
                   <Form.Group as={Col} xs={3}>
                       <Form.Label>State</Form.Label>
-                      <Form.Control type="text" onChange={handleChange('state')} ></Form.Control>
+                      <Form.Control type="text" onChange={setState} ></Form.Control>
                   </Form.Group>
                   <Form.Group as={Col} xs={3}>
                       <Form.Label>Postal Code</Form.Label>
-                      <Form.Control type="text" onChange={handleChange('postalCode')} ></Form.Control>
+                      <Form.Control type="text" onChange={values.setPostalCode} ></Form.Control>
                   </Form.Group>
             </Form.Row>
             </Form.Row>)
@@ -72,7 +70,7 @@ render(){
         <Form.Row className="Rows ">
         <Form.Group as={Col} xs={10}> 
               <Form.Label>Pick Up Time:</Form.Label>
-              <Form.Control type="text" onChange={handleChange('time')} placeholder="Time (HH:MM)" ></Form.Control>
+              <Form.Control type="text" onChange={setTime} placeholder="Time (HH:MM)" ></Form.Control>
               </Form.Group>
         </Form.Row>)
     }
@@ -89,7 +87,7 @@ render(){
                       <Form.Row className="Rows" >
                       <Form.Group as={Col} className="Cols" xs={3}>
                             <Form.Label>Meal:</Form.Label>
-                            <Form.Control as="select" custom onChange={handleChange('MID')} value={values.MID} >
+                            <Form.Control as="select" custom onChange={setMID} value={values.MID} >
                             <option></option>
                             {meal && meal.map((food, i) => {
                                  return(
@@ -100,7 +98,7 @@ render(){
 
                        <Form.Group as={Col}  xs={3}>
                             <Form.Label>Quantity:</Form.Label>
-                            <Form.Control type="number"  min="1" max="100"  id="mealQuantity" onChange={handleChange('MNum')}  />
+                            <Form.Control type="number"  min="1" max="100"  id="mealQuantity" onChange={setMNum}  />
                        </Form.Group>
 
                         <Form.Group as={Col} xs="auto" className="ButtonCols">
@@ -112,18 +110,18 @@ render(){
                       <Form.Row className="Rows" >
                       <Form.Group as={Col}   xs={3}>
                             <Form.Label>Drink:</Form.Label>
-                            <Form.Control as="select" custom  onChange={handleChange('DID')} value={values.DID} >
+                            <Form.Control as="select" custom  onChange={setDID} value={values.DID} >
                             <option> </option>
                             {drink && drink.map((food, i) => {
                                  return(
                             <option key={i} value={food[0].id}>{food[0].name}</option> 
-                                     )})}
+                                 )})}
                             </Form.Control>
                        </Form.Group>
 
                        <Form.Group as={Col}  xs={3}>
                             <Form.Label>Quantity:</Form.Label>
-                            <Form.Control type="number"  min="1" max="100" id="drinkQunatity"  onChange={handleChange('DNum')} />
+                            <Form.Control type="number"  min="1" max="100" id="drinkQunatity"  onChange={setDNum} />
                        </Form.Group>
 
                         <Form.Group as={Col}  xs="auto" className="ButtonCols"  >
@@ -142,8 +140,8 @@ render(){
                             name="EatOptions"
                             id="EatOptions"
                             value={0}
-                            onClick={handleChange('option')}
-                            onChange={()=> this.setState({OptionPage:  DineIn() })}
+                            onClick={values.setOption}
+                            onChange={()=> setOptionPage( DineIn() )}
                             />
                             
                            
@@ -154,9 +152,9 @@ render(){
                             name="EatOptions"
                             id="EatOptions"
                             value={1}
-                            onClick={handleChange('option')}
+                            onClick={values.setOption}
                             onChange={()=>
-                                this.setState({OptionPage:  Delivery() })
+                                setOptionPage( Delivery() )
                                 
                         }
                             />
@@ -168,11 +166,11 @@ render(){
                             name="EatOptions"
                             id="EatOptions"
                             value={2}
-                            onClick={handleChange('option')}
-                            onChange={()=>this.setState({OptionPage: PickUp()})}
+                            onClick={values.setOption}
+                            onChange={()=>setOptionPage(PickUp())}
                             />
                       </Form.Row>
-                        {this.state.OptionPage}
+                        {OptionPage}
                         <Form.Row className="Rows">
                             <Form.Group as={Col}   style={{
                                     
@@ -184,14 +182,14 @@ render(){
                                 as="textarea"
                                 placeholder="Notes"
                                 style={{height:'100px' ,maxWidth:'500px'}}
-                                onChange={handleChange('notes')}
+                                onChange={setNotes}
                                 value={values.notes}
                     
                                  />  
                             </Form.Group>
                         </Form.Row>
                       <Form.Row className="Rows" >                        
-                          <Button variant="primary" onClick={this.continue} >Check Out</Button>
+                          <Button variant="primary" onClick={Next} >Check Out</Button>
                       </Form.Row>
                   </Form>
                   </div>
@@ -200,4 +198,3 @@ render(){
    )
    }
 
-}
