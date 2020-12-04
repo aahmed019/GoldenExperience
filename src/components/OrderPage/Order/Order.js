@@ -3,12 +3,13 @@ import './Order.css'
 import {Col} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
-import {useState, setState} from 'react'
+import {useState} from 'react'
 
 
 export default function Order (props) {
 
-    const{OptionPage, setOptionPage}=useState(<div></div>)
+    const[OptionPage,setPage]=useState((<div/>))
+
     const Next = e =>{
         e.preventDefault();
         const cart1 = props.cart.length;
@@ -19,61 +20,66 @@ export default function Order (props) {
         }
     }
 
+    const UpdateOption =e=>{
+        switch(e.target.value)
+        {
+            case "0" : setPage(DineIn);break;
+            case "1" : setPage(Delivery);break;
+            case "2" : setPage(PickUp);break;
+            default: alert("Error for Option Page")
+        }
+    }
 
 
-    const{ values, AddToCart,meal, drink }=props;
-    const {setMID,setMNum,setDID,setDNum,setNotes,setAddress,setCity,setState,setPostalCode,setSeatNumber,setTime}=props.Change
-
+    const{ values, AddToCart,meal, drink,handleChange }=props;
+   
   // Only for Reserving Seats may need to be in other pages ( Restaurant Page)
-    function DineIn() {
-        return(
+    const DineIn=(
+        
         <Form.Row className="Rows ">
         <Form.Group as={Col} xs={10}> 
               <Form.Label>Seat Number:</Form.Label>
-              <Form.Control type="text" onChange={setSeatNumber} values={values.seatNumber} ></Form.Control>
+              <Form.Control type="text" name="seatNumber" onChange={handleChange} values={values.seatNumber} ></Form.Control>
               </Form.Group>
               <Form.Group as={Col} xs={10}> 
               <Form.Label>Time:</Form.Label>
-              <Form.Control type="text" onChange={setTime } placeholder="Time in HH:MM" ></Form.Control>
+              <Form.Control type="text" name="title" onChange={handleChange } placeholder="Time in HH:MM" ></Form.Control>
               </Form.Group>
         </Form.Row>)
-     }
+     
  ///   
-     function Delivery(){
-        return(
+     const Delivery= (
             <Form.Row>
             <Form.Row className="Rows ">
             <Form.Group as={Col} xs={6}> 
                   <Form.Label>Address:</Form.Label>
-                  <Form.Control type="text" onChange={setAddress} ></Form.Control>
+                  <Form.Control type="text" name="address" onChange={handleChange} ></Form.Control>
                   </Form.Group>
             </Form.Row>
             <Form.Row className="Rows ">
                   <Form.Group as={Col} xs={3}>
                       <Form.Label>City</Form.Label>
-                      <Form.Control type="text" onChange={setCity} ></Form.Control>
+                      <Form.Control type="text" name="city" onChange={handleChange} ></Form.Control>
                   </Form.Group>
                   <Form.Group as={Col} xs={3}>
                       <Form.Label>State</Form.Label>
-                      <Form.Control type="text" onChange={setState} ></Form.Control>
+                      <Form.Control type="text" name="state" onChange={handleChange} ></Form.Control>
                   </Form.Group>
                   <Form.Group as={Col} xs={3}>
                       <Form.Label>Postal Code</Form.Label>
-                      <Form.Control type="text" onChange={values.setPostalCode} ></Form.Control>
+                      <Form.Control type="text" name="postalCode" onChange={handleChange} ></Form.Control>
                   </Form.Group>
             </Form.Row>
             </Form.Row>)
-    }
-
-    function PickUp(){
-        return (
+    
+    const PickUp= (
         <Form.Row className="Rows ">
         <Form.Group as={Col} xs={10}> 
               <Form.Label>Pick Up Time:</Form.Label>
-              <Form.Control type="text" onChange={setTime} placeholder="Time (HH:MM)" ></Form.Control>
+              <Form.Control type="text" name="time" onChange={handleChange} placeholder="Time (HH:MM)" ></Form.Control>
               </Form.Group>
         </Form.Row>)
-    }
+    
 
   
 
@@ -87,7 +93,7 @@ export default function Order (props) {
                       <Form.Row className="Rows" >
                       <Form.Group as={Col} className="Cols" xs={3}>
                             <Form.Label>Meal:</Form.Label>
-                            <Form.Control as="select" custom onChange={setMID} value={values.MID} >
+                            <Form.Control as="select"custom  name="MID" onChange={handleChange} value={values.MID} >
                             <option></option>
                             {meal && meal.map((food, i) => {
                                  return(
@@ -98,7 +104,7 @@ export default function Order (props) {
 
                        <Form.Group as={Col}  xs={3}>
                             <Form.Label>Quantity:</Form.Label>
-                            <Form.Control type="number"  min="1" max="100"  id="mealQuantity" onChange={setMNum}  />
+                            <Form.Control type="number"  min="1" max="100"  id="mealQuantity" name="MNum" onChange={handleChange}  />
                        </Form.Group>
 
                         <Form.Group as={Col} xs="auto" className="ButtonCols">
@@ -110,7 +116,7 @@ export default function Order (props) {
                       <Form.Row className="Rows" >
                       <Form.Group as={Col}   xs={3}>
                             <Form.Label>Drink:</Form.Label>
-                            <Form.Control as="select" custom  onChange={setDID} value={values.DID} >
+                            <Form.Control as="select" custom name="DID" onChange={handleChange} value={values.DID} >
                             <option> </option>
                             {drink && drink.map((food, i) => {
                                  return(
@@ -121,7 +127,7 @@ export default function Order (props) {
 
                        <Form.Group as={Col}  xs={3}>
                             <Form.Label>Quantity:</Form.Label>
-                            <Form.Control type="number"  min="1" max="100" id="drinkQunatity"  onChange={setDNum} />
+                            <Form.Control type="number"  min="1" max="100" id="drinkQunatity" name="DNum" onChange={handleChange} />
                        </Form.Group>
 
                         <Form.Group as={Col}  xs="auto" className="ButtonCols"  >
@@ -137,11 +143,11 @@ export default function Order (props) {
                             inline
                             type="radio"
                             label="Dine In"
-                            name="EatOptions"
+                            name="option"
                             id="EatOptions"
                             value={0}
-                            onClick={values.setOption}
-                            onChange={()=> setOptionPage( DineIn() )}
+                            onClick={handleChange}
+                            onChange={UpdateOption}
                             />
                             
                            
@@ -149,25 +155,24 @@ export default function Order (props) {
                             inline
                             type="radio"
                             label="Delivery"
-                            name="EatOptions"
+                            
                             id="EatOptions"
                             value={1}
-                            onClick={values.setOption}
-                            onChange={()=>
-                                setOptionPage( Delivery() )
-                                
-                        }
+                            name="option"
+                            onClick={handleChange}
+                            onChange={UpdateOption}
                             />
 
                             <Form.Check
                             inline
                             type="radio"
                             label="Pick Up"
-                            name="EatOptions"
+                            
                             id="EatOptions"
                             value={2}
-                            onClick={values.setOption}
-                            onChange={()=>setOptionPage(PickUp())}
+                            onClick={handleChange}
+                            name="option"
+                            onChange={UpdateOption}
                             />
                       </Form.Row>
                         {OptionPage}
@@ -182,7 +187,8 @@ export default function Order (props) {
                                 as="textarea"
                                 placeholder="Notes"
                                 style={{height:'100px' ,maxWidth:'500px'}}
-                                onChange={setNotes}
+                                name="notes"
+                                onChange={handleChange}
                                 value={values.notes}
                     
                                  />  

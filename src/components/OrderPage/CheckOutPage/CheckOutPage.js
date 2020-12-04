@@ -1,39 +1,34 @@
-import React, {  Component } from 'react';
+import React, {  useState, useEffect } from 'react';
 import './CheckOutPage.css'
 import Button from 'react-bootstrap/Button';
 import {Row,Col,Container,Form} from 'react-bootstrap'
 import Fire from '../../../firebaseConfig.js'
-export default class CheckOutPage  extends Component{
+export default function CheckOutPage  (props){
 
-constructor(props){
-    super(props);
-    this.componentDidMount= this.componentDidMount.bind(this);
-    this.state={
-        OptionPage: (<div></div>)
-    }
-    this.db =Fire.db;
-}
+ const db =Fire.db;
 
-componentDidMount(){
-  this.props.CalculateTotal();
+const[OptionPage,setOptionPage]= useState( (<div></div>));
+
+useEffect(()=>{
+  props.CalculateTotal();
   //alert(this.props.checkoutvalues.option)  // for debugging 
-  let option = parseInt(this.props.checkoutvalues.option)
+  let option = parseInt(props.checkoutvalues.option)
   switch(option)
   {
-    case 0: this.setState({OptionPage: (<Row className="Rows">
+    case 0: setOptionPage(<Row className="Rows">
                                             <Row className="Rows">
                                             <h4>Dine In</h4>
                                             </Row>
                                                 <Col xs="auto">
                                                 <Form.Label>Seat Number:</Form.Label>
-                                                <Form.Label>&ensp;{this.props.checkoutvalues.seatNumber}</Form.Label>
+                                                <Form.Label>&ensp;{props.checkoutvalues.seatNumber}</Form.Label>
                                                 </Col >
                                                 <Col xs="auto">
                                                 <Form.Label>Time:</Form.Label>
-                                                <Form.Label>&ensp;{this.props.checkoutvalues.time}</Form.Label>
+                                                <Form.Label>&ensp;{props.checkoutvalues.time}</Form.Label>
                                                 </Col>     
-                                            </Row>)});break;
-    case 1: this.setState({OptionPage:(<Row className="Rows">
+                                            </Row>);break;
+    case 1: setOptionPage(<Row className="Rows">
                                             <Row className="Rows">
                                             <h4>Delivery</h4>
                                             </Row>
@@ -41,73 +36,78 @@ componentDidMount(){
                                                 <Col xs={4}>
                                                 <Form.Label>Address: </Form.Label>  
                                                 <Form.Label>
-                                                    &ensp; {this.props.checkoutvalues.address}
+                                                    &ensp; {props.checkoutvalues.address}
                                                 </Form.Label>
                                                 </Col>
                                                 <Col xs={2}>
                                                 <Form.Label>City:</Form.Label>
-                                                <Form.Label>&ensp;{this.props.checkoutvalues.city}</Form.Label>
+                                                <Form.Label>&ensp;{props.checkoutvalues.city}</Form.Label>
                                                 </Col>
                                                 <Col xs={2}>
                                                 <Form.Label>State: </Form.Label>
-                                                <Form.Label>&ensp;{this.props.checkoutvalues.state}</Form.Label>
+                                                <Form.Label>&ensp;{props.checkoutvalues.state}</Form.Label>
                                                 </Col>
                                                 <Col xs={2}>
                                                 <Form.Label>Postal Code: </Form.Label>
-                                                <Form.Label>&ensp;{this.props.checkoutvalues.postalCode}</Form.Label>
+                                                <Form.Label>&ensp;{props.checkoutvalues.postalCode}</Form.Label>
                                                 </Col>
 
                                             </Row>
 
                                                
                                           </Row>
-                                         )});break;
-    case 2: this.setState({OptionPage: (<Row className="Rows">
+                                         );break;
+    case 2: setOptionPage (<Row className="Rows">
                                             <Row className="Rows">
                                             <h4>Pick Up</h4>
                                             </Row>
                                             <Row className="Rows">
                                                 <Col >
                                                 <Form.Label> Pick up Time :</Form.Label>
-                                                <Form.Label>&ensp;{this.props.checkoutvalues.time}</Form.Label>
+                                                <Form.Label>&ensp;{props.checkoutvalues.time}</Form.Label>
                                                 </Col>  
                                             </Row>
-                                            </Row>)});break;
+                                            </Row>);break;
   }
 
 
-        db.getCollection("Drink").get().then(snapshot => {
+       /* db.getCollection("Drink").get().then(snapshot => {
             const drink = [];
             snapshot.forEach(doc => {
                 const data = doc.data();
                 drink.push([data, doc.id]);
 
             })
-            this.setDrink({drink: drink});
-        }).catch(error => console.log(error))
-}
+            setDrink( drink);
+        }).catch(error => console.log(error))*/
+        
+},[])
 
 
 
-continue= e=>{
+const next= e=>{
     e.preventDefault();
-    const cart1 = this.props.checkoutvalues.cart.length;
+    const cart1 = props.checkoutvalues.cart.length;
     if(cart1 ===0)
     { alert("The shopping cart is empty ! Please go back to order.")}
+    else if (props.checkoutvalues.balance == 0 || props.checkoutvalues.balance < props.checkoutvalues.total)
+    {
+        alert("Insufficient fund")
+    }
     else{
-    this.props.NextStep();
+    props.NextStep();
     }
     
 
 
 
 }
-goBack= e=>{
+const goBack= e=>{
     e.preventDefault();
-    this.props.PrevStep();
+    props.PrevStep();
 }
-render(){
-    const{checkoutvalues ,meal,drink,RemoveFromCart} = this.props;
+
+    const{checkoutvalues ,meal,drink,RemoveFromCart} = props;
     const{cart,total }= checkoutvalues;
     return(
         <div className="background-boi">
@@ -162,16 +162,16 @@ render(){
                     <Col>$ {total}</Col>
                     <Col></Col>
                 </Row>
-                {this.state.OptionPage}
+                {OptionPage}
                 <Row className="Rows">
                     <Col xs={5}> 
                     <Form.Label>Notes:</Form.Label>
-                    <Form.Label>&ensp;{this.props.checkoutvalues.notes}</Form.Label>
+                    <Form.Label>&ensp;{props.checkoutvalues.notes}</Form.Label>
                     </Col>
                 </Row>
                 <Row className="Rows">
-                    <Col xs={5}> <Button variant="primary"  onClick={this.goBack}>Go Back</Button></Col>
-                    <Col xs={5}><Button variant="primary"  onClick={this.continue}>Next</Button></Col>
+                    <Col xs={5}> <Button variant="primary"  onClick={goBack}>Go Back</Button></Col>
+                    <Col xs={5}><Button variant="primary"  onClick={next}>Next</Button></Col>
                 </Row>
             </Container>
        
@@ -180,4 +180,3 @@ render(){
     )
 }
 
-}

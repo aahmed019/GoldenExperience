@@ -8,6 +8,7 @@ import Footer from '../Footer/Footer'
 import { useAuth } from '../../contexts/AuthContext'
 
 
+
 export default function OrderPage (){
  
 
@@ -33,8 +34,8 @@ export default function OrderPage (){
 
     const{currentUser}=useAuth();
 
-    useEffect(()=>{
-
+    const getData = async() =>{
+        
         db.getCollection("Food").get().then(snapshot => {
             const meal = [];
             snapshot.forEach(doc => {
@@ -67,10 +68,16 @@ export default function OrderPage (){
                 setBalance(usersbalance);
             })
         }}).catch(error => console.log(error))
+    }
+
+    useEffect(()=>{
+
+        getData();
 
     },[])
     function AddToCart(fid,fquantity) {
         let newCart = cart;
+        console.log("fid: "+fid+"\n"+"fquantity: "+fquantity);
         if(fid ==="")
         { alert("Please choose something from the list ! ")}
         else{
@@ -97,9 +104,6 @@ export default function OrderPage (){
     
         let totalcost=0;
         let price = 0;
-        let meal = meal;
-        let drink = drink;
-        let cart= cart;
    
          cart.map(item=>{
             let type=item.id[0];
@@ -142,10 +146,35 @@ export default function OrderPage (){
        
         setStep( step-1);
     }
-    /*const handleChange =input=> e=> {
-        setState({[input] : e.target.value})
+    function startOver()
+    {
+        setCart([]);
+        setStep(1);
+    }
+    const handleChange = e=> {
+        switch(e.target.name)
+        {
+            case "MID": setMID(e.target.value);break
+            case "MNum": setMNum(e.target.value);break
+            case "DID": setDID(e.target.value);break
+            case "DNum": setDNum(e.target.value);break
+            case "notes": setNotes(e.target.value);break
+            case "address": setAddress(e.target.value);break
+            case "city": setCity(e.target.value);break
+            case "state": setState(e.target.value);break
+            case "postalCode": setPostalCode(e.target.value);break
+            case "seatNumber": setSeatNumber(e.target.value);break
+            case "cart": setCart(e.target.value);break
+            case "time": setTime(e.target.value);break
+            case "total": setTotal(e.target.value);break
+            case "option": setOption(e.target.value);break
+            case "balance": setBalance(e.target.value);break
+            default: console.log("Error in setStates")
+        }  
+
+
         
-    }*/
+    }
     function RemoveFromCart(fid){
         let newCart = cart;
         let Meal = meal;
@@ -173,23 +202,21 @@ export default function OrderPage (){
       
         const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,seatNumber}
         const checkoutvalues={cart,address,city,state,postalCode,seatNumber,time,total,option,notes,balance}
-        const Change = {setMID,setMNum,setDID,setDNum,setNotes,setAddress,setCity,setState,setPostalCode,setSeatNumber,setCart,setTime,setTotal,setOption,setBalance}
         switch(step)
-    {
+         {
         case 1: return (    <div>
                             <Order 
                             NextStep={NextStep}
                             cart={cart}
-                            //handleChange={handleChange}
+                            handleChange={handleChange}
                             AddToCart={AddToCart}
                             values={values}
-                            Change={Change}
                             meal={meal}
                             drink={drink}
                             />
                             <Footer/>
                             </div>)
-       /* case 2: return(     <div>
+        case 2: return(     <div>
                             <CheckOut 
                             CalculateTotal={CalculateTotal}
                             checkoutvalues={checkoutvalues}
@@ -198,7 +225,7 @@ export default function OrderPage (){
                             drink={drink}
                             NextStep={NextStep}
                             PrevStep={PrevStep}
-                            //handleChange={handleChange}
+                            handleChange={handleChange}
                             RemoveFromCart={RemoveFromCart}
                             />
                             <Footer/>
@@ -208,18 +235,18 @@ export default function OrderPage (){
                             <Success
                             checkoutvalues={checkoutvalues}
                             UpdateBalance={UpdateBalance}
-                            //handleChange={handleChange}
+                            startOver={startOver}
                             />
                             <Footer/>
                             </div>
-                        )*/ 
+                        )
         default: return(
                             <div>
                                 <Order 
                                 NextStep={NextStep}
-                               // handleChange={handleChange}
+                               handleChange={handleChange}
                                 AddToCart={AddToCart}
-                                values={values}
+                                checkoutvalues={checkoutvalues}
                             />
                             <Footer/>
                             </div>
