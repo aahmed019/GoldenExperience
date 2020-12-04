@@ -51,15 +51,15 @@ render(){
                   </Form.Group>
             </Form.Row>
             <Form.Row className="Rows ">
-                  <Form.Group as={Col} xs={2}>
+                  <Form.Group as={Col} xs={3}>
                       <Form.Label>City</Form.Label>
                       <Form.Control type="text" onChange={handleChange('city')} ></Form.Control>
                   </Form.Group>
-                  <Form.Group as={Col} xs={2}>
+                  <Form.Group as={Col} xs={3}>
                       <Form.Label>State</Form.Label>
                       <Form.Control type="text" onChange={handleChange('state')} ></Form.Control>
                   </Form.Group>
-                  <Form.Group as={Col} xs={2}>
+                  <Form.Group as={Col} xs={3}>
                       <Form.Label>Postal Code</Form.Label>
                       <Form.Control type="text" onChange={handleChange('postalCode')} ></Form.Control>
                   </Form.Group>

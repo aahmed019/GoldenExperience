@@ -29,14 +29,15 @@ export default function NewUsers() {
     },[])
 
     function Approve(username, email, password, name){
-        tests.getCollection('Users').doc(username).set({
+        tests.getCollection('Users').doc(email).set({
             username: username,
             password: password,
             name: name,
             email: email,
             orderHistory: [],
             warnings: 0,
-            Balance: 0
+            Balance: 0,
+            Vip: "false"
             })
             .then(function() {// went through
                 console.log("Approved!");

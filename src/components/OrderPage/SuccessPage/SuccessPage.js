@@ -11,6 +11,10 @@ export default class SuccessPage extends Component{
                 e.preventDefault();
                 this.props.PrevStep();
             }
+            componentDidMount()
+            {
+                this.props.UpdateBalance();
+            }
             render(){
                 return(
                     <div className="CheckOut">

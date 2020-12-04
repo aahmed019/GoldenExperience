@@ -2,16 +2,16 @@ import React, {  Component } from 'react';
 import './CheckOutPage.css'
 import Button from 'react-bootstrap/Button';
 import {Row,Col,Container,Form} from 'react-bootstrap'
+import Fire from '../../../firebaseConfig.js'
 export default class CheckOutPage  extends Component{
 
-constructor(props)
-{
+constructor(props){
     super(props);
     this.componentDidMount= this.componentDidMount.bind(this);
     this.state={
         OptionPage: (<div></div>)
     }
-   
+    this.db =Fire.db;
 }
 
 componentDidMount(){
@@ -74,7 +74,20 @@ componentDidMount(){
                                             </Row>
                                             </Row>)});break;
   }
+
+
+        this.db.getCollection("Drink").get().then(snapshot => {
+            const drink = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                drink.push([data, doc.id]);
+
+            })
+            this.setState({drink: drink});
+        }).catch(error => console.log(error))
 }
+
+
 
 continue= e=>{
     e.preventDefault();
@@ -84,6 +97,10 @@ continue= e=>{
     else{
     this.props.NextStep();
     }
+    
+
+
+
 }
 goBack= e=>{
     e.preventDefault();
@@ -102,6 +119,7 @@ render(){
                     <Col>Item</Col>
                     <Col>Quantity</Col>
                     <Col>Price</Col>
+                    <Col></Col>
                 </Row>
                 {
                     cart.map((item)=>{
@@ -142,6 +160,7 @@ render(){
                     <Col></Col>
                     <Col>Total:</Col>
                     <Col>$ {total}</Col>
+                    <Col></Col>
                 </Row>
                 {this.state.OptionPage}
                 <Row className="Rows">

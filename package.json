@@ -13,7 +13,6 @@
     "m": "^1.5.6",
     "react": "^16.13.1",
     "react-bootstrap": "^1.4.0",
-    "react-bootstrap-time-picker": "^2.0.1",
     "react-credit-cards": "^0.8.3",
     "react-dom": "^16.13.1",
     "react-grid-system": "^7.1.1",

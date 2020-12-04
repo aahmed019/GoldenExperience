@@ -3,12 +3,12 @@ import '../../App.css';
 import logo from '../../images/logoforschool.png';
 import { Link} from 'react-router-dom';
 import { useAuth } from "../../contexts/AuthContext"
+import Fire from '../../firebaseConfig';
 
 export default function NavigationBar(){
-  const currentUser = useAuth();
-    
+  const { currentUser } = useAuth()  
   
-  
+  console.log(currentUser);
   
   return(
     <div>
@@ -23,13 +23,13 @@ export default function NavigationBar(){
         </div>
         <div className="navbar-collapse collapse w-100 order-3 dual-collapse2" >
             <ul className="navbar-nav ml-auto navItems ">
-              <li className= "nav-item navItems" ><Link classname = "navItems" to="/Home">Home</Link></li>&emsp;&emsp;
-              <li className= "nav-item" ><Link to="/OrderPage">Orders</Link></li>&emsp;&emsp;
+              <li className= "nav-item navItems" ><Link className = "navItems" to="/Home">Home</Link></li>&emsp;&emsp;
+              <li className= "nav-item" ><Link to="/">Orders</Link></li>&emsp;&emsp;
               <li className= "nav-item" ><Link to="/Menu">Menus</Link></li>&emsp;&emsp;
               <li className= "nav-item" ><Link to="/Discussion">Discussion</Link></li>&emsp;&emsp;
-              {currentUser.email !== undefined ?
-              <li className= "nav-item" ><Link className="profilepage" to="/Profile">Profile</Link></li>:
-              <li className= "nav-item" ><Link className="login" to="/LoginV2">Login</Link></li>}&emsp;&emsp;
+              {currentUser ===  null ?
+              <li className= "nav-item" ><Link className="login" to="/LoginV2">Login</Link></li>:
+              <li className= "nav-item" ><Link className="profilepage" to="/Profile">Profile</Link></li>}&emsp;&emsp;
             </ul>
         </div>
     </nav>

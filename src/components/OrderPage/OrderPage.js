@@ -2,10 +2,10 @@ import React, {  Component } from 'react';
 import './OrderPage.css'
 import Order from './Order/Order.js'
 import CheckOut from './CheckOutPage/CheckOutPage'
-import Confirm from './ConfirmPage/ConfirmPage'
 import Success from './SuccessPage/SuccessPage'
 import Fire from '../../firebaseConfig.js'
 import Footer from '../Footer/Footer'
+import { useRouteMatch } from 'react-router-dom';
 
 
 
@@ -22,7 +22,7 @@ export default class OrderPage extends Component{
         Dnum: 1,
         notes: "",
         address: "",
-        balance: this.props.balance,
+        balance: 0,
         total:0,
         address:"",
         city:"",
@@ -30,7 +30,8 @@ export default class OrderPage extends Component{
         postalCode:"",
         seatNum:"",
         time: "12:00 PM",
-        option: 0
+        option: 0,
+        user: useRouteMatch()
     }
 
     this.AddToCart =this.AddToCart.bind(this);
@@ -38,7 +39,6 @@ export default class OrderPage extends Component{
     this.PrevStep= this.PrevStep.bind(this);
     this.handleChange= this.handleChange.bind(this);
     this.CalculateTotal= this.CalculateTotal.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
 
     this.db =Fire.db;
 
@@ -61,7 +61,16 @@ export default class OrderPage extends Component{
     
                 })
                 this.setState({drink: drink});
-        })}).catch(error => console.log(error))
+        })}).then(()=>{
+            this.db.getCollection("Users").doc(this.state.user).get().then(doc => {
+                let usersbalance = 0;
+                const data = doc.data();
+                usersbalance= data.Balance;
+                alert(usersbalance);
+                this.setState({balance: usersbalance});
+            })
+        }).catch(error => console.log(error))
+
     }
     AddToCart=(fid,fquantity)=> {
         let newCart = this.state.cart;
@@ -111,6 +120,23 @@ export default class OrderPage extends Component{
         
         
     }
+    UpdateBalance=()=>{
+        if(this.state.balance < this.state.total)
+        {
+            alert("Insufficient fund.")
+        }
+        else if(this.state.balance === 0)
+        {
+            alert("Your balance is 0")
+        }
+        else{
+            let bal= this.state.balance;
+            let cost = this.state.total;
+            bal = bal- cost;
+            this.setState({balance: bal})
+            alert("Your order has been placed !")
+        }
+    }
     NextStep=()=>{
         const{step} =this.state;
         this.setState({step: step+1});
@@ -147,8 +173,8 @@ export default class OrderPage extends Component{
     }
     render(){
         const{step, cart, address, balance, meal, drink,MID,MNum,DID,DNum,time,notes,total,city,state,postalCode,seatNumber,option}=this.state;
-        const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,seatNumber,time,balance,total,notes}
-        const checkoutvalues={cart,address,city,state,postalCode,seatNumber,time,balance,total,option,notes}
+        const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,seatNumber,notes}
+        const checkoutvalues={cart,address,city,state,postalCode,seatNumber,time,balance,total,option,notes,balance}
         
         switch(step)
     {
@@ -178,19 +204,11 @@ export default class OrderPage extends Component{
                             />
                             <Footer/>
                             </div>)
-        case 3: return(     <div>
-                            <Confirm
-                            NextStep={this.NextStep}
-                            PrevStep={this.PrevStep}
-                            handleChange={this.handleChange}
-                            />
-                            <Footer/>
-                            </div>
-        )
-        case 4: return(
+        case 3: return(
                             <div>
                             <Success
-                            PrevStep={this.PrevStep}
+                            checkoutvalues={checkoutvalues}
+                            UpdateBalance={this.UpdateBalance}
                             handleChange={this.handleChange}
                             />
                             <Footer/>

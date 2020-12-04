@@ -28,14 +28,17 @@ class DiscussionPage extends Component{
     }        
     render(){
         return(
+            <div>
             <div className="discussion-background">
                 <div>
-        <h1>Welcome to the discussion forum</h1>
-        {this.state.topics && this.state.topics.map((topic, i) => {
-            return(
-                <Topic key={i} name={topic[0].name} data={topic[0]} id={topic[1]}></Topic> 
-            )})}
+                    <h1>Welcome to the discussion forum</h1>
+                    {this.state.topics && this.state.topics.map((topic, i) => {
+                    return(
+                    <Topic key={i} name={topic[0].name} data={topic[0]} id={topic[1]}></Topic> 
+                 )})}
                 </div>
+            
+            </div>
             <Footer/>
             </div>
            

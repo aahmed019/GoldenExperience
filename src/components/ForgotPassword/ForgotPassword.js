@@ -28,7 +28,7 @@ export default function ForgotPassword(){
             setLoading(false)
         }
     return(
-        <Container className = "d-flex align-items-center justify-content-center" style ={{minHeight: "100vh"}}>
+        <Container className = "d-flex align-items-center justify-content-center" style ={{minHeight: "80vh"}}>
             <div className ="w-100 " style = {{ maxWidth: '400px'}}>
                 <Card>
                     <Card.Body>
