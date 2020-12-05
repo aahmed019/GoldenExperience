@@ -2,14 +2,11 @@ import React, {useEffect, useState } from 'react';
 import './Manager.css'
 import Fire from '../../firebaseConfig';
 import 'react-tabs/style/react-tabs.css';
-import { useAuth } from '../../contexts/AuthContext';
-
 
 export default function Users() {
     let tests = Fire.db
 
     const[newUsers, setNewUsers] = useState([])
-    const {currentUser} = useAuth();
     
     const getData = async() =>{
         const users = []

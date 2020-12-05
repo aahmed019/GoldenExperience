@@ -44,8 +44,8 @@ class ChefPage extends Component {
 
     render(){
         return (
-            <div>
-                <div className='chef-background-boi'>
+            <div className='chef-background-boi'>
+                <div>
                     <Tabs defaultIndex={1} onSelect={index => console.log(index)}>
                         <TabList>
                             <Tab>Upload Menu</Tab>
@@ -55,7 +55,7 @@ class ChefPage extends Component {
                             <Tab>Food Item</Tab>
                         </TabList>
                         <TabPanel>
-                            <div className='container'>
+                            <div style={{textAlign:'center'}}>
                                 <br />
                                 <br />
                                 <input type="file" onChange={this.uploadFile}></input>
@@ -83,7 +83,6 @@ class ChefPage extends Component {
                         </TabPanel>
                     </Tabs>
                 </div>
-                <Footer />
             </div>
 
         );

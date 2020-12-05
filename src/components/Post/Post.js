@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Card } from 'react-bootstrap';
 import './Post.css'
 import {Link} from 'react-router-dom';
-import Footer from '../Footer/Footer';
+//import Footer from '../Footer/Footer';
 
 class Post extends Component{
     render(){

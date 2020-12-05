@@ -16,7 +16,7 @@ export default function ManagerPage() {
     
     return (     
         <div style={{textAlign:'center'}}>
-            <div className='background-boi'>
+            <div className='manager-background-boi'>
                     <Tabs defaultIndex={0} onSelect={index => console.log(index)}>
                         <TabList>
                             <Tab>New Users</Tab>
@@ -53,7 +53,6 @@ export default function ManagerPage() {
                     </Tabs>
                     
                 </div>
-                <Footer />
         </div>
         );
 

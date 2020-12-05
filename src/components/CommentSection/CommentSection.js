@@ -49,7 +49,7 @@ class CommentSection extends Component{
                let prevData = this.props.location.state.data.posts;
                console.log(prevData);
                 for(let i = 0; i < prevData.length; i++){
-                    if(prevData[i].text == this.props.location.state.text && prevData[i].username == this.props.location.state.username){
+                    if(prevData[i].text === this.props.location.state.text && prevData[i].username === this.props.location.state.username){
                         
                             prevData[i].comments.push({
                                 "text": this.state.value,

@@ -3,7 +3,6 @@ import '../../App.css';
 import logo from '../../images/logoforschool.png';
 import { Link} from 'react-router-dom';
 import { useAuth } from "../../contexts/AuthContext"
-import Fire from '../../firebaseConfig';
 
 export default function NavigationBar(){
   const { currentUser } = useAuth()  
