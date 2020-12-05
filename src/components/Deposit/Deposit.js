@@ -28,7 +28,8 @@ export default function Deposit() {
     // this.setState({ [name]: value });
   }
   const handleSubmit = (e) => {
-    console.log("here");
+    e.preventDefault();
+    console.log(cvc, expiry, focus, name, number,amount );
   }
   
   
@@ -104,7 +105,7 @@ export default function Deposit() {
               </div>
             </Row>
             <div>
-              <button className="btn btn-primary btn-block mt-3 font-text">DEPOSIT</button>
+              <button className="btn btn-primary btn-block mt-3 font-text" onClick={handleSubmit}>DEPOSIT</button>
             </div>
           </form>
       </Row>
