@@ -8,6 +8,7 @@ import { useAuth } from "../../contexts/AuthContext"
 export default function DiscussionPage() {
     const { currentUser, logout } = useAuth()
     const [topics, setTopics] = useState('');
+    const [userAuthorize, setAuthorize] = useState(true);
     let database = Fire.db;
 
     const getData = async() =>{
@@ -21,11 +22,28 @@ export default function DiscussionPage() {
             setTopics(localTopics);
         }).catch(error => console.log(error))
         }       
-        useEffect(() =>{
-            getData()
-        },[])
+     
+    
+    const getUser = async() =>{
+        if(currentUser){
+            database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
+                if(!doc.exists){
+                    setAuthorize(false);
+                }
+            })    
+        }
+    }
+    
+    useEffect(() =>{
+        getData()
+        getUser()
+    },[])
+
     if(currentUser == null){
         return(<div>Please log in to view this page</div>)
+    }
+    if(userAuthorize == false){
+        return(<div>You need to be apporved to view this page</div>)
     }
     return(
         <div>
