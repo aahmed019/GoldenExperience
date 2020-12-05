@@ -5,14 +5,10 @@ import { useAuth } from "../../contexts/AuthContext"
 import Fire from '../../firebaseConfig';
 import "./Deposit.css"
 import {Row} from "react-bootstrap";
+import Notifications, {notify} from 'react-notify-toast';
+
 export default function Deposit() {
-  // this.state = {
-  //   cvc: '',
-  //   expiry: '',
-  //   focus: '',
-  //   name: '',
-  //   number: '',
-  // };
+
   const [cvc, setCVC] = useState('');
   const [expiry, setExpiry] = useState('');
   const [focus, setFocus] = useState('');
@@ -24,20 +20,10 @@ export default function Deposit() {
     return(<div>Please log in to view this page</div>)
   }
   let database = Fire.db;
-  const handleInputFocus = (e) => {
-    this.setState({ focus: e.target.name });
-  }
 
-  
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    
-    // this.setState({ [name]: value });
-  }
   const handleSubmit = (e) => {
     e.preventDefault();
       database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
-        // console.log(doc.data().Balance)
         let newBalance = 0;
         if(doc.exists){
           newBalance = doc.data().Balance + parseInt(amount);
@@ -54,16 +40,14 @@ export default function Deposit() {
             database.getCollection('SignUp').doc(currentUser.email).update({
               Balance: newBalance,
             })
+          }).then(() => {
+            notify.show('Money Deposited!');
           })
       
       })
-   
-
   }
-  
-  
-  
     return (
+      <div>
       <Row id="PaymentForm">
         <Cards
           cvc={cvc}
@@ -138,6 +122,8 @@ export default function Deposit() {
             </div>
           </form>
       </Row>
+      <Notifications />
+      </div>
     );
   }
 
