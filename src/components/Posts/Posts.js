@@ -1,5 +1,4 @@
 import React, {useEffect, useState } from 'react';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import {Row, Button, Modal} from "react-bootstrap";
 import Post from "../Post/Post"
 import './Posts.css'
@@ -8,11 +7,16 @@ import PostModal from '../PostModal/PostModal'
 import Footer from '../Footer/Footer';
 import { useAuth } from "../../contexts/AuthContext"
 import props from 'prop-types';
+import Fire from '../../firebaseConfig';
 
 export default function Posts(props){
     const [data, setData] = useState(''); 
     const [show, setShow] = useState(false); 
     const [id, setId] = useState(''); 
+    const { currentUser, logout } = useAuth()
+    const [userAuthorize, setAuthorize] = useState(true);
+
+    let database = Fire.db;
 
     const handleShow = () =>{
         setShow(true);
@@ -29,12 +33,26 @@ export default function Posts(props){
             setId(props.location.state.id);    
         }
     }   
+    const getUser = async() =>{
+        if(currentUser){
+            database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
+                if(!doc.exists){
+                    setAuthorize(false);
+                }
+            })    
+        }
+    }
     useEffect(() =>{
         getData()
-        // getUser()
+        getUser()
     },[])
+    if(currentUser == null){
+        return(<div>Please log in to view this page</div>)
+    }
+    if(userAuthorize == false){
+        return(<div>You need to be apporved to view this page</div>)
+    }
        
-
     if(data){
         return(
             <div className="black-background">
