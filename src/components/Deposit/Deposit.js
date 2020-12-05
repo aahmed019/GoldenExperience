@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
+import { useAuth } from "../../contexts/AuthContext"
+import Fire from '../../firebaseConfig';
 import "./Deposit.css"
 import {Row} from "react-bootstrap";
 export default function Deposit() {
@@ -17,10 +19,15 @@ export default function Deposit() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [amount, setAmount] = useState('');
-
+  const { currentUser, logout } = useAuth()
+  if(currentUser == null){
+    return(<div>Please log in to view this page</div>)
+  }
+  let database = Fire.db;
   const handleInputFocus = (e) => {
     this.setState({ focus: e.target.name });
   }
+
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +36,20 @@ export default function Deposit() {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(cvc, expiry, focus, name, number,amount );
+    database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
+    if(doc.exists){
+      database.getCollection('Users').doc(currentUser.email).update({
+        Balance: parseInt(amount),
+      })
+    }
+      database.getCollection('SignUp').doc(currentUser.email).get().then(function(doc){
+        database.getCollection('SignUp').doc(currentUser.email).update({
+          Balance: parseInt(amount),
+        })
+      })
+  
+  })
+
   }
   
   
