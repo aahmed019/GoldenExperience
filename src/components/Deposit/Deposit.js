@@ -36,19 +36,28 @@ export default function Deposit() {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
-    if(doc.exists){
-      database.getCollection('Users').doc(currentUser.email).update({
-        Balance: parseInt(amount),
-      })
-    }
-      database.getCollection('SignUp').doc(currentUser.email).get().then(function(doc){
-        database.getCollection('SignUp').doc(currentUser.email).update({
-          Balance: parseInt(amount),
-        })
-      })
+      database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
+        // console.log(doc.data().Balance)
+        let newBalance = 0;
+        if(doc.exists){
+          newBalance = doc.data().Balance + parseInt(amount);
+          console.log(newBalance)
   
-  })
+          database.getCollection('Users').doc(currentUser.email).update({
+            Balance: newBalance,
+          })
+        }
+          database.getCollection('SignUp').doc(currentUser.email).get().then(function(doc){
+            if(newBalance == 0){
+              newBalance = doc.data().Balance + parseInt(amount);
+            }
+            database.getCollection('SignUp').doc(currentUser.email).update({
+              Balance: newBalance,
+            })
+          })
+      
+      })
+   
 
   }
   
@@ -125,7 +134,7 @@ export default function Deposit() {
               </div>
             </Row>
             <div>
-              <button className="btn btn-primary btn-block mt-3 font-text" onClick={handleSubmit}>DEPOSIT</button>
+              <button type="submit" className="btn btn-primary btn-block mt-3 font-text">DEPOSIT</button>
             </div>
           </form>
       </Row>
