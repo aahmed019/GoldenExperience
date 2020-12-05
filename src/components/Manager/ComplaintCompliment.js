@@ -71,8 +71,8 @@ export default function ComplaintCompliment() {
                 <h1>Complaint number: {i + 1}</h1>
                 <h2>From: {item.sender}</h2>
                 <h2>To: {item.staff}</h2>
-                <h2>Complaint: {item.Complaint}</h2>
-                <h2>Compliment: {item.Compliment}</h2>
+                <h2>Complaint: {item.complaint}</h2>
+                <h2>Compliment: {item.compliment}</h2>
                 <button onClick={() => {AddComplaint(item.id, item.staff)}}>Complaint</button>
                 <br/><br/>
                 <button onClick={() => {AddCompliment(item.id, item.staff)}}>Compliment</button>
