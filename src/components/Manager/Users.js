@@ -2,12 +2,14 @@ import React, {useEffect, useState } from 'react';
 import './Manager.css'
 import Fire from '../../firebaseConfig';
 import 'react-tabs/style/react-tabs.css';
+import { useAuth } from '../../contexts/AuthContext';
 
 
 export default function Users() {
     let tests = Fire.db
 
     const[newUsers, setNewUsers] = useState([])
+    const {currentUser} = useAuth();
     
     const getData = async() =>{
         const users = []
@@ -41,6 +43,21 @@ export default function Users() {
         getData()
     }
 
+    //function for changing balance
+    // async function changeBalance(userEmail){
+    //     await tests.getCollection('Users').doc(currentUser.email).update({
+    //         Balance:1
+    //     }).then(function() {// went through
+    //         console.log("Approved!");
+            
+    //     })
+    //     .catch(function(error) { //broke down somewhere
+    //         console.error("Error: ", error);
+    //     });
+
+    //     getData()
+    // }
+
     return (     
         <div style={{textAlign:'center'}}>
             <h1>Users</h1>
@@ -52,6 +69,7 @@ export default function Users() {
                 <h2>Name: {item.name}</h2>
                 <h2>Email: {item.email}</h2>
                 <h2>Username: {item.username}</h2>
+            <h2>Balance: {item.Balance}</h2>
                 <button onClick={() => {deleteUser(item.username)}}>Delete</button>
                 <br/>
                 <br/>

@@ -9,6 +9,7 @@ import Staff from './Staff';
 import Menu from '../Menu/Menu';
 import Users from './Users'
 import TabooWords from './Taboo'
+import ComplaintCompliment from './ComplaintCompliment'
 
 
 export default function ManagerPage() {
@@ -16,13 +17,13 @@ export default function ManagerPage() {
     return (     
         <div style={{textAlign:'center'}}>
             <div className='background-boi'>
-                    <Tabs defaultIndex={5} onSelect={index => console.log(index)}>
+                    <Tabs defaultIndex={0} onSelect={index => console.log(index)}>
                         <TabList>
                             <Tab>New Users</Tab>
                             <Tab>Users</Tab>
                             <Tab>Meun</Tab>
                             <Tab>Staff</Tab>
-                            <Tab>Complaints</Tab>
+                            <Tab>Complaints/Compliments</Tab>
                             <Tab>Taboo words</Tab>
                         </TabList>
 
@@ -43,7 +44,7 @@ export default function ManagerPage() {
                         </TabPanel>
 
                         <TabPanel>
-                            <h1>Complaints</h1>
+                            <ComplaintCompliment/>
                         </TabPanel>
 
                         <TabPanel>

@@ -43,8 +43,7 @@ export default function Staff() {
 
     function Demote(staffer, demotionCount){
         if(demotionCount === 2){
-            //commented out but works
-            //fire(staffer)
+            fire(staffer)
         }
         else{
         tests.getCollection('Staff').doc(staffer).update({
