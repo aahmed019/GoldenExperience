@@ -1,66 +1,79 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import Footer from '../Footer/Footer.js'
 import {Link} from 'react-router-dom';
 import {Row} from "react-bootstrap";
 import './ComplaintPage.css'
 import queryString from 'query-string'
 
-class ComplaintPage extends Component{
-    render(){
-        const value = queryString.parse(this.props.location.search);
-        const usertype = value.usertype;
-        const username = value.username;
-        console.log(usertype);
-        console.log(username);
-        console.log(this.state);
-        var showComplimentForm = false;
-        var showComplaintForm = false;
-        if(usertype === "manager"){
+export default function ComplaintPage(props){
+    const[showComplimentForm, setShowComplimentForm] = useState('none')
+    const[showComplaintForm, setShowComplaintForm] = useState('none') //assign to setShowComplaintForm(*here*) to change
+    
+    let fire = Fire.db
 
-        }else{
-            return(
-                <div>
-                <div className ='background-boi'>
-                    <div className = "container">
-                        <div class="row" style = {{backgroundColor: "green"}}>
-                            <div class="column" style = {{backgroundColor: "blue"}} >
-                                <h2>Submit Compliment</h2>
-                                <form>
-                                    <h3>username:</h3>
-                                    <input type="text" compliment_user="compliment_user"/><br></br>
-                                    <input type="button" value="Submit" onClick={() => showComplimentForm = true}/>
-                                </form>
-                                <div id="compliment_form" style={{ display: showComplimentForm ? "block" : "none" }}>
-                                    <p>postulant periculis vel an, mea modus similique no.</p><br></br>
-                                    <p>Eam oporteat oportere scribentur ad, mel ea oporteat probatus.</p><br></br>
-                                    <p>At offendit suscipiantur pri, dicant corrumpit id vis.</p><br></br>
-                                    <p>Odio fierent imperdiet duo cu, ad democritum appellantur duo, ex ancillae conceptam pri.</p><br></br>
-                                </div>
-                            </div>
-                            <div class="column" style = {{backgroundColor: "purple"}}>
-                                <h2>Submit Complaint</h2>
-                                <form>
-                                    <h3>username:</h3>
-                                    <input type="text" complaint_user="complaint_user"/><br></br>
-                                    <input type="button" value="Submit" onClick={() => showComplaintForm = true}/>
-                                </form>
-                                <div id="complaint_form" style={{ display: showComplaintForm ? "block" : "none" }}>
-                                    <p>postulant periculis vel an, mea modus similique no.</p><br></br>
-                                    <p>Eam oporteat oportere scribentur ad, mel ea oporteat probatus.</p><br></br>
-                                    <p>At offendit suscipiantur pri, dicant corrumpit id vis.</p><br></br>
-                                    <p>Odio fierent imperdiet duo cu, ad democritum appellantur duo, ex ancillae conceptam pri.</p><br></br>
-                                </div>
-                            </div>
+    const value = queryString.parse(props.location.search);
+    const usertype = value.usertype;
+    const username = value.username;
+    console.log(usertype);
+    console.log(username);
+    if(usertype === "manager"){
+        var indents = [];
+        for (var i = 0; i < 10; i++) {
+            indents.push(<h1 className='indent' key={i}>some shit that got pushed</h1>);
+        }
+        return (
+        <div>
+            {indents}
+            "Some text value"
+        </div>
+        )
+    }else{
+        return(
+            <div>
+            <div className ='background-boi'>
+                <div className = "container">
+                    <div class="row" style = {{backgroundColor: "green"}}>
+                        <div class="column" style = {{backgroundColor: "blue"}} >
+                            <h2>Submit Compliment</h2>
+                            <form>
+                                <h3>Order Number</h3>
+                                <input type="text" OrderSearhCompliment="OrderSearhCompliment"/>
+                                <input type="button" id="OrderSearhComplimentExecute" value="Search" onClick = {() =>setShowComplaintForm('block')}/><br></br>
+                                <select name="complimentTo" id="complimentTo">
+                                    <option value="chef">Compliment Chef on this order</option>
+                                    <option value="driver">Compliment Driver on this order</option>
+                                </select>
+                                <h3>Title</h3>
+                                <input type="text" complimentTitle="complimentTitle"/>
+                                <h3>Description</h3>
+                                <input type="text" class="submissionfield" complimentDescription="complimentDescription"/>
+                            </form>
                         </div>
-                        <div style = {{backgroundColor: "red"}}>
-                                <h1 style = {{verticalAlign: "top"}}>Display active complaint threads here</h1>
+                        <div class="column" style = {{backgroundColor: "purple", display: showComplaintForm}} >
+                            <h2>Submit Complaint</h2>
+                            <form>
+                                <h3>Order Number</h3>
+                                <input type="text" orderSearchComplaint="orderSearchComplaint"/>
+                                <input type="button" id="orderSearchComplaintExecute" value="Search"/><br></br>
+                                <select name="complaintAbout" id="complaintAbout">
+                                    <option value="chef">Complaint about the Chef on this order</option>
+                                    <option value="driver">Complaint about the Driver on this order</option>
+                                    <option value="customer">Complaint about the Customer on this order</option>
+                                </select>
+                                <h3>Title</h3>
+                                <input type="text" complaintTitle="complaintTitle"/>
+                                <h3>Description</h3>
+                                <input type="text" class="submissionfield" complaintDescription="complaintDescription"/>
+                            </form>
                         </div>
                     </div>
+                    <div style = {{backgroundColor: "red"}}>
+                            <h1 style = {{verticalAlign: "top"}}>Display active complaint threads here</h1>
+                    </div>
                 </div>
-                <Footer/>
-                </div>
-            )
-        }
+            </div>
+            <Footer/>
+            </div>
+        )
     }
 }
-export default ComplaintPage
