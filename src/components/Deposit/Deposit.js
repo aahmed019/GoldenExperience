@@ -1,38 +1,48 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import "./Deposit.css"
 import {Row} from "react-bootstrap";
-export default class Deposit extends React.Component {
-  state = {
-    cvc: '',
-    expiry: '',
-    focus: '',
-    name: '',
-    number: '',
-  };
+export default function Deposit() {
+  // this.state = {
+  //   cvc: '',
+  //   expiry: '',
+  //   focus: '',
+  //   name: '',
+  //   number: '',
+  // };
+  const [cvc, setCVC] = useState('');
+  const [expiry, setExpiry] = useState('');
+  const [focus, setFocus] = useState('');
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const [amount, setAmount] = useState('');
 
-  handleInputFocus = (e) => {
+  const handleInputFocus = (e) => {
     this.setState({ focus: e.target.name });
   }
   
-  handleInputChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     
-    this.setState({ [name]: value });
+    // this.setState({ [name]: value });
+  }
+  const handleSubmit = (e) => {
+    console.log("here");
   }
   
-  render() {
+  
+  
     return (
       <Row id="PaymentForm">
         <Cards
-          cvc={this.state.cvc}
-          expiry={this.state.expiry}
-          focused={this.state.focus}
-          name={this.state.name}
-          number={this.state.number}
+          cvc={cvc}
+          expiry={expiry}
+          focused={focus}
+          name={name}
+          number={number}
         />
-        <form className = "deposit-form "onSubmit={this.handleSubmit}>
+        <form className = "deposit-form" onSubmit={handleSubmit}>
             <input
                 type="text"
                 name="amount"
@@ -40,8 +50,9 @@ export default class Deposit extends React.Component {
                 placeholder="Amount"
                 pattern="\d*"
                 required
-                onChange={this.handleInputChange}
-                onFocus={this.handleInputFocus}
+                onChange={e => setAmount(e.target.value)} 
+                value={amount}
+                onFocus={e => setFocus(e.target.name)}
               />
               <input
                 type="tel"
@@ -50,8 +61,9 @@ export default class Deposit extends React.Component {
                 placeholder="Card Number"
                 pattern="[\d| ]{16,22}"
                 required
-                onChange={this.handleInputChange}
-                onFocus={this.handleInputFocus}
+                onChange={e => setNumber(e.target.value)} 
+                value={number}
+                onFocus={e => setFocus(e.target.name)}
               />
               <input
                 type="text"
@@ -59,8 +71,9 @@ export default class Deposit extends React.Component {
                 className="form-control mt-1"
                 placeholder="Name"
                 required
-                onChange={this.handleInputChange}
-                onFocus={this.handleInputFocus}
+                onChange={e => setName(e.target.value)} 
+                value={name}
+                onFocus={e => setFocus(e.target.name)}
               />
             <Row>
               <div className="col-6">
@@ -71,8 +84,9 @@ export default class Deposit extends React.Component {
                   placeholder="Valid Thru"
                   pattern="\d\d/\d\d"
                   required
-                  onChange={this.handleInputChange}
-                  onFocus={this.handleInputFocus}
+                  onChange={e => setExpiry(e.target.value)} 
+                  value={expiry}
+                  onFocus={e => setFocus(e.target.name)}
                 />
               </div>
               <div className="col-6">
@@ -83,8 +97,9 @@ export default class Deposit extends React.Component {
                   placeholder="CVC"
                   pattern="\d{3,4}"
                   required
-                  onChange={this.handleInputChange}
-                  onFocus={this.handleInputFocus}
+                  onChange={e => setCVC(e.target.value)} 
+                  value={cvc}
+                  onFocus={e => setFocus(e.target.name)}
                 />
               </div>
             </Row>
@@ -95,4 +110,4 @@ export default class Deposit extends React.Component {
       </Row>
     );
   }
-}
+
