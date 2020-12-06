@@ -6,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import PostModal from '../PostModal/PostModal'
 import Footer from '../Footer/Footer';
 import { useAuth } from "../../contexts/AuthContext"
-import props from 'prop-types';
 import Fire from '../../firebaseConfig';
 
 export default function Posts(props){
@@ -15,6 +14,8 @@ export default function Posts(props){
     const [id, setId] = useState(''); 
     const { currentUser, logout } = useAuth()
     const [userAuthorize, setAuthorize] = useState(true);
+    const [username, setUsername] = useState(true);
+    const [email, setEmail] = useState(true);
 
     let database = Fire.db;
 
@@ -27,10 +28,17 @@ export default function Posts(props){
     const showModal = () =>{
         return show;
     }  
+    const getPosts = async() =>{
+        database.getCollection("Topics").doc(props.location.state.id).get().then(doc => {
+           setData(doc.data())
+        }).catch(error => console.log(error))
+    }
     const getData = async() =>{
         if(props.location.state){
-            setData(props.location.state.data);
-            setId(props.location.state.id);    
+            // setData(props.location.state.data);
+            setId(props.location.state.id);   
+            getPosts()
+
         }
     }   
     const getUser = async() =>{
@@ -39,10 +47,15 @@ export default function Posts(props){
                 if(!doc.exists){
                     setAuthorize(false);
                 }
+                else{
+                    setUsername(doc.data().username)
+                    setEmail(doc.data().email)
+                }
             })    
         }
     }
     useEffect(() =>{
+        getPosts()
         getData()
         getUser()
     },[])
@@ -50,7 +63,7 @@ export default function Posts(props){
         return(<div>Please log in to view this page</div>)
     }
     if(userAuthorize == false){
-        return(<div>You need to be apporved to view this page</div>)
+        return(<div>You need to be approved to view this page</div>)
     }
        
     if(data){
@@ -59,11 +72,7 @@ export default function Posts(props){
                 <div>{data.posts && data.posts.map((post, i) => {
                     let date = ""
                     if(post.time){
-                        // SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                        // sfd.format(new Date(timestamp));
                         date = new Date(post.time.seconds*1000).toString()
-                        // console.log(post.time.toString());
-                        // date = post.time.toDate().toString();
                     }
                     return(
                         <Post data={data} comments={post.comments} id={id} key={i} username={post.username} text={post.text} time={date}></Post> 
@@ -71,7 +80,7 @@ export default function Posts(props){
                 </div>
                 
                 <div><Button className="newpost" onClick={handleShow}>Create New Post</Button></div>
-                <PostModal data={data} id={id} show={show} handleClose={handleClose}></PostModal>
+                <PostModal email={email} getPosts ={getPosts} username={username} data={data} id={id} show={show} handleClose={handleClose}></PostModal>
                 <Footer/>
             </div>
         );

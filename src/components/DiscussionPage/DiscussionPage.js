@@ -43,7 +43,7 @@ export default function DiscussionPage() {
         return(<div>Please log in to view this page</div>)
     }
     if(userAuthorize == false){
-        return(<div>You need to be apporved to view this page</div>)
+        return(<div>You need to be approved to view this page</div>)
     }
     return(
         <div>
