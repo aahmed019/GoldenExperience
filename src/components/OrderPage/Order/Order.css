@@ -1,0 +1,44 @@
+.background-boi{
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    justify-content: center;
+    
+
+}
+.Order{
+    max-width:50%;
+    padding: 2px;
+    border-radius: 25px;    
+    background-color: black;
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+}
+
+.FormControl{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+}   
+
+.Rows{
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items:flex-end;
+    width: 100%;
+    height: auto;
+    margin:0;
+    padding: 0px;
+    
+}
+.ButtonCols{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end; 
+}

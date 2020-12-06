@@ -2,7 +2,7 @@ import React, {useEffect, useState } from 'react';
 import {Row, Button, Modal} from "react-bootstrap";
 import Post from "../Post/Post"
 import './Posts.css'
-import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap.css';
 import PostModal from '../PostModal/PostModal'
 import Footer from '../Footer/Footer';
 import { useAuth } from "../../contexts/AuthContext"

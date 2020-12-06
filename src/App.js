@@ -15,6 +15,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import UpdateProfile from './components/UpdateProfile/UpdateProfile';
 import CommentSection from './components/CommentSection/CommentSection';
+import OrderPage from './components/OrderPage/OrderPage';
 import Deposit from './components/Deposit/Deposit';
 import DiscussionPage from './components/DiscussionPage/DiscussionPage';
 import Menu from './components/Menu/Menu';
@@ -46,6 +47,7 @@ function App() {
               <Route exact path = '/Home' component = {LandingPage}/>
               <Route exact path = '/Register' component = {SignUp}/>
               <Route exact path = '/Confirmation' component = {ConfirmationPage}/>
+              <Route exact path = '/Order' component = {OrderPage}/>
               <Route exact path = '/Chef' component={ChefPage}/>
               <Route exact path = '/Manager' component={ManagerPage}/>
               <Route exact path = '/Profile' component ={ProfilePage}/>
