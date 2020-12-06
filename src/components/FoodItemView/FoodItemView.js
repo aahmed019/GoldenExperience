@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Fire from '../../firebaseConfig';
 import Footer from '../Footer/Footer';
+import ReactStars from 'react-stars'
 
 export default function FoodItemView(){
     const[FoodItems, setFoodItems] = useState([])
@@ -42,6 +43,14 @@ export default function FoodItemView(){
                 <p>${item.price}</p>
                 <p>{item.description}</p>
                 <img src={item.url} style={{"width":"200px","height":"200px"}}/>
+                <ReactStars
+                    count={5}
+                    edit={false}
+                    onChange={e => console.log(e)}
+                    value ={item.rating}
+                    size={24}
+                    color2={'#ffd700'}
+                    color1={'#A9A9A9'} />
 
                 </div>
                 })}  
