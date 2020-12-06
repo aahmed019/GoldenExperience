@@ -11,7 +11,7 @@ export default function PostModal(props){
     const deRegisterUser = (email) => {
         database.getCollection('Users').doc(email).delete()
         .then(() =>{
-            notify.show('You have been deregistered!');
+            notify.show('Stop cursing! You have been deregistered!');
             window.location.reload(false);
         })
         .catch(function(error) { //broke down somewhere
@@ -20,10 +20,15 @@ export default function PostModal(props){
     }
 
     const removeVIP = (email) => {
+        database.getCollection('SignUp').doc(email).update({
+            Vip: "false",
+            warnings: 0
+          })
         database.getCollection('Users').doc(email).update({
-            Vip: "false"
+            Vip: "false",
+            warnings: 0
         }).then(() => {
-            notify.show('Your VIP status has been removed!');
+            notify.show('Stop cursing! Your VIP status has been removed!');
         })
     }
 
@@ -45,10 +50,9 @@ export default function PostModal(props){
                 removeVIP(email);
               }
               else if(new_warnings >= 3 && vip_status == "false"){
-                console.log("here in deregsiter")
                 deRegisterUser(email);
               }else{
-                notify.show('A warning has been added to your account!');
+                notify.show('Stop cursing! A warning has been added to your account!');
               }
            
             }
@@ -108,7 +112,8 @@ export default function PostModal(props){
                     });
                 }
                 else{
-                    console.log("violation");
+                    notify.show('Stop cursing! The message has been blocked and a warning has been added to your account!');
+                    setValue("")
                 }
             }).catch(function(error){
                 console.log(error)
