@@ -22,14 +22,14 @@ export default function FoodItems() {
         tests.getCollection('Food').get()
         .then(querySnapshot => {
             querySnapshot.docs.forEach(doc => {
-                if(doc.data()["Chef"] == username){
+                if(doc.data()["Chef"] === username){
                     foodItems.push(doc.data())
                 }
             });
             tests.getCollection('Drink').get()
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
-                    if(doc.data()["Chef"] == username){
+                    if(doc.data()["Chef"] === username){
                         foodItems.push(doc.data())
                     }
                 });
@@ -89,7 +89,7 @@ export default function FoodItems() {
         getData()
     }
     async function addFooditem(){
-        if(typeValue == "drink"){
+        if(typeValue === "drink"){
             let id="d"+foodNameValue.split(" ").join("")
             await tests.getCollection('Drink').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username  })
             .then(() =>{
@@ -123,15 +123,15 @@ export default function FoodItems() {
     const handleClose= (e) =>{
         setShow(false)
     }
-    const handleSubmit= (e) =>{
-        setShow(false)
-    }
+    //const handleSubmit= (e) =>{
+        //setShow(false)
+    //}
 
 
 
 
     return (     
-        <div>
+        <div className='chef-background-boi'>
              {FoodItems.map(function(item, i){
                 return <div style={{paddingRight:'2%', border:"1px solid white"}} key={i}>
                 {/* <input type="text" value={item.name} onChange={this.handleChange}></input> */}

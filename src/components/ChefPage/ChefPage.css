@@ -1,10 +1,6 @@
-.container{
-    /* Rectangle 1 */
-}
-
 .chef-background-boi{
     position: relative;
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
     background: linear-gradient(180deg, rgba(204, 177, 177, 0) 0%, #424242 100%), linear-gradient(180deg, #666565 0%, rgba(255, 255, 255, 0) 100%), radial-gradient(50% 50% at 50% 50%, rgba(238, 215, 12, 0.979) 80.37%, rgba(251, 224, 84, 0) 100%);
 }

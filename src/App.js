@@ -20,6 +20,7 @@ import Deposit from './components/Deposit/Deposit';
 import DiscussionPage from './components/DiscussionPage/DiscussionPage';
 import Menu from './components/Menu/Menu';
 import Posts from './components/Posts/Posts';
+import Complaint from './components/Complaint/Complaint';
 
 
 
@@ -57,6 +58,7 @@ function App() {
               <Route exact path = '/Discussion' component = {DiscussionPage}/>
               <Route exact path = '/Menu' component = {Menu}/>
               <Route exact path = '/Posts' component = {Posts}/>
+              <Route exact path = '/Complaint' component = {Complaint}/>
 
               
         </Switch>

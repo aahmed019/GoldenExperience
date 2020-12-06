@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import {Button, Modal, Form} from "react-bootstrap";
 import Fire from '../../firebaseConfig';
 import "./PostModal.css"
