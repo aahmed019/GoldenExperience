@@ -2,18 +2,55 @@ import React, {useEffect, useState} from 'react';
 import {Button, Modal, Form} from "react-bootstrap";
 import Fire from '../../firebaseConfig';
 import "./PostModal.css"
+import Notifications, {notify} from 'react-notify-toast';
+
 export default function PostModal(props){
     const [val, setValue] = useState('');
     let database = Fire.db
-  
+    
+    const deRegisterUser = (email) => {
+        database.getCollection('Users').doc(email).delete()
+        .then(() =>{
+            notify.show('You have been deregistered!');
+            window.location.reload(false);
+        })
+        .catch(function(error) { //broke down somewhere
+            console.error("Error: ", error);
+        });
+    }
+
+    const removeVIP = (email) => {
+        database.getCollection('Users').doc(email).update({
+            Vip: "false"
+        }).then(() => {
+            notify.show('Your VIP status has been removed!');
+        })
+    }
+
     const addWarning = (username, email) =>{
         database.getCollection('Users').doc(email).get().then(function(doc){
             let new_warnings = 0;
+            let vip_status = false;
             if(doc.exists){
-                new_warnings = doc.data().warnings + 1;
+              new_warnings = doc.data().warnings + 1;
+              vip_status = doc.data().Vip;
+              console.log(vip_status)
               database.getCollection('Users').doc(email).update({
                 warnings: new_warnings,
               })
+              database.getCollection('SignUp').doc(email).update({
+                warnings: new_warnings,
+              })
+              if(new_warnings >= 2 && vip_status == "true"){
+                removeVIP(email);
+              }
+              else if(new_warnings >= 3 && vip_status == "false"){
+                console.log("here in deregsiter")
+                deRegisterUser(email);
+              }else{
+                notify.show('A warning has been added to your account!');
+              }
+           
             }
         })
     }
@@ -83,6 +120,7 @@ export default function PostModal(props){
     
     
         return(
+            <div>
         <Modal show={props.show} onHide={props.handleClose}>
                     <Modal.Header>
                     <Modal.Title>Post</Modal.Title>
@@ -103,5 +141,8 @@ export default function PostModal(props){
                         Save Changes
                     </Button>
                     </Modal.Footer>
-        </Modal>);
+        </Modal>
+        <Notifications />
+        </div>
+);
     }
