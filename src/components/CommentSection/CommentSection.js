@@ -9,17 +9,46 @@ import { useAuth } from "../../contexts/AuthContext"
 
 export default function CommentSection(props){
     const [value, setValue] = useState(''); 
-    const [comments, setComments] = useState(props.location.state.comments); 
+    const [comments, setComments] = useState([]); 
     let database = Fire.db
     const [username, setUsername] = useState(true);
     const [email, setEmail] = useState(true);
     const { currentUser, logout } = useAuth()
     const [userAuthorize, setAuthorize] = useState(true);
+    const [id, setId] = useState(''); 
+    const [data, setData] = useState(''); 
 
 
     // if(props.location.state){
     //     setComments(props.location.state.comments)
     // }
+    const getComments = async(postdata) =>{
+        if(postdata){
+            let comments = [];
+            for(let i = 0; i < postdata.posts.length; i++){
+                if(postdata.posts[i].text === props.location.state.text && postdata.posts[i].username === props.location.state.poster){
+                       comments = postdata.posts[i].comments;
+                }
+            }
+            setComments(comments)
+        }
+
+    }
+    const getPosts = async() =>{
+        database.getCollection("Topics").doc(props.location.state.id).get().then(doc => {
+           setData(doc.data())
+           getComments(doc.data());
+        }).catch(error => console.log(error))
+    }
+    const getData = async() =>{
+        if(props.location.state){
+            // setData(props.location.state.data);
+            setId(props.location.state.id);   
+            getPosts()
+
+        }
+    }   
+
 
     const getUser = async() =>{
         if(currentUser){
@@ -35,9 +64,11 @@ export default function CommentSection(props){
         }
     }
     useEffect(() =>{
-        // getPosts()
-        // getData()
+        getData()
         getUser()
+        // getPosts()
+        // getComments()
+
     },[])
 
     const deRegisterUser = (email) => {
@@ -65,13 +96,13 @@ export default function CommentSection(props){
     }
 
     const addWarning = (username, email) =>{
+        console.log("need to enter", username, email)
         database.getCollection('Users').doc(email).get().then(function(doc){
             let new_warnings = 0;
             let vip_status = false;
             if(doc.exists){
               new_warnings = doc.data().warnings + 1;
               vip_status = doc.data().Vip;
-              console.log(vip_status)
               database.getCollection('Users').doc(email).update({
                 warnings: new_warnings,
               })
@@ -91,9 +122,6 @@ export default function CommentSection(props){
         })
     }
 
-    const handleChange = (e) =>{
-        this.setState({value: e.target.value});
-    }
     const handleSubmit = (e) =>{
         let tabooList = [];
         database.getCollection('TabooWords').get()
@@ -119,31 +147,33 @@ export default function CommentSection(props){
             }
             if(value.length > 0 && violation_count <= 3){
                 if(violation_count > 0){
-                    addWarning(username, props.email);
+                    addWarning(username, props.location.state.email);
                 }
-               let prevData = props.location.state.data.posts;
-               console.log(prevData);
+               let prevData = data.posts;
+               console.log("prevdata", prevData);
                 for(let i = 0; i < prevData.length; i++){
                     if(prevData[i].text === props.location.state.text && prevData[i].username === props.location.state.poster){
                             prevData[i].comments.push({
-                                "text": value,
+                                "text": new_val,
                                 "username": username,
                                 time: database.getTime()
                             })    
                     }
                 }
-                console.log(prevData)
-                    database.getCollection("Topics").doc(props.location.state.id).update({
-                        "posts": prevData
-                    }).then(() =>{
-                    console.log("New Post Added to Database");
-                    }).catch(function(error) { //broke down somewhere
-                    console.error("Error: ", error);
-                    });    
+                console.log("newdata", prevData)
+                database.getCollection("Topics").doc(props.location.state.id).update({
+                    "posts": prevData
+                }).then(() =>{
+                    setValue('')
+                    getData()
+                console.log("New Post Added to Database");
+                }).catch(function(error) { //broke down somewhere
+                console.error("Error: ", error);
+                });    
                 
             }
             else{
-                console.log(violation_count, "violations");
+                // console.log(violation_count, "violations");
             }
     
         }).catch(function(error){
@@ -174,6 +204,7 @@ export default function CommentSection(props){
                         )})}
                 </div>
                 <Footer/>
+                <Notifications/>
                 </div>
             );
         }
