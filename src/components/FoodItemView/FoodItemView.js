@@ -41,6 +41,8 @@ export default function FoodItemView(){
                 <p>{item.name}</p>
                 <p>${item.price}</p>
                 <p>{item.description}</p>
+                <img src={item.url} style={{"width":"200px","height":"200px"}}/>
+
                 </div>
                 })}  
             <Footer/>
