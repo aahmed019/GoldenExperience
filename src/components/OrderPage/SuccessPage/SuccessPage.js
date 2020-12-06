@@ -105,8 +105,8 @@ export default function SuccessPage (props){
                         pickupTime:time,
                         items: cart,
                         total:total,
-                        user: currentUser.email
-
+                        user: currentUser.email,
+                        userName: currentUser.name
                     })
                     .then(function() {// went through
                         console.log("Approved!");
