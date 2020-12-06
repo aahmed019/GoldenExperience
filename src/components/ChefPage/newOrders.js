@@ -2,17 +2,39 @@ import React, {useEffect, useState } from 'react';
 import './Chef.css'
 import Fire from '../../firebaseConfig';
 
+
 export default function newOrders() {
     let tests = Fire.db
 
-    const[newUsers, setNewUsers] = useState([])
+    const[newOrders, setNewOrders] = useState([])
     
+    const getData = async() =>{
+        const orders = []
+        tests.getCollection('Users').get()
+        .then(querySnapshot => {
+            querySnapshot.docs.forEach(doc => {
+                //let currentId = doc.id
+                let data = doc.data()
+                orders.push(data)
+            });
+            setNewOrders(users)
+        }).catch(function(error){
+            console.log(error)
+        })
+    }
+
+    useEffect(() =>{
+        getData()
+    },[])
+    
+
+
     
     return (     
         <div style={{textAlign:'center'}}>
             <h1>Users</h1>
             <div style={{display:'flex', flexDirection:'row'}}>
-            {newUsers.map(function(item, i){
+            {newOrders.map(function(item, i){
                 console.log(item);
                 return <div key={i}>
                 <h1>User number: {i + 1}</h1>
