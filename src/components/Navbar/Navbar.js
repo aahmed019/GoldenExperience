@@ -3,7 +3,6 @@ import '../../App.css';
 import logo from '../../images/logoforschool.png';
 import { Link} from 'react-router-dom';
 import { useAuth } from "../../contexts/AuthContext"
-import Fire from '../../firebaseConfig';
 
 export default function NavigationBar(){
   const { currentUser } = useAuth()  
@@ -24,7 +23,7 @@ export default function NavigationBar(){
         <div className="navbar-collapse collapse w-100 order-3 dual-collapse2" >
             <ul className="navbar-nav ml-auto navItems ">
               <li className= "nav-item navItems" ><Link className = "navItems" to="/Home">Home</Link></li>&emsp;&emsp;
-              <li className= "nav-item" ><Link to="/">Orders</Link></li>&emsp;&emsp;
+              <li className= "nav-item" ><Link to="/Order">Orders</Link></li>&emsp;&emsp;
               <li className= "nav-item" ><Link to="/Menu">Menus</Link></li>&emsp;&emsp;
               <li className= "nav-item" ><Link to="/Discussion">Discussion</Link></li>&emsp;&emsp;
               {currentUser ===  null ?

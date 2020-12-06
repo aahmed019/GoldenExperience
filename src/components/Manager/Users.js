@@ -2,14 +2,11 @@ import React, {useEffect, useState } from 'react';
 import './Manager.css'
 import Fire from '../../firebaseConfig';
 import 'react-tabs/style/react-tabs.css';
-import { useAuth } from '../../contexts/AuthContext';
-
 
 export default function Users() {
     let tests = Fire.db
 
     const[newUsers, setNewUsers] = useState([])
-    const {currentUser} = useAuth();
     
     const getData = async() =>{
         const users = []
@@ -70,6 +67,7 @@ export default function Users() {
                 <h2>Email: {item.email}</h2>
                 <h2>Username: {item.username}</h2>
             <h2>Balance: {item.Balance}</h2>
+            <h2>Warnings: {item.warnings}</h2>
                 <button onClick={() => {deleteUser(item.username)}}>Delete</button>
                 <br/>
                 <br/>

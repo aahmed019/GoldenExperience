@@ -36,7 +36,7 @@ export default function SignUp(){
                     orderHistory: [],
                     warnings: 0,
                     Balance: 0,
-                    Vip: "false"
+                    Vip: false
                     }).then(function() {// went through
                         console.log("Document successfully written!");
                         

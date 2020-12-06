@@ -1,59 +1,86 @@
-import React, { Component } from 'react';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import React, {useEffect, useState } from 'react';
 import {Row, Button, Modal} from "react-bootstrap";
 import Post from "../Post/Post"
 import './Posts.css'
-import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap.css';
 import PostModal from '../PostModal/PostModal'
 import Footer from '../Footer/Footer';
+import { useAuth } from "../../contexts/AuthContext"
+import Fire from '../../firebaseConfig';
 
-class Posts extends Component{
-    constructor(props) { 
-        super(props);
-   
-        this.state = {
-            data : this.props.location.state,
-            show : false
-        }
-        this.handleShow = this.handleShow.bind(this);
-        this.handleClose = this.handleClose.bind(this);
+export default function Posts(props){
+    const [data, setData] = useState(''); 
+    const [show, setShow] = useState(false); 
+    const [id, setId] = useState(''); 
+    const { currentUser, logout } = useAuth()
+    const [userAuthorize, setAuthorize] = useState(true);
+    const [username, setUsername] = useState(true);
+    const [email, setEmail] = useState(true);
+
+    let database = Fire.db;
+
+    const handleShow = () =>{
+        setShow(true);
+    }  
+    const handleClose = () =>{
+        setShow(false);
+    }  
+    const showModal = () =>{
+        return show;
+    }  
+    const getPosts = async() =>{
+        database.getCollection("Topics").doc(props.location.state.id).get().then(doc => {
+           setData(doc.data())
+        }).catch(error => console.log(error))
     }
-    handleShow(){
-        this.setState({
-            show:true
-        });
-    }  
-    handleClose(){
-        this.setState({
-            show:false
-        });
-    }  
+    const getData = async() =>{
+        if(props.location.state){
+            // setData(props.location.state.data);
+            setId(props.location.state.id);   
+            getPosts()
 
-    showModal(){
-        return this.state.show;
-    }  
-    render(){
-        if(this.props.location.state){
-            const {data} = this.props.location.state;
-            const {id} = this.props.location.state;
+        }
+    }   
+    const getUser = async() =>{
+        if(currentUser){
+            database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
+                if(!doc.exists){
+                    setAuthorize(false);
+                }
+                else{
+                    setUsername(doc.data().username)
+                    setEmail(doc.data().email)
+                }
+            })    
+        }
+    }
+    useEffect(() =>{
+        getPosts()
+        getData()
+        getUser()
+    },[])
+    if(currentUser == null){
+        return(<div>Please log in to view this page</div>)
+    }
+    if(userAuthorize == false){
+        return(<div>You need to be approved to view this page</div>)
+    }
+       
+    if(data){
         return(
             <div className="black-background">
                 <div>{data.posts && data.posts.map((post, i) => {
                     let date = ""
                     if(post.time){
-                        // SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                        // sfd.format(new Date(timestamp));
                         date = new Date(post.time.seconds*1000).toString()
-                        // console.log(post.time.toString());
-                        // date = post.time.toDate().toString();
                     }
                     return(
-                        <Post data={data} comments={post.comments} id={id} key={i} username={post.username} text={post.text} time={date}></Post> 
+                        <Post email={email} data={data} comments={post.comments} id={id} key={i} poster={post.username} text={post.text} time={date}></Post> 
                     )})}
                 </div>
                 
-                <div><Button className="newpost" onClick={this.handleShow}>Create New Post</Button></div>
-                <PostModal data={data} id={id} show={this.state.show} handleClose={this.handleClose}></PostModal>
+                <div><Button className="newpost" onClick={handleShow}>Create New Post</Button></div>
+                <PostModal email={email} getPosts ={getPosts} username={username} data={data} id={id} show={show} handleClose={handleClose}></PostModal>
                 <Footer/>
             </div>
         );
@@ -64,6 +91,3 @@ class Posts extends Component{
             )
         }
     }
-
-}
-export default Posts;

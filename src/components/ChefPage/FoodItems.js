@@ -12,6 +12,7 @@ export default function FoodItems() {
     const[foodPriceValue, setFoodPrice] = useState([])
     const[foodDescriptionValue, setFoodDescription] = useState([])
     const[typeValue, setFoodType] = useState([])
+    const[url, setURL] = useState([])
 
     const[show, setShow] = useState([])
     const username = "John";
@@ -22,14 +23,14 @@ export default function FoodItems() {
         tests.getCollection('Food').get()
         .then(querySnapshot => {
             querySnapshot.docs.forEach(doc => {
-                if(doc.data()["Chef"] == username){
+                if(doc.data()["Chef"] === username){
                     foodItems.push(doc.data())
                 }
             });
             tests.getCollection('Drink').get()
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
-                    if(doc.data()["Chef"] == username){
+                    if(doc.data()["Chef"] === username){
                         foodItems.push(doc.data())
                     }
                 });
@@ -89,9 +90,9 @@ export default function FoodItems() {
         getData()
     }
     async function addFooditem(){
-        if(typeValue == "drink"){
+        if(typeValue === "drink"){
             let id="d"+foodNameValue.split(" ").join("")
-            await tests.getCollection('Drink').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username  })
+            await tests.getCollection('Drink').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:0   })
             .then(() =>{
                 console.log("Added item to drink")
             })
@@ -102,7 +103,7 @@ export default function FoodItems() {
         }
         else{
             let id="m"+foodNameValue.split(" ").join("")
-            await tests.getCollection('Food').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username  })
+            await tests.getCollection('Food').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:0  })
                     .then(() =>{
                         console.log("Added item to food")
                     })
@@ -123,22 +124,26 @@ export default function FoodItems() {
     const handleClose= (e) =>{
         setShow(false)
     }
-    const handleSubmit= (e) =>{
-        setShow(false)
-    }
+    //const handleSubmit= (e) =>{
+        //setShow(false)
+    //}
 
 
 
 
     return (     
-        <div>
+        <div className='chef-background-boi'>
              {FoodItems.map(function(item, i){
                 return <div style={{paddingRight:'2%', border:"1px solid white"}} key={i}>
                 {/* <input type="text" value={item.name} onChange={this.handleChange}></input> */}
                 <p>{item.name}</p>
                 <p>${item.price}</p>
                 <p>{item.description}</p>
+                <img src={item.url} style={{"width":"200px","height":"200px"}}/>
+                <br/>
                 <button onClick={() => {deleteFoodItem(item)}}>Delete</button>
+
+
                 </div>
             })} 
             <br/>
@@ -165,9 +170,10 @@ export default function FoodItems() {
                                     <select value={typeValue} onChange={e => setFoodType(e.target.value)}>
                                         <option value="food">Food</option>
                                         <option value="drink">Drink</option>
-                                        {/* <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option> */}
-                                        </select>
+                                    </select>
+                                    <h6>Url:</h6>
+                                    <input type="text" className="post-modal-input" onChange={e => setURL(e.target.value)} value={url}/>
+
 
                             </div>
                         </Form>

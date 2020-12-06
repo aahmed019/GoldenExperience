@@ -1,33 +1,130 @@
-import React, { Component } from 'react';
+import React, {useEffect,  useState } from 'react';
 import {Button, Form} from "react-bootstrap";
 import Fire from '../../firebaseConfig';
 import Comment from "../Comment/Comment"
 import './CommentSection.css'
 import Footer from "../Footer/Footer"
-class CommentSection extends Component{
-    constructor(props) { 
-        super(props);
-        if(this.props.location.state){
-            this.state = {
-                value : "",
-                comments : this.props.location.state.comments,
-            }    
+import Notifications, {notify} from 'react-notify-toast';
+import { useAuth } from "../../contexts/AuthContext"
+
+export default function CommentSection(props){
+    const [value, setValue] = useState(''); 
+    const [comments, setComments] = useState([]); 
+    let database = Fire.db
+    const [username, setUsername] = useState(true);
+    const [email, setEmail] = useState(true);
+    const { currentUser, logout } = useAuth()
+    const [userAuthorize, setAuthorize] = useState(true);
+    const [id, setId] = useState(''); 
+    const [data, setData] = useState(''); 
+
+
+    // if(props.location.state){
+    //     setComments(props.location.state.comments)
+    // }
+    const getComments = async(postdata) =>{
+        if(postdata){
+            let comments = [];
+            for(let i = 0; i < postdata.posts.length; i++){
+                if(postdata.posts[i].text === props.location.state.text && postdata.posts[i].username === props.location.state.poster){
+                       comments = postdata.posts[i].comments;
+                }
+            }
+            setComments(comments)
         }
-        else{
-            this.state = {
-                value : "",
-            }    
+
+    }
+    const getPosts = async() =>{
+        database.getCollection("Topics").doc(props.location.state.id).get().then(doc => {
+           setData(doc.data())
+           getComments(doc.data());
+        }).catch(error => console.log(error))
+    }
+    const getData = async() =>{
+        if(props.location.state){
+            // setData(props.location.state.data);
+            setId(props.location.state.id);   
+            getPosts()
+
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.db = Fire.db
+    }   
+
+
+    const getUser = async() =>{
+        if(currentUser){
+            database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
+                if(!doc.exists){
+                    setAuthorize(false);
+                }
+                else{
+                    setUsername(doc.data().username)
+                    setEmail(doc.data().email)
+                }
+            })    
+        }
     }
-    handleChange(e){
-        this.setState({value: e.target.value});
+    useEffect(() =>{
+        getData()
+        getUser()
+        // getPosts()
+        // getComments()
+
+    },[])
+
+    const deRegisterUser = (email) => {
+        database.getCollection('Users').doc(email).delete()
+        .then(() =>{
+            notify.show('Stop cursing! You have been deregistered!');
+            window.location.reload(false);
+        })
+        .catch(function(error) { //broke down somewhere
+            console.error("Error: ", error);
+        });
     }
-    handleSubmit(){
+
+    const removeVIP = (email) => {
+        database.getCollection('SignUp').doc(email).update({
+            Vip: "false",
+            warnings: 0
+          })
+        database.getCollection('Users').doc(email).update({
+            Vip: "false",
+            warnings: 0
+        }).then(() => {
+            notify.show('Stop cursing! Your VIP status has been removed!');
+        })
+    }
+
+    const addWarning = (username, email) =>{
+        console.log("need to enter", username, email)
+        database.getCollection('Users').doc(email).get().then(function(doc){
+            let new_warnings = 0;
+            let vip_status = false;
+            if(doc.exists){
+              new_warnings = doc.data().warnings + 1;
+              vip_status = doc.data().Vip;
+              database.getCollection('Users').doc(email).update({
+                warnings: new_warnings,
+              })
+              database.getCollection('SignUp').doc(email).update({
+                warnings: new_warnings,
+              })
+              if(new_warnings >= 2 && vip_status == "true"){
+                removeVIP(email);
+              }
+              else if(new_warnings >= 3 && vip_status == "false"){
+                deRegisterUser(email);
+              }else{
+                notify.show('Stop cursing! A warning has been added to your account!');
+              }
+           
+            }
+        })
+    }
+
+    const handleSubmit = (e) =>{
         let tabooList = [];
-        this.db.getCollection('TabooWords').get()
+        database.getCollection('TabooWords').get()
         .then(querySnapshot => {
             querySnapshot.docs.forEach(doc => {
                 //let currentId = doc.id
@@ -35,67 +132,81 @@ class CommentSection extends Component{
                 
             });
             let violation_count = 0;
+            let new_val = value;
             for(let i = 0; i < tabooList.length; i++){
+
                 let ast_str = "";
                 for(let j = 0; j < tabooList[i].length; j++){
                     ast_str += "*";
                 }
                 // temp = tabooList[i];
-                let count = this.state.value.split(tabooList[i]).length - 1;;
+                let count = value.split(tabooList[i]).length - 1;
                 violation_count += count;
-                this.state.value = this.state.value.replaceAll(tabooList[i], ast_str);
+                new_val = new_val.replaceAll(tabooList[i], ast_str)
+                setValue(new_val)
             }
-            if(this.state.value.length > 0 && violation_count <= 3){
-               let prevData = this.props.location.state.data.posts;
-               console.log(prevData);
-                for(let i = 0; i < prevData.length; i++){
-                    if(prevData[i].text == this.props.location.state.text && prevData[i].username == this.props.location.state.username){
-                        
-                            prevData[i].comments.push({
-                                "text": this.state.value,
-                                "username": "rudeuser",
-                                time: this.db.getTime()
-                            })    
+            if(value.length > 0){
+                if(violation_count <= 3){
+                    if(violation_count > 0){
+                        addWarning(username, props.location.state.email);
                     }
-                }
-                    this.db.getCollection("Topics").doc(this.props.location.state.id).update({
+                let prevData = data.posts;
+                    for(let i = 0; i < prevData.length; i++){
+                        if(prevData[i].text === props.location.state.text && prevData[i].username === props.location.state.poster){
+                                prevData[i].comments.push({
+                                    "text": new_val,
+                                    "username": username,
+                                    time: database.getTime()
+                                })    
+                        }
+                    }
+                    database.getCollection("Topics").doc(props.location.state.id).update({
                         "posts": prevData
                     }).then(() =>{
+                        setValue('')
+                        getData()
                     console.log("New Post Added to Database");
                     }).catch(function(error) { //broke down somewhere
                     console.error("Error: ", error);
                     });    
-                
-            }
-            else{
-                console.log(violation_count, "violations");
+                    
+                }
+                else{
+                    addWarning(username, props.location.state.email);
+                    notify.show('Stop cursing! The message has been blocked and a warning has been added to your account!');
+                    setValue("")
+                }
             }
     
         }).catch(function(error){
             console.log(error)
         })
     }
+    if(userAuthorize == false){
+        return(<div>You need to be approved to view this page</div>)
+    }
 
-    render(){
-        if(this.props.location.state){
+
+        if(props.location.state){
             return(
                 <div className="black-background">
                 <div className="commentBox">
                     <div className="postTextDiv">
-                        <p>{this.props.location.state.text} by {this.props.location.state.username}</p>
+                        <p>{props.location.state.text} by {props.location.state.poster}</p>
                     </div>
                     <Form>
                         <div className="formComment">
-                            <input className="inputComment" value={this.state.value} onChange={this.handleChange}/>
-                            <Button className="buttonComment gold-text" onClick={this.handleSubmit}>Post Comment</Button>
+                            <input className="inputComment" value={value} onChange={e => setValue(e.target.value)}/>
+                            <Button className="buttonComment gold-text" onClick={handleSubmit}>Post Comment</Button>
                         </div>
                     </Form>
-                    {this.state.comments && this.state.comments.map((comment, i) => {
+                    {comments && comments.map((comment, i) => {
                         return(
                             <Comment key={i} username={comment.username} text={comment.text}></Comment> 
                         )})}
                 </div>
                 <Footer/>
+                <Notifications/>
                 </div>
             );
         }
@@ -107,6 +218,5 @@ class CommentSection extends Component{
 
         // if(this.props.comments.length == 0)
     }
-}
 
-export default CommentSection;
+

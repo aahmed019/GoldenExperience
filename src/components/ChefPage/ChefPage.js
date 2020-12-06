@@ -6,6 +6,7 @@ import {Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css';
 import Menu from '../Menu/Menu';
 import FoodItems from './FoodItems';
+import NewOrders from './NewOrders';
 
 class ChefPage extends Component {
     
@@ -20,10 +21,6 @@ class ChefPage extends Component {
         const snapshot = await this.db.getCollection('SignUp').get();
         console.log(snapshot.docs.map(doc => doc.data()));
     }
-    async getData(){
-
-    }
-
 
     async uploadFile(e){
         const file = e.target.files[0];
@@ -44,8 +41,8 @@ class ChefPage extends Component {
 
     render(){
         return (
-            <div>
-                <div className='chef-background-boi'>
+            <div className='chef-background-boi'>
+                <div>
                     <Tabs defaultIndex={1} onSelect={index => console.log(index)}>
                         <TabList>
                             <Tab>Upload Menu</Tab>
@@ -55,7 +52,7 @@ class ChefPage extends Component {
                             <Tab>Food Item</Tab>
                         </TabList>
                         <TabPanel>
-                            <div className='container'>
+                            <div style={{textAlign:'center'}}>
                                 <br />
                                 <br />
                                 <input type="file" onChange={this.uploadFile}></input>
@@ -65,25 +62,22 @@ class ChefPage extends Component {
 
                         <TabPanel>
                             <Menu />
-                            
                         </TabPanel>
 
                         <TabPanel>
-                            <h1>Orders</h1>
-                            
+                            <NewOrders/>
                         </TabPanel>
 
                         <TabPanel>
                         <h1>Disputes</h1>
-                            
                         </TabPanel>
+
                         <TabPanel>
                         <h1>Food Item</h1>
                            <FoodItems></FoodItems>
                         </TabPanel>
                     </Tabs>
                 </div>
-                <Footer />
             </div>
 
         );
