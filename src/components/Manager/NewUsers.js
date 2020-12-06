@@ -28,15 +28,15 @@ export default function NewUsers() {
         getData()
     },[])
 
-    function Approve(username, email, password, name){
+    function Approve(username, email, password, name, balance, warnings){
         tests.getCollection('Users').doc(email).set({
             username: username,
             password: password,
             name: name,
             email: email,
             orderHistory: [],
-            warnings: 0,
-            Balance: 0,
+            warnings: warnings,
+            Balance: balance,
             Vip: "false"
             })
             .then(function() {// went through
@@ -75,7 +75,7 @@ export default function NewUsers() {
                 <h2>Username: {item.username}</h2>
                 <h2>Balance: {item.Balance}</h2>
                 <h2>Warnings: {item.warnings}</h2>
-                <button onClick={() => {Approve(item.username, item.email, item.password, item.name)}}>Approve</button>
+                <button onClick={() => {Approve(item.username, item.email, item.password, item.name ,item.Balance, item.warnings)}}>Approve</button>
                 <br/><br/>
                 <button onClick={() => {deleteNewSignUp(item.username)}}>Deny</button>
                 <br/>
