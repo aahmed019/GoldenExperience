@@ -58,7 +58,7 @@ export default function Dashboard() {
                     <strong>name:</strong> {name}<br/>
                     <strong>Balance:</strong> {Balance}<br/>
                     <strong>Warnings:</strong> {warnings}<br/>
-                    <strong>Vip Status:</strong> {vip}
+                    <strong>Vip Status:</strong> {vip.toString()}
                     </div>:
                     <div>
                     <strong>Account Still Pending!</strong><br/>

@@ -37,7 +37,7 @@ export default function NewUsers() {
             orderHistory: [],
             warnings: warnings,
             Balance: balance,
-            Vip: "false"
+            Vip: false
             })
             .then(function() {// went through
                 console.log("Approved!");
