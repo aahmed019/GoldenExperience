@@ -54,8 +54,7 @@ export default function NewOrders() {
                 <div>
                     {item.items.map(function(cart, index){
                         return <div>
-                            <h2>{cart.id}</h2>
-                            <h2>{cart.quantity}</h2>
+                            <h2>{cart.id} : {cart.quantity}</h2>
                         </div>
                         
                     })}

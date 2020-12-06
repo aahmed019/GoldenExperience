@@ -60,6 +60,21 @@ export default function ComplaintCompliment() {
         getData()
     }
 
+    async function NoMerit(requestID ,user){
+        await tests.getCollection('Users').doc(user).update({
+            warnings: increment
+        })
+        .then(() =>{
+            tests.getCollection('Compls').doc(requestID).delete()
+            console.log("No Merit Done")
+        })
+        .catch(function(error) { //broke down somewhere
+            console.error("Error: ", error);
+        });
+
+        getData()
+    }
+
 
     return (     
         <div style={{textAlign:'center'}}>
@@ -69,13 +84,14 @@ export default function ComplaintCompliment() {
                 console.log(item);
                 return <div key={i}>
                 <h1>Complaint number: {i + 1}</h1>
-                <h2>From: {item.sender}</h2>
+                <h2>From: {item.complainer}</h2>
                 <h2>To: {item.staff}</h2>
                 <h2>Complaint: {item.complaint}</h2>
                 <h2>Compliment: {item.compliment}</h2>
                 <button onClick={() => {AddComplaint(item.id, item.staff)}}>Complaint</button>
                 <br/><br/>
                 <button onClick={() => {AddCompliment(item.id, item.staff)}}>Compliment</button>
+                <button onClick={() => {NoMerit(item.id ,item.complainer)}}>No Merit</button>
                 <br/>
                 <br/>
                 </div>
