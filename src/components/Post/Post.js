@@ -15,7 +15,8 @@ export default function Post(props){
     text:props.text,
     username:props.username,
     id: props.id,
-    data: props.data   } } } className="gold-text">{props.text} by {props.username}</Link></p></div>
+    data: props.data,
+    poster: props.poster   } } } className="gold-text">{props.text} by {props.poster}</Link></p></div>
                     </Card.Body>
                 </Card>
             </div>

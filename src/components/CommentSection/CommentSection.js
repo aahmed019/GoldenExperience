@@ -1,31 +1,23 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {Button, Form} from "react-bootstrap";
 import Fire from '../../firebaseConfig';
 import Comment from "../Comment/Comment"
 import './CommentSection.css'
 import Footer from "../Footer/Footer"
-class CommentSection extends Component{
-    constructor(props) { 
-        super(props);
-        if(this.props.location.state){
-            this.state = {
-                value : "",
-                comments : this.props.location.state.comments,
-            }    
-        }
-        else{
-            this.state = {
-                value : "",
-            }    
-        }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.db = Fire.db
-    }
-    handleChange(e){
+
+export default function CommentSection(props){
+    const [value, setValue] = useState(''); 
+    const [comments, setComments] = useState(props.location.state.comments); 
+    let database = Fire.db
+
+    // if(props.location.state){
+    //     setComments(props.location.state.comments)
+    // }
+
+    const handleChange = (e) =>{
         this.setState({value: e.target.value});
     }
-    handleSubmit(){
+    const handleSubmit = (e) =>{
         let tabooList = [];
         this.db.getCollection('TabooWords').get()
         .then(querySnapshot => {
@@ -41,24 +33,24 @@ class CommentSection extends Component{
                     ast_str += "*";
                 }
                 // temp = tabooList[i];
-                let count = this.state.value.split(tabooList[i]).length - 1;;
+                let count = value.split(tabooList[i]).length - 1;;
                 violation_count += count;
-                this.state.value = this.state.value.replaceAll(tabooList[i], ast_str);
+                value = value.replaceAll(tabooList[i], ast_str);
             }
-            if(this.state.value.length > 0 && violation_count <= 3){
-               let prevData = this.props.location.state.data.posts;
+            if(value.length > 0 && violation_count <= 3){
+               let prevData = props.location.state.data.posts;
                console.log(prevData);
                 for(let i = 0; i < prevData.length; i++){
-                    if(prevData[i].text === this.props.location.state.text && prevData[i].username === this.props.location.state.username){
+                    if(prevData[i].text === props.location.state.text && prevData[i].username === props.location.state.username){
                         
                             prevData[i].comments.push({
-                                "text": this.state.value,
+                                "text": value,
                                 "username": "rudeuser",
-                                time: this.db.getTime()
+                                time: database.getTime()
                             })    
                     }
                 }
-                    this.db.getCollection("Topics").doc(this.props.location.state.id).update({
+                    this.db.getCollection("Topics").doc(props.location.state.id).update({
                         "posts": prevData
                     }).then(() =>{
                     console.log("New Post Added to Database");
@@ -76,21 +68,20 @@ class CommentSection extends Component{
         })
     }
 
-    render(){
-        if(this.props.location.state){
+        if(props.location.state){
             return(
                 <div className="black-background">
                 <div className="commentBox">
                     <div className="postTextDiv">
-                        <p>{this.props.location.state.text} by {this.props.location.state.username}</p>
+                        <p>{props.location.state.text} by {props.location.state.poster}</p>
                     </div>
                     <Form>
                         <div className="formComment">
-                            <input className="inputComment" value={this.state.value} onChange={this.handleChange}/>
-                            <Button className="buttonComment gold-text" onClick={this.handleSubmit}>Post Comment</Button>
+                            <input className="inputComment" value={value} onChange={handleChange}/>
+                            <Button className="buttonComment gold-text" onClick={handleSubmit}>Post Comment</Button>
                         </div>
                     </Form>
-                    {this.state.comments && this.state.comments.map((comment, i) => {
+                    {comments && comments.map((comment, i) => {
                         return(
                             <Comment key={i} username={comment.username} text={comment.text}></Comment> 
                         )})}
@@ -107,6 +98,5 @@ class CommentSection extends Component{
 
         // if(this.props.comments.length == 0)
     }
-}
 
-export default CommentSection;
+

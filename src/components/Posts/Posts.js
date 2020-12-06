@@ -75,7 +75,7 @@ export default function Posts(props){
                         date = new Date(post.time.seconds*1000).toString()
                     }
                     return(
-                        <Post data={data} comments={post.comments} id={id} key={i} username={post.username} text={post.text} time={date}></Post> 
+                        <Post data={data} comments={post.comments} id={id} key={i} poster={post.username} text={post.text} time={date}></Post> 
                     )})}
                 </div>
                 
