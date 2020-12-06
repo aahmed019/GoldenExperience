@@ -25,11 +25,11 @@ export default function OrderPage (){
     const [city,setCity]= useState("")
     const [state,setState]=useState("")
     const [postalCode,setPostalCode]= useState("")
-    const [seatNumber,setSeatNumber]= useState("")
     const [time,setTime]= useState("")
-    const [option,setOption]= useState(0)
+    const [option,setOption]= useState(1)
     const [meal,setMeal]= useState([])
     const [drink,setDrink]= useState([])
+    const [UserName,setUserName]= useState("")
     const db =Fire.db;
 
     const{currentUser}=useAuth();
@@ -59,12 +59,16 @@ export default function OrderPage (){
             else{
             db.getCollection("Users").doc(currentUser.email).get().then(doc => {
                 let usersbalance = 0;
+                let username ="";
                 const data = doc.data();
                 if(data){
                     usersbalance= data.Balance;
+                    username= data.name;
                 }
 
                // alert(usersbalance);
+
+                setUserName(username);
                 setBalance(usersbalance);
             })
         }}).catch(error => console.log(error))
@@ -93,7 +97,8 @@ export default function OrderPage (){
                 item.quantity = item.quantity + fquantity
             }})
          }
-         
+         CalculateTotal();
+         getData();
         }
        
         setCart( newCart);
@@ -117,7 +122,7 @@ export default function OrderPage (){
           
             totalcost = totalcost + (price* item.quantity)
             })
-        setTotal(totalcost)
+         setTotal(totalcost)
         
         
     }
@@ -167,7 +172,6 @@ export default function OrderPage (){
             case "city": setCity(e.target.value);break
             case "state": setState(e.target.value);break
             case "postalCode": setPostalCode(e.target.value);break
-            case "seatNumber": setSeatNumber(e.target.value);break
             case "cart": setCart(e.target.value);break
             case "time": setTime(e.target.value);break
             case "total": setTotal(e.target.value);break
@@ -204,8 +208,8 @@ export default function OrderPage (){
     }
    
       
-        const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,seatNumber}
-        const checkoutvalues={cart,address,city,state,postalCode,seatNumber,time,total,option,notes,balance}
+        const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,total}
+        const checkoutvalues={cart,address,city,state,postalCode,time,total,option,notes,balance,UserName}
         switch(step)
          {
         case 1: return (    <div>
@@ -214,6 +218,7 @@ export default function OrderPage (){
                             cart={cart}
                             handleChange={handleChange}
                             AddToCart={AddToCart}
+                            RemoveFromCart={RemoveFromCart}
                             values={values}
                             meal={meal}
                             drink={drink}

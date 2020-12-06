@@ -15,19 +15,6 @@ useEffect(()=>{
   let option = parseInt(props.checkoutvalues.option)
   switch(option)
   {
-    case 0: setOptionPage(<Row className="Rows">
-                                            <Row className="Rows">
-                                            <h4>Dine In</h4>
-                                            </Row>
-                                                <Col xs="auto">
-                                                <Form.Label>Seat Number:</Form.Label>
-                                                <Form.Label>&ensp;{props.checkoutvalues.seatNumber}</Form.Label>
-                                                </Col >
-                                                <Col xs="auto">
-                                                <Form.Label>Time:</Form.Label>
-                                                <Form.Label>&ensp;{props.checkoutvalues.time}</Form.Label>
-                                                </Col>     
-                                            </Row>);break;
     case 1: setOptionPage(<Row className="Rows">
                                             <Row className="Rows">
                                             <h4>Delivery</h4>
