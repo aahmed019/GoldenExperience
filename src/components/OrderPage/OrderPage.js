@@ -150,6 +150,10 @@ export default function OrderPage (){
     {
         setCart([]);
         setStep(1);
+        setAddress("");
+        setTime("");
+        setNotes("");
+        setOption(1);
     }
     const handleChange = e=> {
         switch(e.target.name)
@@ -227,6 +231,7 @@ export default function OrderPage (){
                             PrevStep={PrevStep}
                             handleChange={handleChange}
                             RemoveFromCart={RemoveFromCart}
+                            UpdateBalance={UpdateBalance}
                             />
                             <Footer/>
                             </div>)
@@ -234,7 +239,7 @@ export default function OrderPage (){
                             <div>
                             <Success
                             checkoutvalues={checkoutvalues}
-                            UpdateBalance={UpdateBalance}
+                           
                             startOver={startOver}
                             />
                             <Footer/>

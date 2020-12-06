@@ -87,6 +87,7 @@ useEffect(()=>{
 
 const next= e=>{
     e.preventDefault();
+    props.UpdateBalance();
     const cart1 = props.checkoutvalues.cart.length;
     if(cart1 ===0)
     { alert("The shopping cart is empty ! Please go back to order.")}
