@@ -9,14 +9,15 @@ export default function ComplaintCompliment() {
 
     const[Complaints, getComplaints] = useState([])
     const increment = firebase.firestore.FieldValue.increment(1);
+    const decrement = firebase.firestore.FieldValue.increment(-1);
     
     const getData = async() =>{
         const comp = []
         tests.getCollection('Compls').get()
         .then(querySnapshot => {
             querySnapshot.docs.forEach(doc => {
-                //let currentId = doc.id
-                let data = doc.data()
+                let currentID = doc.id
+                let data = {...doc.data(), ['id']: currentID}
                 comp.push(data)
             });
             getComplaints(comp)
@@ -31,12 +32,12 @@ export default function ComplaintCompliment() {
 
 
     async function AddComplaint(request, staffmember){
-        await tests.getCollection('Staff').doc(staffmember).update({
-            ComplaintsCounter: increment
+        await tests.getCollection('Staff').where('staff', '===', staffmember).update({
+            ComplCounter: decrement
         })
         .then(() =>{
             tests.getCollection('Compls').doc(request).delete()
-            console.log("Request Done")
+            console.log("Complaint Added")
         })
         .catch(function(error) { //broke down somewhere
             console.error("Error: ", error);
@@ -46,12 +47,13 @@ export default function ComplaintCompliment() {
     }
 
     async function AddCompliment(request, staffmember){
-        await tests.getCollection('Staff').doc(staffmember).update({
-            ComplimentsCounter: increment
+        var t = tests.getCollection('Staff').where('staff', '==', staffmember).get();
+        t.update({
+            ComplCounter: increment
         })
         .then(() =>{
             tests.getCollection('Compls').doc(request).delete()
-            console.log("Request Done")
+            console.log("Compliment Added")
         })
         .catch(function(error) { //broke down somewhere
             console.error("Error: ", error);
@@ -84,14 +86,13 @@ export default function ComplaintCompliment() {
                 console.log(item);
                 return <div key={i}>
                 <h1>Complaint number: {i + 1}</h1>
-                <h2>From: {item.complainer}</h2>
+                <h2>From: {item.user}</h2>
                 <h2>To: {item.staff}</h2>
-                <h2>Complaint: {item.complaint}</h2>
-                <h2>Compliment: {item.compliment}</h2>
+                <h2>Description: {item.complaint}</h2>
                 <button onClick={() => {AddComplaint(item.id, item.staff)}}>Complaint</button>
                 <br/><br/>
                 <button onClick={() => {AddCompliment(item.id, item.staff)}}>Compliment</button>
-                <button onClick={() => {NoMerit(item.id ,item.complainer)}}>No Merit</button>
+                <button onClick={() => {NoMerit(item.id ,item.complainee)}}>No Merit</button>
                 <br/>
                 <br/>
                 </div>

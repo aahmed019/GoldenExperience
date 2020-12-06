@@ -36,8 +36,8 @@ export default function Staff() {
 
     function Promote(staffer){
         tests.getCollection('Staff').doc(staffer).update({
-            Salary: promote
-
+            Salary: promote,
+            ComplCounter: 0
         }).then(getData())
     }
 
@@ -48,7 +48,8 @@ export default function Staff() {
         else{
         tests.getCollection('Staff').doc(staffer).update({
             Salary: demote,
-            DemotionCounter: increment
+            DemotionCounter: increment,
+            ComplCounter: 0
         }).then(getData())
     }
 }
@@ -76,8 +77,7 @@ export default function Staff() {
                 <h5>Email: {item.Position}</h5>
                 <h5>Salary: {item.Salary}</h5>
                 <h5>Rating: {item.Rating}</h5>
-                <h5>Complaints: {item.ComplaintsCounter}</h5>
-                <h5>Compliments: {item.ComplimentsCounter} </h5>
+                <h5>Complaints/Compliments: {item.ComplCounter}</h5>
                 <h5>Demoted Counter: {item.DemotionCounter} </h5>
                 <hr></hr>
                 <button onClick={() => Promote(item.Name)}>Promote</button>
