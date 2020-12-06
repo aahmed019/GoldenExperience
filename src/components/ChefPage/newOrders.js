@@ -1,23 +1,23 @@
 import React, {useEffect, useState } from 'react';
-import './Chef.css'
+import './ChefPage.css'
 import Fire from '../../firebaseConfig';
 
 
-export default function newOrders() {
+export default function NewOrders() {
     let tests = Fire.db
 
     const[newOrders, setNewOrders] = useState([])
     
     const getData = async() =>{
         const orders = []
-        tests.getCollection('Users').get()
+        tests.getCollection('Orders').get()
         .then(querySnapshot => {
             querySnapshot.docs.forEach(doc => {
-                //let currentId = doc.id
-                let data = doc.data()
+                let currentID = doc.id
+                let data = { ...doc.data(), ['OrderID']: currentID}
                 orders.push(data)
             });
-            setNewOrders(users)
+            setNewOrders(orders)
         }).catch(function(error){
             console.log(error)
         })
@@ -27,23 +27,32 @@ export default function newOrders() {
         getData()
     },[])
     
+    async function deleteOrder(id){
+        await tests.getCollection('Orders').doc(id).delete()
+        .then(() =>{
+            console.log("Order completed deleted from Database")
+        })
+        .catch(function(error) { //broke down somewhere
+            console.error("Error: ", error);
+        });
 
+        getData()
+    }
 
     
     return (     
         <div style={{textAlign:'center'}}>
-            <h1>Users</h1>
+            <h1>Orders</h1>
             <div style={{display:'flex', flexDirection:'row'}}>
             {newOrders.map(function(item, i){
                 console.log(item);
                 return <div key={i}>
-                <h1>User number: {i + 1}</h1>
-                <h2>Name: {item.name}</h2>
-                <h2>Email: {item.email}</h2>
-                <h2>Username: {item.username}</h2>
-            <h2>Balance: {item.Balance}</h2>
-            <h2>Warnings: {item.warnings}</h2>
-                <button onClick={() => {deleteUser(item.username)}}>Delete</button>
+                <h1>Order number: {i + 1}</h1>
+                <h2>Name: {item.user}</h2>
+                <h2>Address: {item.address}</h2>
+                <h2>Total: ${item.total}</h2>
+                <h2>Type: {item.type}</h2>
+                <button onClick={() => {deleteOrder(item.OrderID)}}>Delete</button>
                 <br/>
                 <br/>
                 </div>
