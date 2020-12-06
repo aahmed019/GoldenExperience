@@ -4,26 +4,26 @@ import './Post.css'
 import {Link} from 'react-router-dom';
 //import Footer from '../Footer/Footer';
 
-class Post extends Component{
-    render(){
+export default function Post(props){
         return(
         // <div style="border: 1px solid black">
             <div className="center background-black">
                 <Card className="post-card">
                     <Card.Body>
                     <div><p><Link to ={{pathname: "/Comments", state: {
-    comments: this.props.comments,
-    text:this.props.text,
-    username:this.props.username,
-    id: this.props.id,
-    data: this.props.data   } } } className="gold-text">{this.props.text} by {this.props.username}</Link></p></div>
+    comments: props.comments,
+    text:props.text,
+    username:props.username,
+    id: props.id,
+    data: props.data,
+    poster: props.poster,
+    email: props.email   } } } className="gold-text">{props.text} by {props.poster}</Link></p></div>
                     </Card.Body>
                 </Card>
             </div>
 
         // </div>)
         )
-    }
+    
 }
 
-export default Post;
