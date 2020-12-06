@@ -1,112 +1,154 @@
-import React, { Component } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Modal, Form} from "react-bootstrap";
 import Fire from '../../firebaseConfig';
 import "./PostModal.css"
-class PostModal extends Component{
-    constructor(props) { 
-        super(props);
-        this.state = {
-            value : ""
-        }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.db = Fire.db
+import Notifications, {notify} from 'react-notify-toast';
+
+export default function PostModal(props){
+    const [val, setValue] = useState('');
+    let database = Fire.db
+    
+    const deRegisterUser = (email) => {
+        database.getCollection('Users').doc(email).delete()
+        .then(() =>{
+            notify.show('Stop cursing! You have been deregistered!');
+            window.location.reload(false);
+        })
+        .catch(function(error) { //broke down somewhere
+            console.error("Error: ", error);
+        });
     }
 
-    handleChange(e){
-        this.setState({value: e.target.value});
+    const removeVIP = (email) => {
+        database.getCollection('SignUp').doc(email).update({
+            Vip: "false",
+            warnings: 0
+          })
+        database.getCollection('Users').doc(email).update({
+            Vip: "false",
+            warnings: 0
+        }).then(() => {
+            notify.show('Stop cursing! Your VIP status has been removed!');
+        })
     }
-    handleSubmit(){
 
-        if(this.state.value.length > 0){
+    const addWarning = (username, email) =>{
+        database.getCollection('Users').doc(email).get().then(function(doc){
+            let new_warnings = 0;
+            let vip_status = false;
+            if(doc.exists){
+              new_warnings = doc.data().warnings + 1;
+              vip_status = doc.data().Vip;
+              console.log(vip_status)
+              database.getCollection('Users').doc(email).update({
+                warnings: new_warnings,
+              })
+              database.getCollection('SignUp').doc(email).update({
+                warnings: new_warnings,
+              })
+              if(new_warnings >= 2 && vip_status == "true"){
+                removeVIP(email);
+              }
+              else if(new_warnings >= 3 && vip_status == "false"){
+                deRegisterUser(email);
+              }else{
+                notify.show('Stop cursing! A warning has been added to your account!');
+              }
+           
+            }
+        })
+    }
+    const handleSubmit = (e) =>{
+        // e.preventDefault();
+        if(val.length > 0){
             let prevData = [];
             let tabooList = [];
           
-            this.db.getCollection('TabooWords').get()
+            database.getCollection('TabooWords').get()
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
                     //let currentId = doc.id
                     tabooList.push(doc.id);
                 });
                 let violation_count = 0;
+                let new_val = val;
                 for(let i = 0; i < tabooList.length; i++){
-                    console.log(tabooList[i]);
     
                     let ast_str = "";
                     for(let j = 0; j < tabooList[i].length; j++){
                         ast_str += "*";
                     }
                     // temp = tabooList[i];
-                    let count = this.state.value.split(tabooList[i]).length - 1;;
+                    let count = val.split(tabooList[i]).length - 1;
                     violation_count += count;
-                    this.state.value = this.state.value.replaceAll(tabooList[i], ast_str);
-                    // console.log(violation_count, this.state.value);
+                    new_val = new_val.replaceAll(tabooList[i], ast_str)
+                    setValue(new_val)
                 }
                 if(violation_count <= 3){
-                    console.log("no violation");
-                    if(this.props.data.posts){
-                        prevData = this.props.data.posts;
+                    if(violation_count > 0){
+                        addWarning(props.username, props.email);
+                    }
+                    if(props.data.posts){
+                        prevData = props.data.posts;
                     }
                     const newData = {
-                        "text": this.state.value,
-                        "username": "eram",
-                        time: this.db.getTime(),
+                        "text": new_val,
+                        "username": props.username,
+                        time: database.getTime(),
                         comments : [] 
         
                     }
                     prevData.push(newData);
                     console.log(prevData);
-                    this.db.getCollection("Topics").doc(this.props.id).update({
+                    console.log(props.username)
+                    database.getCollection("Topics").doc(props.id).update({
                         "posts": prevData
                     }).then(() =>{
+                        props.getPosts()
+                        setValue("")
                     console.log("New Post Added to Database")
                     }).catch(function(error) { //broke down somewhere
                     console.error("Error: ", error);
                     });
                 }
                 else{
-                    console.log("violation");
+                    addWarning(props.username, props.email);
+                    notify.show('Stop cursing! The message has been blocked and a warning has been added to your account!');
+                    setValue("")
                 }
-    
             }).catch(function(error){
                 console.log(error)
-            })
-
-        
-            // useEffect(() =>{
-            //     getData()
-            // },[])
-            console.log(tabooList[0])
-            
-              
+            })              
                           
         }
-        this.props.handleClose();
+        props.handleClose();
     }
-
-    render(){
+    
+    
         return(
-        <Modal show={this.props.show} onHide={this.props.handleClose}>
+            <div>
+        <Modal show={props.show} onHide={props.handleClose}>
                     <Modal.Header>
                     <Modal.Title>Post</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form onSubmit={this.props.handleSubmit}>
+                        <Form onSubmit={props.handleSubmit}>
                                 <div>
                                     <h6>Post:</h6>
-                                <input type="text" className="post-modal-input" onChange={this.handleChange} value={this.state.value}/>
+                                <input type="text" className="post-modal-input" onChange={e => setValue(e.target.value)} value={val}/>
                             </div>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                    <Button variant="secondary post-modal-button" onClick={this.props.handleClose}>
+                    <Button variant="secondary post-modal-button" onClick={props.handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary post-modal-button" onClick={this.handleSubmit}>
+                    <Button variant="primary post-modal-button" onClick={handleSubmit}>
                         Save Changes
                     </Button>
                     </Modal.Footer>
-        </Modal>);
+        </Modal>
+        <Notifications />
+        </div>
+);
     }
-}
-export default PostModal;

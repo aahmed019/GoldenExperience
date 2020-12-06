@@ -21,7 +21,7 @@ import DiscussionPage from './components/DiscussionPage/DiscussionPage';
 import Menu from './components/Menu/Menu';
 import Posts from './components/Posts/Posts';
 import Complaint from './components/Complaint/Complaint';
-
+import FoodItemView from './components/FoodItemView/FoodItemView';
 
 
 function App() {
@@ -59,6 +59,7 @@ function App() {
               <Route exact path = '/Menu' component = {Menu}/>
               <Route exact path = '/Posts' component = {Posts}/>
               <Route exact path = '/Complaint' component = {Complaint}/>
+              <Route exact path = '/FoodItems' component = {FoodItemView}/>
 
               
         </Switch>
