@@ -11,7 +11,7 @@ import { useAuth } from '../../contexts/AuthContext'
 
 export default function OrderPage (){
  
-
+    const [userAuthorize, setAuthorize] = useState(true);
     const [step,setStep]= useState(1)
     const [cart,setCart]= useState([])
     const [MID,setMID]= useState("")
@@ -55,21 +55,26 @@ export default function OrderPage (){
                 setDrink( drink);
         })}).then(()=>{
             if(currentUser === null)
-            {console.log("NO USER")}
+            {setAuthorize(false)} // check if currentUser is logged in or not 
             else{
             db.getCollection("Users").doc(currentUser.email).get().then(doc => {
                 let usersbalance = 0;
                 let username ="";
-                const data = doc.data();
-                if(data){
+               
+                if(doc.exists){
+                    const data = doc.data();
                     usersbalance= data.Balance;
                     username= data.name;
+                    setUserName(username);
+                    setBalance(usersbalance);
                 }
+                else if (!doc.exists)
+                {
+                    setAuthorize(false)
+                }
+            
 
-               // alert(usersbalance);
 
-                setUserName(username);
-                setBalance(usersbalance);
             })
         }}).catch(error => console.log(error))
     }
@@ -210,58 +215,70 @@ export default function OrderPage (){
       
         const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,total}
         const checkoutvalues={cart,address,city,state,postalCode,time,total,option,notes,balance,UserName}
-        switch(step)
-         {
-        case 1: return (    <div>
-                            <Order 
-                            NextStep={NextStep}
-                            cart={cart}
-                            handleChange={handleChange}
-                            AddToCart={AddToCart}
-                            RemoveFromCart={RemoveFromCart}
-                            values={values}
-                            meal={meal}
-                            drink={drink}
-                            />
-                            <Footer/>
-                            </div>)
-        case 2: return(     <div>
-                            <CheckOut 
-                            CalculateTotal={CalculateTotal}
-                            checkoutvalues={checkoutvalues}
-                            option={option}
-                            meal ={meal}
-                            drink={drink}
-                            NextStep={NextStep}
-                            PrevStep={PrevStep}
-                            handleChange={handleChange}
-                            RemoveFromCart={RemoveFromCart}
-                            UpdateBalance={UpdateBalance}
-                            />
-                            <Footer/>
-                            </div>)
-        case 3: return(
-                            <div>
-                            <Success
-                            checkoutvalues={checkoutvalues}
-                           
-                            startOver={startOver}
-                            />
-                            <Footer/>
-                            </div>
-                        )
-        default: return(
-                            <div>
-                                <Order 
-                                NextStep={NextStep}
+        if(userAuthorize)
+        {   
+            switch(step)
+            {
+           case 1: return (    <div>
+                               <Order 
+                               NextStep={NextStep}
+                               cart={cart}
                                handleChange={handleChange}
-                                AddToCart={AddToCart}
-                                checkoutvalues={checkoutvalues}
-                            />
-                            <Footer/>
-                            </div>
-        )
-    }
+                               AddToCart={AddToCart}
+                               RemoveFromCart={RemoveFromCart}
+                               values={values}
+                               meal={meal}
+                               drink={drink}
+                               />
+                               <Footer/>
+                               </div>)
+           case 2: return(     <div>
+                               <CheckOut 
+                               CalculateTotal={CalculateTotal}
+                               checkoutvalues={checkoutvalues}
+                               option={option}
+                               meal ={meal}
+                               drink={drink}
+                               NextStep={NextStep}
+                               PrevStep={PrevStep}
+                               handleChange={handleChange}
+                               RemoveFromCart={RemoveFromCart}
+                               UpdateBalance={UpdateBalance}
+                               />
+                               <Footer/>
+                               </div>)
+           case 3: return(
+                               <div>
+                               <Success
+                               checkoutvalues={checkoutvalues}
+                              
+                               startOver={startOver}
+                               />
+                               <Footer/>
+                               </div>
+                           )
+           default: return(
+                               <div>
+                                   <Order 
+                                   NextStep={NextStep}
+                                   handleChange={handleChange}
+                                   AddToCart={AddToCart}
+                                   checkoutvalues={checkoutvalues}
+                               />
+                               <Footer/>
+                               </div>
+           )
+         }
+
+        }
+        else
+        {
+            return(
+                <div className="background-boi">
+                <h1>You need to be logged in to view this page</h1>
+                </div>
+           )
+        }
 
     }
     
