@@ -58,8 +58,9 @@ function App() {
               <Route exact path = '/Discussion' component = {DiscussionPage}/>
               <Route exact path = '/Menu' component = {Menu}/>
               <Route exact path = '/Posts' component = {Posts}/>
-              <Route exact path = '/Complaint' component = {Complaint}/>
+              <PrivateRoute exact path = '/Complaint' component = {Complaint}/>
               <Route exact path = '/FoodItems' component = {FoodItemView}/>
+
 
               
         </Switch>
