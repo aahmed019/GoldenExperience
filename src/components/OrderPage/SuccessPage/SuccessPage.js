@@ -1,4 +1,4 @@
-import React, {Component, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from 'react-bootstrap/Button'
 import { useAuth } from '../../../contexts/AuthContext';
 import Fire from '../../../firebaseConfig';
@@ -7,7 +7,7 @@ import firebase from 'firebase/app';
 export default function SuccessPage (props){
             const {currentUser}= useAuth();
             const {checkoutvalues} = props;
-            const {cart, balance,address, city, state, postalCode, total,notes,option,time} = checkoutvalues;
+            const {cart, balance,address, city, state, postalCode, total,notes,option,time,UserName} = checkoutvalues;
             const db = Fire.db;
             const next= e=>{
                 e.preventDefault();
@@ -15,6 +15,8 @@ export default function SuccessPage (props){
             }
 
             useEffect(() =>{                
+                //console.log(JSON.stringify(currentUser))
+                   // getUserName(currentUser.email)
                     changeBalance(currentUser.email)
                     updateOrderHistory(currentUser.email)
                     switch(option){
@@ -25,7 +27,6 @@ export default function SuccessPage (props){
                     }
                     
             },[])
-
             async function changeBalance(userEmail){
                 await db.getCollection('Users').doc(userEmail).update({
                     Balance:balance
@@ -45,7 +46,7 @@ export default function SuccessPage (props){
                         {   
                             type:"delivery",
                             cart:cart,
-                            timestamp:new Date().toLocaleTimeString(),
+                            timestamp:new Date().toLocaleDateString()+" "+new Date().toLocaleTimeString(),
                             address:address + city + state+ postalCode,
                             pickupTime:"",
                             total:total,
@@ -67,7 +68,7 @@ export default function SuccessPage (props){
                         {   
                             type:"Pick up",
                             cart:cart,
-                            timestamp:new Date().toLocaleTimeString(),
+                            timestamp:new Date().toLocaleDateString()+" "+new Date().toLocaleTimeString(),
                             pickupTime: time,
                             address:address + city + state+ postalCode,
                             total:total,
@@ -96,8 +97,9 @@ export default function SuccessPage (props){
                 });    
             }
             function addNewOrder(type){
+                console.log("UserName:", UserName)
                 db.getCollection('Orders').doc().set({
-                        address: address+" "+city+" "+state+" "+postalCode,
+                        address: address+" ,"+city+" ,"+state+" ,"+postalCode,
                         date: new Date().toLocaleDateString(),
                         type:type,
                         deliveredDate:"",
@@ -106,7 +108,7 @@ export default function SuccessPage (props){
                         items: cart,
                         total:total,
                         user: currentUser.email,
-                        userName: currentUser.name
+                        userName: UserName
                     })
                     .then(function() {// went through
                         console.log("Approved!");
