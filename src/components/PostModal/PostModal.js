@@ -112,6 +112,7 @@ export default function PostModal(props){
                     });
                 }
                 else{
+                    addWarning(props.username, props.email);
                     notify.show('Stop cursing! The message has been blocked and a warning has been added to your account!');
                     setValue("")
                 }

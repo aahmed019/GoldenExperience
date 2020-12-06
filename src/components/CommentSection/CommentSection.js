@@ -145,35 +145,37 @@ export default function CommentSection(props){
                 new_val = new_val.replaceAll(tabooList[i], ast_str)
                 setValue(new_val)
             }
-            if(value.length > 0 && violation_count <= 3){
-                if(violation_count > 0){
-                    addWarning(username, props.location.state.email);
-                }
-               let prevData = data.posts;
-               console.log("prevdata", prevData);
-                for(let i = 0; i < prevData.length; i++){
-                    if(prevData[i].text === props.location.state.text && prevData[i].username === props.location.state.poster){
-                            prevData[i].comments.push({
-                                "text": new_val,
-                                "username": username,
-                                time: database.getTime()
-                            })    
+            if(value.length > 0){
+                if(violation_count <= 3){
+                    if(violation_count > 0){
+                        addWarning(username, props.location.state.email);
                     }
+                let prevData = data.posts;
+                    for(let i = 0; i < prevData.length; i++){
+                        if(prevData[i].text === props.location.state.text && prevData[i].username === props.location.state.poster){
+                                prevData[i].comments.push({
+                                    "text": new_val,
+                                    "username": username,
+                                    time: database.getTime()
+                                })    
+                        }
+                    }
+                    database.getCollection("Topics").doc(props.location.state.id).update({
+                        "posts": prevData
+                    }).then(() =>{
+                        setValue('')
+                        getData()
+                    console.log("New Post Added to Database");
+                    }).catch(function(error) { //broke down somewhere
+                    console.error("Error: ", error);
+                    });    
+                    
                 }
-                console.log("newdata", prevData)
-                database.getCollection("Topics").doc(props.location.state.id).update({
-                    "posts": prevData
-                }).then(() =>{
-                    setValue('')
-                    getData()
-                console.log("New Post Added to Database");
-                }).catch(function(error) { //broke down somewhere
-                console.error("Error: ", error);
-                });    
-                
-            }
-            else{
-                // console.log(violation_count, "violations");
+                else{
+                    addWarning(username, props.location.state.email);
+                    notify.show('Stop cursing! The message has been blocked and a warning has been added to your account!');
+                    setValue("")
+                }
             }
     
         }).catch(function(error){
