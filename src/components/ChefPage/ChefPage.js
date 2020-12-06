@@ -20,11 +20,7 @@ class ChefPage extends Component {
         const snapshot = await this.db.getCollection('SignUp').get();
         console.log(snapshot.docs.map(doc => doc.data()));
     }
-    async getData(){
-
-    }
-
-
+    
     async uploadFile(e){
         const file = e.target.files[0];
         console.log(file.name)
@@ -65,18 +61,16 @@ class ChefPage extends Component {
 
                         <TabPanel>
                             <Menu />
-                            
                         </TabPanel>
 
                         <TabPanel>
                             <h1>Orders</h1>
-                            
                         </TabPanel>
 
                         <TabPanel>
                         <h1>Disputes</h1>
-                            
                         </TabPanel>
+
                         <TabPanel>
                         <h1>Food Item</h1>
                            <FoodItems></FoodItems>
