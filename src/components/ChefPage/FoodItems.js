@@ -12,6 +12,7 @@ export default function FoodItems() {
     const[foodPriceValue, setFoodPrice] = useState([])
     const[foodDescriptionValue, setFoodDescription] = useState([])
     const[typeValue, setFoodType] = useState([])
+    const[url, setURL] = useState([])
 
     const[show, setShow] = useState([])
     const username = "John";
@@ -91,7 +92,7 @@ export default function FoodItems() {
     async function addFooditem(){
         if(typeValue === "drink"){
             let id="d"+foodNameValue.split(" ").join("")
-            await tests.getCollection('Drink').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username  })
+            await tests.getCollection('Drink').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:0   })
             .then(() =>{
                 console.log("Added item to drink")
             })
@@ -102,7 +103,7 @@ export default function FoodItems() {
         }
         else{
             let id="m"+foodNameValue.split(" ").join("")
-            await tests.getCollection('Food').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username  })
+            await tests.getCollection('Food').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:0  })
                     .then(() =>{
                         console.log("Added item to food")
                     })
@@ -138,7 +139,11 @@ export default function FoodItems() {
                 <p>{item.name}</p>
                 <p>${item.price}</p>
                 <p>{item.description}</p>
+                <img src={item.url} style={{"width":"200px","height":"200px"}}/>
+                <br/>
                 <button onClick={() => {deleteFoodItem(item)}}>Delete</button>
+
+
                 </div>
             })} 
             <br/>
@@ -165,9 +170,10 @@ export default function FoodItems() {
                                     <select value={typeValue} onChange={e => setFoodType(e.target.value)}>
                                         <option value="food">Food</option>
                                         <option value="drink">Drink</option>
-                                        {/* <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option> */}
-                                        </select>
+                                    </select>
+                                    <h6>Url:</h6>
+                                    <input type="text" className="post-modal-input" onChange={e => setURL(e.target.value)} value={url}/>
+
 
                             </div>
                         </Form>
