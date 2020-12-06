@@ -51,6 +51,15 @@ export default function NewOrders() {
                 <h2>Name: {item.user}</h2>
                 <h2>Address: {item.address}</h2>
                 <h2>Total: ${item.total}</h2>
+                <div>
+                    {item.items.map(function(cart, index){
+                        return <div>
+                            <h2>{cart.id}</h2>
+                            <h2>{cart.quantity}</h2>
+                        </div>
+                        
+                    })}
+                </div>
                 <h2>Type: {item.type}</h2>
                 <button onClick={() => {deleteOrder(item.OrderID)}}>Delete</button>
                 <br/>
