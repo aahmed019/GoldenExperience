@@ -47,7 +47,7 @@ export default function NewUsers() {
                 console.error("Error: ", error);
             });
 
-            deleteNewSignUp(username)
+            deleteNewSignUp(email)
     }
 
     async function deleteNewSignUp(user){
