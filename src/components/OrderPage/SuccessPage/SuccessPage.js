@@ -17,14 +17,16 @@ export default function SuccessPage (props){
             useEffect(() =>{                
                 //console.log(JSON.stringify(currentUser))
                    // getUserName(currentUser.email)
-                    changeBalance(currentUser.email)
-                    updateOrderHistory(currentUser.email)
-                    switch(option){
+                    //changeBalance(currentUser.email)
+                   // updateOrderHistory(currentUser.email)
+                    cart.map(item=> UpdateItemPopularity(item))
+
+                    /*switch(option){
                         case "1": addNewOrder("delivery");break;
                         case "2": addNewOrder("Pickup");break;
                         default: console.log("Error in order type")
 
-                    }
+                    }*/
                     
             },[])
             async function changeBalance(userEmail){
@@ -97,7 +99,7 @@ export default function SuccessPage (props){
                 });    
             }
             function addNewOrder(type){
-                console.log("UserName:", UserName)
+                //console.log("UserName:", UserName)
                 db.getCollection('Orders').doc().set({
                         address: address+" ,"+city+" ,"+state+" ,"+postalCode,
                         date: new Date().toLocaleDateString(),
@@ -117,6 +119,42 @@ export default function SuccessPage (props){
                     .catch(function(error) { //broke down somewhere
                         console.error("Error: ", error);
                     });
+                }
+                async function UpdateItemPopularity(item){
+                       
+                            let itemCount=0;
+                            let type ="";
+   
+                            if(item.id[0]==="m")
+                            {
+                                type="Food"
+                            }
+                            else
+                            {
+                                type="Drink"
+                            }
+                            //alert(item.id)
+                            //alert(type)
+                             db.getCollection(type).doc(item.id).get().then(doc=>{
+                                 //console.log(doc.data().id)
+                                if(doc.exists)
+                                {
+                                    itemCount =doc.data().count
+                                    //id = doc.data().id
+                                   // alert(JSON.stringify(doc.data()))
+                                    
+                                }
+                             }).then(()=>{
+                                // alert(id )
+                                // alert(itemCount)
+                                 db.getCollection(type).doc(item.id).update({
+                                    count: itemCount + 1   
+                                 })
+                             }).then(()=> console.log("Item count updated !")
+                            ).catch(error=> console.log("Error: ",error))
+                        
+
+                    
                 }
                 return(
                     <div className="CheckOut">
