@@ -34,6 +34,18 @@ export default function FoodItemView(){
         getData()
     },[])
 
+    const calculateRating = (rating) =>{
+        let ratingVal = 0.0;
+        if(rating.length == 0){
+            return 0;
+        }
+        let sum = 0;
+        for(let i = 0; i < rating.length; i++){
+            sum += rating[i];
+        } 
+        ratingVal = sum/rating.length;
+        return ratingVal;
+    }   
 
     return(<div className='chef-background-boi'>
                 {FoodItems.map(function(item, i){
@@ -47,7 +59,7 @@ export default function FoodItemView(){
                     count={5}
                     edit={false}
                     onChange={e => console.log(e)}
-                    value ={item.rating}
+                    value ={calculateRating(item.rating)}
                     size={24}
                     color2={'#ffd700'}
                     color1={'#A9A9A9'} />

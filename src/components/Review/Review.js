@@ -2,6 +2,7 @@ import React, {useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext"
 import Fire from '../../firebaseConfig';
 import ReactStars from 'react-stars'
+import Notifications, {notify} from 'react-notify-toast';
 
 export default function Review(){
     const [userAuthorize, setAuthorize] = useState(true);
@@ -57,6 +58,8 @@ export default function Review(){
         database.getCollection('Reviews').doc(id).set({rating: event })
         .then(() =>{
             console.log("Added item to review")
+            notify.show('Thank you for your review!');
+
         })
         .catch(function(error) { //broke down somewhere
             console.error("Error: ", error);
@@ -141,7 +144,6 @@ export default function Review(){
             edit={true}
             onChange={e=> changeRating(e, item, username)}
             size={24}
-            half={false}
             color2={'#ffd700'}
             color1={'#A9A9A9'} />
 
@@ -150,6 +152,8 @@ export default function Review(){
 
         </div>
     })} 
+    <Notifications/>
+
     </div>
     )
 }
