@@ -15,6 +15,17 @@ export default function Order (props) {
         const cart1 = props.cart.length;
         if(cart1<=0)
         { alert("Please add something to the cart")}
+        else if(option ===0 )
+        {
+            alert("Please choose order type!")
+        }
+        else if(option ==="1" && (address ==="" || city==="" || state==="" || postalCode==="") ){
+            alert("Please enter the address!")
+        }
+        else if (option ==="2" && time==="")
+        {
+            alert("Please enter the pick up time!")
+        }
         else{
         props.NextStep();
         }
@@ -31,7 +42,8 @@ export default function Order (props) {
 
 
 
-    const{ values, AddToCart,meal, drink,handleChange,cart,RemoveFromCart }=props;
+    const{ values, AddToCart,meal, drink,handleChange,cart,RemoveFromCart}=props;
+    const {address,city,state,postalCode,option,time} = values;
    
   // Only for Reserving Seats may need to be in other pages ( Restaurant Page)
     const DineIn=(
@@ -196,10 +208,10 @@ export default function Order (props) {
                 <h1>Cart</h1>
                 </Row>
                 <Row className="Rows">
-                    <Col>Item</Col>
-                    <Col>Quantity</Col>
-                    <Col>Price</Col>
-                    <Col> </Col>
+                    <Col xs={4}>Item</Col>
+                    <Col xs={2}>Quantity</Col>
+                    <Col xs={2}>Price</Col>
+                    <Col xs={2}> </Col>
                 </Row>
                 {  
                     cart.map((item)=>{
@@ -217,10 +229,10 @@ export default function Order (props) {
                         }
                        return(
                         <Row key={item.id} className="Rows">
-                                <Col xs="auto">{name}</Col>
-                                <Col >{item.quantity}</Col>
-                                <Col >$ {item.quantity * price}</Col> 
-                                <Col >
+                                <Col xs={4} >{name}</Col>
+                                <Col xs={2}>{item.quantity}</Col>
+                                <Col xs={2}>$ {item.quantity * price}</Col> 
+                                <Col xs={2}>
                                 <Button 
                                 variant="primary" 
                                 value={item.id} 
@@ -237,10 +249,10 @@ export default function Order (props) {
                      })
                 }
                 <Row className="Rows">
-                    <Col></Col>
-                    <Col>Total:</Col>
-                    <Col>$ {values.total}</Col>
-                    <Col></Col>
+                    <Col xs={4}></Col>
+                    <Col xs={2}>Total:</Col>
+                    <Col xs={2}>$ {values.total}</Col>
+                    <Col xs={2}> </Col>
                 </Row>
 
             </Container>
