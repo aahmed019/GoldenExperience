@@ -12,16 +12,13 @@ import { setConfiguration } from 'react-grid-system';
 
 toast.configure()
 
-export default function Complaint(props){
+export default function Complaint(){
     const[showComplimentForm, setShowComplimentForm] = useState('none')
     const[showComplaintForm, setShowComplaintForm] = useState('none')
     const[items, setItems] = useState([])
     const[complaintAgainstUser, setComplaintAgainstUser] = useState([])
     const[orders, setOrders] = useState([])
     const{currentUser} = useAuth()
-    const value = queryString.parse(props.location.search);
-    const usertype = value.usertype;
-    const username = value.username;
     
     console.log(currentUser.username)
 
@@ -29,10 +26,11 @@ export default function Complaint(props){
 
     const getOrders = async() => {
         const tempOrders = []
-        fire.getCollection('Orders').get().then(querySnapshot => {
+        fire.getCollection('Orders').where('user', '==', String(currentUser.email)).get().then(querySnapshot => {
             querySnapshot.docs.forEach(doc => {
-                let data = doc.data()
-                tempOrders.push(data)                
+                let currentID = doc.id
+                let data = { ...doc.data(), ['orderID']: currentID}
+                tempOrders.push(data)         
             })
             setOrders(tempOrders)
         }).catch(function(error){
@@ -44,7 +42,8 @@ export default function Complaint(props){
         const tempAgainst = []
         fire.getCollection('Compls').where('complainee', '==', String(currentUser.email)).get().then(querySnapshot => {
             querySnapshot.docs.forEach(doc => {
-                let data = doc.data()
+                let currentID = doc.id
+                let data = {...doc.data(), ['id']: currentID}
                 tempAgainst.push(data)
             })
             setComplaintAgainstUser(tempAgainst)
@@ -62,7 +61,7 @@ export default function Complaint(props){
         var orderToGet = document.getElementById("OrderSearhCompliment").value
         var orderFound = false
         orders.forEach(order => {
-            if(String(order.total) === String(orderToGet) && String(order.user) === String(currentUser.email)){
+            if(String(order.orderID) === String(orderToGet) && String(order.user) === String(currentUser.email)){
                 orderFound = true
             }})
         if(orderFound){
@@ -78,7 +77,7 @@ export default function Complaint(props){
         var orderFound = false
         const tempItems = []
         orders.forEach(order => {
-            if(String(order.total) === String(orderToGet) && String(order.user) === String(currentUser.email)){
+            if(String(order.orderID) === String(orderToGet) && String(order.user) === String(currentUser.email)){
                 orderFound = true
                 order.items.forEach(item => {
                     if(String(item.id[0]) === "m"){
@@ -111,75 +110,87 @@ export default function Complaint(props){
         }
     }
 
-    if(usertype === "manager"){
-        var indents = [];
-        for (var i = 0; i < 10; i++) {
-            indents.push(<h1 className='indent' key={i}>some shit that got pushed</h1>);
-        }
-        return (
+    const dispute = () => {
+
+    }
+
+    return(
         <div>
-            {indents}
-            "Some text value"
-        </div>
-        )
-    }else{
-        return(
-            <div>
-            <div className ='background-boi'>
-                <div className = "container">
-                    <div class="row" style = {{backgroundColor: "green"}}>
-                        <div class="column" style = {{backgroundColor: "blue"}} >
-                            <h2>Submit Compliment</h2>
-                            <h3>Order Number</h3>
-                                <input type="text" id="OrderSearhCompliment"/>
-                                <input type="button" id="OrderSearhComplimentExecute" value="Search" onClick = {findOrderForCompliment}/><br></br>
-                            <form style = {{display: showComplimentForm}}>
-                                <select name="complimentTo" id="complimentTo">
-                                    <option value="chef">Compliment Chef on this order</option>
-                                    <option value="driver">Compliment Driver on this order</option>
-                                </select>
-                                <h3>Title</h3>
-                                <input type="text" id="complimentTitle"/>
-                                <h3>Description</h3>
-                                <input type="text" class="submissionfield" id="complimentDescription"/>
-                            </form>
-                        </div>
-                        <div class="column" style = {{backgroundColor: "purple"}} >
-                            <h2>Submit Complaint</h2>
-                            <h3>Order Number</h3>
-                            <input type="text" id="orderSearchComplaint"/>
-                            <input type="button" id="orderSearchComplaintExecute" value="Search" onClick = {findOrderForComplaint}/><br></br>
-                            <form style = {{display: showComplaintForm}}>
-                                <select name="complaintAbout" id="complaintAbout">
-                                    {items.map(function(item, i){
-                                        return <option key={i} value={item[i][0]}>Complaint about the {item[i][1]} on this order</option>
-                                    })}
-                                    <option value="driver">Complaint about the Driver on this order</option>
-                                    <option value="customer">Complaint about the Customer on this order</option>
-                                </select>
-                                <h3>Title</h3>
-                                <input type="text" id="complaintTitle"/>
-                                <h3>Description</h3>
-                                <input type="text" class="submissionfield" id="complaintDescription"/>
-                            </form>
-                        </div>
+        <div className ='background-boi'>
+            <div className = "container bigBoxed">
+                <div class="row" style = {{backgroundColor: "green"}}>
+                    <div class="column" style = {{backgroundColor: "blue"}} >
+                        <h2>Submit Compliment</h2>
+                        <h3>Order Number</h3>
+                            <input type="text" id="OrderSearhCompliment"/>
+                            <input type="button" id="OrderSearhComplimentExecute" value="Search" onClick = {findOrderForCompliment}/><br></br>
+                        <form style = {{display: showComplimentForm}}>
+                            <select name="complimentTo" id="complimentTo">
+                                <option value="chef">Compliment Chef on this order</option>
+                                <option value="driver">Compliment Driver on this order</option>
+                            </select>
+                            <h3>Title</h3>
+                            <input type="text" id="complimentTitle"/>
+                            <h3>Description</h3>
+                            <input type="text" class="submissionfield" id="complimentDescription"/>
+                        </form>
                     </div>
-                    <div>
-                    <h2>Complaints Against {currentUser.name}</h2>
+                    <div class="column" style = {{backgroundColor: "purple"}} >
+                        <h2>Submit Complaint</h2>
+                        <h3>Order Number</h3>
+                        <input type="text" id="orderSearchComplaint"/>
+                        <input type="button" id="orderSearchComplaintExecute" value="Search" onClick = {findOrderForComplaint}/><br></br>
+                        <form style = {{display: showComplaintForm}}>
+                            <select name="complaintAbout" id="complaintAbout">
+                                {items.map(function(item, i){
+                                    return <option key={i} value={item[i][0]}>Complaint about the {item[i][1]} on this order</option>
+                                })}
+                                <option value="driver">Complaint about the Driver on this order</option>
+                                <option value="customer">Complaint about the Customer on this order</option>
+                            </select>
+                            <h3>Title</h3>
+                            <input type="text" id="complaintTitle"/>
+                            <h3>Description</h3>
+                            <input type="text" class="submissionfield" id="complaintDescription"/><br></br>
+                            <input type="button" id="submitComplaint" value="Submit" onClick={() => {toast("does nothing rn")}}></input>
+                        </form>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "column bigBoxed">
+                        <h2>Complaints Against {currentUser.email.substring(0, currentUser.email.indexOf('@'))}</h2>
                         {complaintAgainstUser.map(function(complaint, i){
                             console.log(complaint)
-                            return <div key={i}>
+                            return <div key={i} class = "smallBoxed">
                                 <h3>Title: {complaint.Title}</h3>
                                 <h3>Description: </h3>
                                 <p>{complaint.Description}</p><br></br>
-                                <button onClick = {() => toast('does nothing rn')}>dispute</button>
+                                <button onClick = {dispute(complaint.id)}>dispute</button>
+                            </div>
+                        })}
+                    </div>
+                    <div class = "column bigBoxed">
+                        <h2>Orders Placed by {currentUser.email.substring(0, currentUser.email.indexOf('@'))}</h2>
+                        {orders.map(function(item, i){
+                            console.log(item);
+                            return <div key={i} class = "smallBoxed">
+                            <h3>Order number: {item.orderID}</h3>
+                            <h4>Address: {item.address}</h4>
+                            <h4>Total: ${item.total}</h4>
+                            <div>
+                                {item.items.map(function(cart, j){
+                                    return <div>
+                                        <h2>{cart.id} : {cart.quantity}</h2>
+                                    </div>
+                                })}
+                            </div>
                             </div>
                         })}
                     </div>
                 </div>
             </div>
-            <Footer/>
-            </div>
-        )
-    }
+        </div>
+        <Footer/>
+        </div>
+    )
 }

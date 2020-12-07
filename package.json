@@ -24,7 +24,6 @@
     "react-tabs": "^3.1.1",
     "react-toastify": "^6.1.0",
     "react-stars": "^2.2.5",
-    "react-tabs": "^3.1.1",
     "react-time-picker": "^4.1.1"
   },
   "scripts": {
