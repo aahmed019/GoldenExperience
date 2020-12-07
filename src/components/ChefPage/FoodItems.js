@@ -13,6 +13,7 @@ export default function FoodItems() {
     const[foodDescriptionValue, setFoodDescription] = useState([])
     const[typeValue, setFoodType] = useState([])
     const[url, setURL] = useState([])
+    const[vip, setVIP] = useState(false)
 
     const[show, setShow] = useState([])
     const username = "John";
@@ -92,7 +93,7 @@ export default function FoodItems() {
     async function addFooditem(){
         if(typeValue === "drink"){
             let id="d"+foodNameValue.split(" ").join("")
-            await tests.getCollection('Drink').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:0   })
+            await tests.getCollection('Drink').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:[], count:0, vip:vip })
             .then(() =>{
                 console.log("Added item to drink")
             })
@@ -103,7 +104,7 @@ export default function FoodItems() {
         }
         else{
             let id="m"+foodNameValue.split(" ").join("")
-            await tests.getCollection('Food').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:0  })
+            await tests.getCollection('Food').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:[], count:0, vip:vip  })
                     .then(() =>{
                         console.log("Added item to food")
                     })
@@ -113,9 +114,12 @@ export default function FoodItems() {
         }
         setFoodPrice("")
         setFoodDescription("")
+        setFoodName("")
+        setURL("")
         setFoodType("Food")
         setFoodPrice()
         setShow(false)
+        setVIP(false)
 
         getData()
     }
@@ -134,17 +138,39 @@ export default function FoodItems() {
     return (     
         <div className='chef-background-boi'>
              {FoodItems.map(function(item, i){
-                return <div style={{paddingRight:'2%', border:"1px solid white"}} key={i}>
-                {/* <input type="text" value={item.name} onChange={this.handleChange}></input> */}
-                <p>{item.name}</p>
-                <p>${item.price}</p>
-                <p>{item.description}</p>
-                <img src={item.url} style={{"width":"200px","height":"200px"}}/>
-                <br/>
-                <button onClick={() => {deleteFoodItem(item)}}>Delete</button>
-
-
-                </div>
+                 if(item.vip){
+                    return <div style={{paddingRight:'2%', border:"1px solid white"}} key={i}>
+                    {/* <input type="text" value={item.name} onChange={this.handleChange}></input> */}
+                    <p>{item.name}</p>
+                    <p>${item.price}</p>
+                    <p>{item.description}</p>
+                    <p>{item.id}</p>
+                    <h5>FOR VIP ONLY</h5>
+    
+                    <img src={item.url} style={{"width":"200px","height":"200px"}}/>
+                    <br/>
+                    <button onClick={() => {deleteFoodItem(item)}}>Delete</button>
+    
+    
+                    </div>
+                 }
+                 else{
+                    return <div style={{paddingRight:'2%', border:"1px solid white"}} key={i}>
+                    {/* <input type="text" value={item.name} onChange={this.handleChange}></input> */}
+                    <p>{item.name}</p>
+                    <p>${item.price}</p>
+                    <p>{item.description}</p>
+                    <p>{item.id}</p>
+                    {/* {item.vip} ? <p>For VIP</p> */}
+    
+                    <img src={item.url} style={{"width":"200px","height":"200px"}}/>
+                    <br/>
+                    <button onClick={() => {deleteFoodItem(item)}}>Delete</button>
+    
+    
+                    </div>
+                 }
+               
             })} 
             <br/>
             <br/>
@@ -173,6 +199,10 @@ export default function FoodItems() {
                                     </select>
                                     <h6>Url:</h6>
                                     <input type="text" className="post-modal-input" onChange={e => setURL(e.target.value)} value={url}/>
+                                    <h6>Only for VIP:</h6>
+                                    <input type="checkbox" style={{marginLeft:"-45%"}} className="post-modal-input" onChange={e => setVIP(e.target.checked)}/>
+
+
 
 
                             </div>
