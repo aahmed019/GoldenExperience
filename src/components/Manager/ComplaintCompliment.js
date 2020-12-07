@@ -31,12 +31,13 @@ export default function ComplaintCompliment() {
     },[])
 
 
-    async function AddComplaint(request, staffmember){
-        await tests.getCollection('Staff').where('staff', '===', staffmember).update({
-            ComplCounter: decrement
-        })
-        .then(() =>{
-            tests.getCollection('Compls').doc(request).delete()
+    async function AddComplaint(requestID, staffmember){
+        await tests.getCollection('Staff').where('Name', '==', staffmember).limit(1).get()
+        .then((snapshot) =>{
+            const staffInformation = snapshot.docs[0];                                              
+            staffInformation.ref.update({ComplCounter: decrement});
+        }).then(() =>{
+            tests.getCollection('Compls').doc(requestID).delete()
             console.log("Complaint Added")
         })
         .catch(function(error) { //broke down somewhere
@@ -46,13 +47,13 @@ export default function ComplaintCompliment() {
         getData()
     }
 
-    async function AddCompliment(request, staffmember){
-        var t = tests.getCollection('Staff').where('staff', '==', staffmember).get();
-        t.update({
-            ComplCounter: increment
-        })
-        .then(() =>{
-            tests.getCollection('Compls').doc(request).delete()
+    async function AddCompliment(requestID, staffmember){
+        await tests.getCollection('Staff').where('Name', '==', staffmember).limit(1).get()
+        .then((snapshot) =>{
+            const staffInformation = snapshot.docs[0];                                              
+            staffInformation.ref.update({ComplCounter: increment});
+        }).then(() =>{
+            tests.getCollection('Compls').doc(requestID).delete()
             console.log("Compliment Added")
         })
         .catch(function(error) { //broke down somewhere
@@ -63,10 +64,11 @@ export default function ComplaintCompliment() {
     }
 
     async function NoMerit(requestID ,user){
-        await tests.getCollection('Users').doc(user).update({
-            warnings: increment
-        })
-        .then(() =>{
+        await tests.getCollection('Staff').where('name', '==', user).limit(1).get()
+        .then((snapshot) =>{
+            const userInformation = snapshot.docs[0];                                              
+            userInformation.ref.update({warning: increment});
+        }).then(() =>{
             tests.getCollection('Compls').doc(requestID).delete()
             console.log("No Merit Done")
         })
