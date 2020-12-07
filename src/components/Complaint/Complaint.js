@@ -18,9 +18,9 @@ export default function Complaint(){
     const[items, setItems] = useState([])
     const[complaintAgainstUser, setComplaintAgainstUser] = useState([])
     const[orders, setOrders] = useState([])
+    const[userVIP, setUserVIP] = useState(false)
+    const[complainee, setComplainee] = useState("")
     const{currentUser} = useAuth()
-    
-    console.log(currentUser.username)
 
     let fire = Fire.db
 
@@ -40,7 +40,7 @@ export default function Complaint(){
     
     const getComplaintsAgainst = async() => {
         const tempAgainst = []
-        fire.getCollection('Compls').where('complainee', '==', String(currentUser.email)).get().then(querySnapshot => {
+        fire.getCollection('Compls').where('Complainee', '==', String(currentUser.email)).get().then(querySnapshot => {
             querySnapshot.docs.forEach(doc => {
                 let currentID = doc.id
                 let data = {...doc.data(), ['id']: currentID}
@@ -51,10 +51,24 @@ export default function Complaint(){
             console.log(error)
         })
     }
+    
+    const isThisUserVIP = async() => {
+        fire.getCollection('Users').where('email', '==', String(currentUser.email)).get().then(querySnapshot => {
+            querySnapshot.docs.forEach(doc => {
+                let data = doc.data()
+                if(data.Vip){
+                    setUserVIP(true)
+                }
+            })
+        }).catch(function(error){
+            console.log(error)
+        })
+    }
 
     useEffect(() =>{
         getOrders()
         getComplaintsAgainst()
+        isThisUserVIP()
     },[])
 
     const findOrderForCompliment = () => {
@@ -70,9 +84,8 @@ export default function Complaint(){
             toast('invalid order')
         }
     }
-
     
-    const findOrderForComplaint = () => {
+    const findOrderForComplaint = async() => {
         var orderToGet = document.getElementById("orderSearchComplaint").value
         var orderFound = false
         const tempItems = []
@@ -110,9 +123,71 @@ export default function Complaint(){
         }
     }
 
-    const dispute = () => {
+    function submitComplaint(){
+        console.log(document.getElementById("complaintAbout").value)
+        if(document.getElementById("complaintAbout").value === "driver"){
+            orders.forEach(function(order){
+                console.log(order)
+                console.log(order.orderID)
+                if(order.orderID == document.getElementById("orderSearchComplaint").value){
+                    console.log(order.deliverer)
+                    setComplainee(order.deliverer)
+                }
+            })
+        }else if(document.getElementById("complaintAbout") === "driver"){
 
+        }else{
+
+        }
+        fire.getCollection('Compls').doc(document.getElementById("complaintTitle").value).set({
+            Complainee: complainee,
+            Complainer: currentUser.email,
+            Description: document.getElementById("complaintDescription").value,
+            Disputed: false,
+            OrderID: document.getElementById("orderSearchComplaint").value,
+            Title: document.getElementById("complaintTitle").value,
+            isVIP: userVIP
+        }).then(function() {// went through
+            console.log("Document successfully written!");
+            
+        })
+        .catch(function(error) { //broke down somewhere
+            console.error("Error writing document: ", error);
+        });
+        toast("complaint submitted")
     }
+
+    const submitCompliment = () => {
+        
+    }
+
+    const dispute = () => {
+        toast("does nothing rn")
+    }
+    // function getFoodNameByID(idToFind){
+    //     var toReturn = ""
+    //     if(String(idToFind[0]) === "m"){
+    //         fire.getCollection('Food').where('id', '==', String(idToFind)).get().then(querySnapshot => {
+    //             querySnapshot.docs.forEach(doc => {
+    //                 let data = doc.data()
+    //                 toReturn = data.name
+    //                 return data.name
+    //             })       
+    //         }).catch(function(error){
+    //             console.log(error)
+    //         })
+    //     }else{
+    //         fire.getCollection('Drink').where('id', '==', String(idToFind)).get().then(querySnapshot => {
+    //             querySnapshot.docs.forEach(doc => {
+    //                 let data = doc.data()
+    //                 toReturn = data.name
+    //             })
+    //         }).catch(function(error){
+    //             console.log(error)
+    //         })            
+    //     }
+    //     return (toReturn)
+    // }
 
     return(
         <div>
@@ -152,12 +227,12 @@ export default function Complaint(){
                             <input type="text" id="complaintTitle"/>
                             <h3>Description</h3>
                             <input type="text" class="submissionfield" id="complaintDescription"/><br></br>
-                            <input type="button" id="submitComplaint" value="Submit" onClick={() => {toast("does nothing rn")}}></input>
+                            <input type="button" id="submitComplaint" value="Submit" onClick={() => submitComplaint()}></input>
                         </form>
                     </div>
                 </div>
                 <div class = "row">
-                    <div class = "column bigBoxed">
+                    <div class = "column">
                         <h2>Complaints Against {currentUser.email.substring(0, currentUser.email.indexOf('@'))}</h2>
                         {complaintAgainstUser.map(function(complaint, i){
                             console.log(complaint)
@@ -169,16 +244,15 @@ export default function Complaint(){
                             </div>
                         })}
                     </div>
-                    <div class = "column bigBoxed">
-                        <h2>Orders Placed by {currentUser.email.substring(0, currentUser.email.indexOf('@'))}</h2>
+                    <div class = "column">
+                        <h2>Orders For {currentUser.email.substring(0, currentUser.email.indexOf('@'))}</h2>
                         {orders.map(function(item, i){
-                            console.log(item);
                             return <div key={i} class = "smallBoxed">
                             <h3>Order number: {item.orderID}</h3>
                             <h4>Address: {item.address}</h4>
                             <h4>Total: ${item.total}</h4>
                             <div>
-                                {item.items.map(function(cart, j){
+                                {item.items.map(function(cart, j){                                
                                     return <div>
                                         <h2>{cart.id} : {cart.quantity}</h2>
                                     </div>
