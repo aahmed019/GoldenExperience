@@ -6,6 +6,7 @@ import {Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css';
 import Menu from '../Menu/Menu';
 import FoodItems from './FoodItems';
+import NewOrders from './NewOrders';
 
 class ChefPage extends Component {
     
@@ -20,10 +21,6 @@ class ChefPage extends Component {
         const snapshot = await this.db.getCollection('SignUp').get();
         console.log(snapshot.docs.map(doc => doc.data()));
     }
-    async getData(){
-
-    }
-
 
     async uploadFile(e){
         const file = e.target.files[0];
@@ -65,18 +62,16 @@ class ChefPage extends Component {
 
                         <TabPanel>
                             <Menu />
-                            
                         </TabPanel>
 
                         <TabPanel>
-                            <h1>Orders</h1>
-                            
+                            <NewOrders/>
                         </TabPanel>
 
                         <TabPanel>
                         <h1>Disputes</h1>
-                            
                         </TabPanel>
+
                         <TabPanel>
                         <h1>Food Item</h1>
                            <FoodItems></FoodItems>
