@@ -58,7 +58,6 @@ export default function SuccessPage (props){
                                             }
                                         }
                                     })
-
                                 }).catch(error=>console.log("Error: ",error))   
             },[])
             async function changeBalance(userEmail){
