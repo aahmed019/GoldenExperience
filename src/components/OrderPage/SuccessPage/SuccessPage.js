@@ -16,17 +16,17 @@ export default function SuccessPage (props){
 
             useEffect(() =>{                
                 //console.log(JSON.stringify(currentUser))
-                   // getUserName(currentUser.email)
-                    //changeBalance(currentUser.email)
-                   // updateOrderHistory(currentUser.email)
+                    getUserName(currentUser.email)
+                    changeBalance(currentUser.email)
+                   updateOrderHistory(currentUser.email)
                     cart.map(item=> UpdateItemPopularity(item))
 
-                    /*switch(option){
+                    switch(option){
                         case "1": addNewOrder("delivery");break;
                         case "2": addNewOrder("Pickup");break;
                         default: console.log("Error in order type")
 
-                    }*/
+                    }
                     
             },[])
             async function changeBalance(userEmail){
