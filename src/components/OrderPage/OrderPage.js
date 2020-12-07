@@ -165,7 +165,7 @@ export default function OrderPage (){
         setAddress("");
         setTime("");
         setNotes("");
-        setOption(1);
+        setOption(0);
         setTotal(0);    
     }
     const handleChange = e=> {
