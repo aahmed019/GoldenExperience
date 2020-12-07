@@ -30,7 +30,8 @@ export default function NavigationBar(){
               {currentUser ===  null ?
               <li className= "nav-item" ><Link className="login" to="/LoginV2">Login</Link></li>:
               <Fragment>
-              <li className= "nav-item" ><Link to="/Order">Orders</Link></li>&emsp;&emsp;
+              <li className= "nav-item" ><Link to="/Order">Order</Link></li>&emsp;&emsp;
+              <li className= "nav-item" ><Link to="/Deposit">Deposit</Link></li>&emsp;&emsp;
               <li className= "nav-item" ><Link to="/Discussion">Discussion</Link></li>&emsp;&emsp;
               <li className= "nav-item" ><Link to="/Review">Review</Link></li>&emsp;&emsp;
               <li className= "nav-item" ><Link className="profilepage" to="/Profile">Profile</Link></li>&emsp;&emsp;
