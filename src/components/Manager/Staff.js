@@ -34,22 +34,37 @@ export default function Staff() {
 
     },[])
 
-    function Promote(staffer){
+    async function Promote(staffer){
         tests.getCollection('Staff').doc(staffer).update({
-            Salary: promote
+            Salary: promote,
+            ComplCounter: 0
+        }).then(() =>{
+            console.log("User information removed from Database")
+        })
+        .catch(function(error) { //broke down somewhere
+            console.error("Error: ", error);
+        });
 
-        }).then(getData())
+        getData()
     }
 
-    function Demote(staffer, demotionCount){
+    async function Demote(staffer, demotionCount){
         if(demotionCount === 2){
             fire(staffer)
         }
         else{
         tests.getCollection('Staff').doc(staffer).update({
             Salary: demote,
-            DemotionCounter: increment
-        }).then(getData())
+            DemotionCounter: increment,
+            ComplCounter: 0
+        }).then(() =>{
+            console.log("User information removed from Database")
+        })
+        .catch(function(error) { //broke down somewhere
+            console.error("Error: ", error);
+        });
+
+        getData()
     }
 }
 
@@ -76,16 +91,15 @@ export default function Staff() {
                 <h5>Email: {item.Position}</h5>
                 <h5>Salary: {item.Salary}</h5>
                 <h5>Rating: {item.Rating}</h5>
-                <h5>Complaints: {item.ComplaintsCounter}</h5>
-                <h5>Compliments: {item.ComplimentsCounter} </h5>
+                <h5>Complaints/Compliments: {item.ComplCounter}</h5>
                 <h5>Demoted Counter: {item.DemotionCounter} </h5>
                 <hr></hr>
-                <button onClick={() => Promote(item.Name)}>Promote</button>
+                <button onClick={() => Promote(item.email)}>Promote</button>
                 <input type='number' onChange={e => setPromote(e.target.value)}></input>
-                <button onClick={() => Demote(item.Name, item.DemotionCounter)}>Demote: </button>
+                <button onClick={() => Demote(item.email, item.DemotionCounter)}>Demote: </button>
                 <input type='number' onChange={e => setDemote(e.target.value)}></input>
                 <br/>
-                <button onClick={() => fire(item.Name)}>Fire</button>
+                <button onClick={() => fire(item.email)}>Fire</button>
                 <br/>
                 </div>
             })}

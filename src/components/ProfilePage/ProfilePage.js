@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Container, Card, Button, Alert } from "react-bootstrap"
 import { useAuth } from "../../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
-import Fire from '../../firebaseConfig';
+import Fire, {auth} from '../../firebaseConfig';
 import './ProfilePage.css'
 
 export default function Dashboard() {
@@ -16,8 +16,9 @@ export default function Dashboard() {
   const [warnings, setWarnings] = useState("");
   const [vip, setVipstatus] = useState("");
   const [email, setEmail] = useState("");
+  const [freshwarn, setfreshwarn] = useState("");
 
-  
+  console.log(currentUser.uid)
   database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
     if(doc.exists){
       setEmail(doc.data().email)
@@ -31,6 +32,27 @@ export default function Dashboard() {
       console.log('no doc found')
     }
   })
+  database.getCollection('SignUp').doc(currentUser.email).get().then(function(doc){
+    if(doc.exists){
+      setfreshwarn(doc.data().warnings);
+    }
+    else{
+      console.log('no doc found')
+    }
+  })
+
+  async function deleteUser(user){
+    await database.getCollection('Users').doc(user).delete()
+    .then(() =>{
+        currentUser.uid.delete();
+        alert('Account has been Deleted!')
+        console.log("User information removed from Database")
+    })
+    .catch(function(error) { //broke down somewhere
+        console.error("Error: ", error);
+    });
+  
+    }
   
   async function handleLogout() {
     setError("")
@@ -58,19 +80,27 @@ export default function Dashboard() {
                     <strong>name:</strong> {name}<br/>
                     <strong>Balance:</strong> {Balance}<br/>
                     <strong>Warnings:</strong> {warnings}<br/>
-                    <strong>Vip Status:</strong> {vip}
+                    <strong>Vip Status:</strong> {vip.toString()}
                     </div>:
                     <div>
                     <strong>Account Still Pending!</strong><br/>
+                    <strong>Warnings:</strong> {freshwarn}<br/>
+                    <strong>Minimum Requirement <br/> to achieve an <br/>approved account is $1.00 </strong>
                     </div>
                     }
                     {email !== '' ?
+                    <div>
                     <Link to="/UpdateProfile" className="btn btn-primary w-100 mt-3">
                         Update email/password
-                    </Link>:
-                    <Link to="/Home" className="btn btn-primary w-100 mt-3">
-                    Home
-                    </Link>}
+                    </Link>
+                    <Link to="/SignUpV2" className="btn btn-primary w-100 mt-3" onClick={() => {deleteUser(email)}}>Delete Account</Link>
+                    </div>
+                    :
+                    <div>
+                    <Link to="/Home" className="btn btn-primary w-100 mt-3">Home</Link>
+                    <Link to="/SignUpV2" className="btn btn-primary w-100 mt-3" onClick={() => {currentUser.delete()}}>Delete Account</Link>
+                    </div>
+                    }
                     </Card.Body>
                 </Card>
                 <div className="w-100 text-center mt-2">
