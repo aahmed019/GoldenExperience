@@ -33,6 +33,7 @@ export default function Deposit() {
             Balance: newBalance,
           })
         }
+        else{
           database.getCollection('SignUp').doc(currentUser.email).get().then(function(doc){
             if(newBalance == 0){
               newBalance = doc.data().Balance + parseInt(amount);
@@ -43,7 +44,8 @@ export default function Deposit() {
           }).then(() => {
             notify.show('Money Deposited!');
           })
-      
+        }
+         
       })
   }
     return (
