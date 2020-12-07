@@ -92,7 +92,7 @@ export default function FoodItems() {
     async function addFooditem(){
         if(typeValue === "drink"){
             let id="d"+foodNameValue.split(" ").join("")
-            await tests.getCollection('Drink').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:0   })
+            await tests.getCollection('Drink').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:[] })
             .then(() =>{
                 console.log("Added item to drink")
             })
@@ -103,7 +103,7 @@ export default function FoodItems() {
         }
         else{
             let id="m"+foodNameValue.split(" ").join("")
-            await tests.getCollection('Food').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:0  })
+            await tests.getCollection('Food').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:[]  })
                     .then(() =>{
                         console.log("Added item to food")
                     })
@@ -139,6 +139,7 @@ export default function FoodItems() {
                 <p>{item.name}</p>
                 <p>${item.price}</p>
                 <p>{item.description}</p>
+                <p>{item.id}</p>
                 <img src={item.url} style={{"width":"200px","height":"200px"}}/>
                 <br/>
                 <button onClick={() => {deleteFoodItem(item)}}>Delete</button>
