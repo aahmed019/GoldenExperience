@@ -33,23 +33,21 @@ export default function PostModal(props){
     }
 
     const addWarning = (username, email) =>{
+        console.log("need to enter", username, email)
         database.getCollection('Users').doc(email).get().then(function(doc){
             let new_warnings = 0;
             let vip_status = false;
             if(doc.exists){
               new_warnings = doc.data().warnings + 1;
               vip_status = doc.data().Vip;
-              console.log(vip_status)
               database.getCollection('Users').doc(email).update({
                 warnings: new_warnings,
               })
-              database.getCollection('SignUp').doc(email).update({
-                warnings: new_warnings,
-              })
-              if(new_warnings >= 2 && vip_status == "true"){
+              if(new_warnings >= 2 && (vip_status == "true" || vip_status == true) ){
                 removeVIP(email);
               }
-              else if(new_warnings >= 3 && vip_status == "false"){
+              else if(new_warnings >= 3 && (vip_status == "false" || vip_status == false) ){
+                  console.log("here in if")
                 deRegisterUser(email);
               }else{
                 notify.show('Stop cursing! A warning has been added to your account!');
@@ -58,6 +56,7 @@ export default function PostModal(props){
             }
         })
     }
+
     const handleSubmit = (e) =>{
         // e.preventDefault();
         if(val.length > 0){
