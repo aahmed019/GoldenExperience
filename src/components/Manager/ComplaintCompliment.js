@@ -79,7 +79,7 @@ export default function ComplaintCompliment() {
 
     async function deleteReport(requestID){
         tests.getCollection('Compls').doc(requestID).delete()
-        getData()
+        getData();
     }
 
 
