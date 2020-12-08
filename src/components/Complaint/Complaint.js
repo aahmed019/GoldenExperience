@@ -9,6 +9,7 @@ import { useAuth } from '../../contexts/AuthContext.js';
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { setConfiguration } from 'react-grid-system';
+import { Next } from 'react-bootstrap/esm/PageItem';
 
 toast.configure()
 
@@ -19,6 +20,7 @@ export default function Complaint(props){
     const[items, setItems] = useState([])
     const[complaintAgainstUser, setComplaintAgainstUser] = useState([])
     const[orders, setOrders] = useState([])
+    const[foodAndDrinkByThisChef, setFoodAndDrinkByThisChef] = useState([])
     const[userVIP, setUserVIP] = useState(false)
     const{currentUser} = useAuth()
     const query = queryString.parse(props.location.search);
@@ -43,7 +45,21 @@ export default function Complaint(props){
                 console.log(error)
             })
         }else if(usertype === "chef"){
-            //getFood()
+            getFoodAndDrink()
+            await fire.getCollection('Orders').get().then(querySnapshot => {
+                querySnapshot.docs.forEach(doc => {
+                    let currentID = doc.id
+                    let data = { ...doc.data(), ['orderID']: currentID}
+                    data.items.forEach(item => {
+                        if(foodAndDrinkByThisChef.includes(item)){
+                            tempOrders.push(data)
+                        }
+                    })
+                })
+                setOrders(tempOrders)
+            }).catch(function(error){
+                console.log(error)
+            })
         }else{
             fire.getCollection('Orders').where('user', '==', String(currentUser.email)).get().then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
@@ -56,6 +72,31 @@ export default function Complaint(props){
                 console.log(error)
             })
         }
+    }
+
+    async function getFoodAndDrink(){
+        const tempFoodAndDrink = []
+        fire.getCollection('Orders').where('email', '==', String(currentUser.email)).get().then(querySnapshot => {
+            querySnapshot.docs.forEach(doc => {
+                let data = doc.data()
+                tempFoodAndDrink.push(data)
+            })
+            setFoodAndDrinkByThisChef(tempFoodAndDrink)
+        }).catch(function(error){
+            console.log(error)
+        })
+        foodAndDrinkByThisChef.forEach(item => {
+            tempFoodAndDrink.push(item)
+        })
+        await fire.getCollection('Drink').where('email', '==', String(currentUser.email)).get().then(querySnapshot => {
+            querySnapshot.docs.forEach(doc => {
+                let data = doc.data()
+                tempFoodAndDrink.push(data)
+            })
+            setFoodAndDrinkByThisChef(tempFoodAndDrink)
+        }).catch(function(error){
+            console.log(error)
+        })
     }
     
     const getComplaintsAgainst = async() => {
@@ -95,14 +136,40 @@ export default function Complaint(props){
         var orderToGet = document.getElementById("orderSearchCompliment").value
         var orderFound = false
         orders.forEach(order => {
+            const tempItems = items
             if(String(order.orderID) === String(orderToGet) && String(order.user) === String(currentUser.email)){
                 orderFound = true
-            }})
+                order.items.forEach(item => {
+                    if(String(item.id[0]) === "m"){
+                        fire.getCollection('Food').where('id', '==', String(item.id)).get().then(querySnapshot => {
+                            querySnapshot.docs.forEach(doc => {
+                                let data = doc.data()
+                                tempItems.push([item.id, data.name])
+                            })
+                            setItems(tempItems)
+                        }).catch(function(error){
+                            console.log(error)
+                        })
+                    }else{
+                        fire.getCollection('Drink').where('id', '==', String(item.id)).get().then(querySnapshot => {
+                            querySnapshot.docs.forEach(doc => {
+                                let data = doc.data()
+                                tempItems.push([item.id, data.name])
+                            })
+                            setItems(tempItems)
+                        }).catch(function(error){
+                            console.log(error)
+                        })
+                    }
+                })
+            }
+        })
         if(orderFound){
             setShowComplimentForm('block')
         }else{
             toast('invalid order')
         }
+        getOrders()
     }
     
     function findOrderForComplaint() {
@@ -136,7 +203,7 @@ export default function Complaint(props){
                     }
                 })
             }
-        })        
+        })
         if(orderFound){
             setShowComplaintForm('block')
         }else{
@@ -145,37 +212,38 @@ export default function Complaint(props){
         getOrders()
     }
 
-    function submitComplaint(){
-        console.log(document.getElementById("complaintAbout").value)
-        var complainee = ""
+    function getEmailComplaint(){
+        console.log("in get email complaint")
         if(document.getElementById("complaintAbout").value === "driver"){
+            console.log("in driver section")
             orders.forEach(order =>{
                 console.log(order)
                 console.log(order.orderID)
                 if(order.orderID == document.getElementById("orderSearchComplaint").value){
-                    console.log(order.deliverer)
-                    complainee = order.deliverer
+                    submitComplaint(order.deliverer)
                 }
             })
         }else if(document.getElementById("complaintAbout").value === "customer"){
+            console.log("in customer section")
             orders.forEach(order =>{
                 console.log(order)
                 console.log(order.orderID)
                 if(order.orderID == document.getElementById("orderSearchComplaint").value){
-                    console.log(order.user)
-                    complainee = order.user
+                    submitComplaint(order.user)
                 }
             })
         }else{
+            console.log("in food section")
             var foodOrDrink = document.getElementById("complaintAbout").value
-            var temp = ""
-            if(String(foodOrDrink) === "m"){
+            console.log(foodOrDrink)
+            if(foodOrDrink.charAt(0) === 'm'){
+                console.log("searching for food")
                 fire.getCollection('Food').where('id', '==', String(foodOrDrink)).get().then(querySnapshot => {
                     querySnapshot.docs.forEach(doc => {
                         let data = doc.data()
-                        temp = data.Chef
+                        console.log(data.email)
+                        submitComplaint(data.email)
                     })
-                    complainee = temp
                 }).catch(function(error){
                     console.log(error)
                 })
@@ -183,15 +251,17 @@ export default function Complaint(props){
                 fire.getCollection('Drink').where('id', '==', String(foodOrDrink)).get().then(querySnapshot => {
                     querySnapshot.docs.forEach(doc => {
                         let data = doc.data()
-                        console.log(data.Chef)
-                        temp = data.Chef
+                        submitComplaint(data.email)
                     })
-                    complainee = temp
                 }).catch(function(error){
                     console.log(error)
                 })
             }
         }
+    }
+
+    function submitComplaint(complainee){
+        console.log(document.getElementById("complaintAbout").value)
         fire.getCollection('Compls').doc().set({
             Complainee: complainee,
             Complainer: currentUser.email,
@@ -211,23 +281,55 @@ export default function Complaint(props){
         toast("complaint submitted")
     }
 
-    const submitCompliment = () => {
-        var complainee = ""
-        console.log(document.getElementById("complimentTo").value)
+    function getEmailCompliment(){
+        console.log("in get email compliment")
         if(document.getElementById("complimentTo").value === "driver"){
+            console.log("in driver section")
             orders.forEach(order =>{
                 console.log(order)
                 console.log(order.orderID)
                 if(order.orderID == document.getElementById("orderSearchCompliment").value){
-                    console.log(order.deliverer)
-                    complainee = order.deliverer
+                    submitCompliment(order.deliverer)
                 }
             })
-        }else if(document.getElementById("complimentTo") === "customer"){
-
+        }else if(document.getElementById("complimentTo").value === "customer"){
+            console.log("in customer section")
+            orders.forEach(order =>{
+                console.log(order)
+                console.log(order.orderID)
+                if(order.orderID == document.getElementById("orderSearchCompliment").value){
+                    submitCompliment(order.user)
+                }
+            })
         }else{
-
+            console.log("in food section")
+            var foodOrDrink = document.getElementById("complimentTo").value
+            console.log(foodOrDrink)
+            if(foodOrDrink.charAt(0) === 'm'){
+                console.log("searching for food")
+                fire.getCollection('Food').where('id', '==', String(foodOrDrink)).get().then(querySnapshot => {
+                    querySnapshot.docs.forEach(doc => {
+                        let data = doc.data()
+                        console.log(data.email)
+                        submitCompliment(data.email)
+                    })
+                }).catch(function(error){
+                    console.log(error)
+                })
+            }else{
+                fire.getCollection('Drink').where('id', '==', String(foodOrDrink)).get().then(querySnapshot => {
+                    querySnapshot.docs.forEach(doc => {
+                        let data = doc.data()
+                        submitCompliment(data.email)
+                    })
+                }).catch(function(error){
+                    console.log(error)
+                })
+            }
         }
+    }
+
+    function submitCompliment(complainee) {
         fire.getCollection('Compls').doc().set({
             Complainee: complainee,
             Complainer: currentUser.email,
@@ -323,8 +425,8 @@ export default function Complaint(props){
                         <form style = {{display: showComplimentForm}}>
                             <h3>Who/What would you like to compliment?</h3>
                             <select name="complimentTo" id="complimentTo">
-                                {items.map(function(item, i){
-                                    return <option key = {i} id={item[0]} value={item[1]}>{item[1]}</option>
+                                {items.map(function(item, i){                                    
+                                    return <option key = {i} id={item[0]} value={item[0]}>{item[1]}</option>
                                 })}
                                 <option value="customer">Customer</option>
                                 <option value="driver">Driver</option>
@@ -333,7 +435,7 @@ export default function Complaint(props){
                             <input type="text" id="complimentTitle"/>
                             <h3>Description</h3>
                             <input type="text" className="submissionfield" id="complimentDescription"/><br></br>
-                            <input type="button" id="submitCompliment" value="Submit" onClick={() => submitCompliment()}></input>
+                            <input type="button" id="submitCompliment" value="Submit" onClick={() =>  getEmailCompliment()}></input>
                         </form>
                     </div>
                     <div className="column" style = {{backgroundColor: "purple"}} >
@@ -344,9 +446,8 @@ export default function Complaint(props){
                         <div style = {{display: showComplaintForm}}>
                             <h3>Who/What would you like to complain about?</h3>
                             <select id="complaintAbout">
-                                {items.map(function(item, i){
-                                    console.log(item[1])
-                                    return <option key = {i} id={item[0]} value={item[1]}>{item[1]}</option>
+                                {items.map(function(item, i){                                    
+                                    return <option key = {i} id={item[0]} value={item[0]}>{item[1]}</option>
                                 })}
                                 <option value="driver">Driver</option>
                                 <option value="customer">Customer</option>                                
@@ -355,7 +456,7 @@ export default function Complaint(props){
                             <input type="text" id="complaintTitle"/>
                             <h3>Description</h3>
                             <input type="text" className="submissionfield" id="complaintDescription"/><br></br>
-                            <input type="button" id="submitComplaint" value="Submit" onClick={() => submitComplaint()}></input>
+                            <input type="button" id="submitComplaint" value="Submit" onClick={() => getEmailComplaint()}></input>
                         </div>
                     </div>
                 </div>
