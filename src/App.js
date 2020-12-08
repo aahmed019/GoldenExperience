@@ -22,7 +22,7 @@ import Menu from './components/Menu/Menu';
 import Posts from './components/Posts/Posts';
 import Complaint from './components/Complaint/Complaint';
 import FoodItemView from './components/FoodItemView/FoodItemView';
-
+import Review from './components/Review/Review';
 
 function App() {
   return (
@@ -60,6 +60,7 @@ function App() {
               <Route exact path = '/Posts' component = {Posts}/>
               <PrivateRoute exact path = '/Complaint' component = {Complaint}/>
               <Route exact path = '/FoodItems' component = {FoodItemView}/>
+              <Route exact path = '/Review' component = {Review}/>
 
 
               

@@ -8,15 +8,39 @@
 }
 .Order{
     max-width:50%;
-    padding: 2px;
+    padding: 10px;
     border-radius: 25px;    
     background-color: black;
     display:flex;
     flex-direction: column;
     justify-content:center;
     align-items:center;
+    margin: 10px;
 }
 
+.OrderContainer{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    width: auto;
+    padding: 1px;
+    margin: 10px;
+
+}
+.Orderlist{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    width: auto;
+
+
+}
+
+.Cart{
+    padding: 10px;
+    width:100%;
+}
 .FormControl{
     display:flex;
     flex-direction: column;

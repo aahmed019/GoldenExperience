@@ -1,6 +1,6 @@
-import React, {  Component } from 'react';
+import React, {  Component, useEffect } from 'react';
 import './Order.css'
-import {Col} from 'react-bootstrap';
+import {Col, Container,Row} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import {useState} from 'react'
@@ -15,6 +15,17 @@ export default function Order (props) {
         const cart1 = props.cart.length;
         if(cart1<=0)
         { alert("Please add something to the cart")}
+        else if(option ===0 )
+        {
+            alert("Please choose order type!")
+        }
+        else if(option ==="1" && (address ==="" || city==="" || state==="" || postalCode==="") ){
+            alert("Please enter the address!")
+        }
+        else if (option ==="2" && time==="")
+        {
+            alert("Please enter the pick up time!")
+        }
         else{
         props.NextStep();
         }
@@ -23,7 +34,6 @@ export default function Order (props) {
     const UpdateOption =e=>{
         switch(e.target.value)
         {
-            case "0" : setPage(DineIn);break;
             case "1" : setPage(Delivery);break;
             case "2" : setPage(PickUp);break;
             default: alert("Error for Option Page")
@@ -31,7 +41,9 @@ export default function Order (props) {
     }
 
 
-    const{ values, AddToCart,meal, drink,handleChange }=props;
+
+    const{ values, AddToCart,meal, drink,handleChange,cart,RemoveFromCart}=props;
+    const {address,city,state,postalCode,option,time} = values;
    
   // Only for Reserving Seats may need to be in other pages ( Restaurant Page)
     const DineIn=(
@@ -45,7 +57,8 @@ export default function Order (props) {
               <Form.Label>Time:</Form.Label>
               <Form.Control type="text" name="title" onChange={handleChange } placeholder="Time in HH:MM" ></Form.Control>
               </Form.Group>
-        </Form.Row>)
+        </Form.Row>
+        )
      
  ///   
      const Delivery= (
@@ -85,6 +98,7 @@ export default function Order (props) {
 
    return (
             <div className="background-boi">
+                <div className="OrderContainer">
                   <div className="Order">
                   <Form className="FormControl" >
                       <Form.Row className="Rows">
@@ -139,17 +153,6 @@ export default function Order (props) {
 
                       <Form.Row className="Rows">
                           
-                            <Form.Check
-                            inline
-                            type="radio"
-                            label="Dine In"
-                            name="option"
-                            id="EatOptions"
-                            value={0}
-                            onClick={handleChange}
-                            onChange={UpdateOption}
-                            />
-                            
                            
                             <Form.Check
                             inline
@@ -177,13 +180,13 @@ export default function Order (props) {
                       </Form.Row>
                         {OptionPage}
                         <Form.Row className="Rows">
-                            <Form.Group as={Col}   style={{
-                                    
-                                    display:'flex', 
-                                    flexDirection:'row',
-                                    alignItems:'center',
-                                    justifyContent:'center'}}>
-                                <Form.Control 
+                            <Form.Group as={Col}   
+                                style={{  
+                                display:'flex', 
+                                flexDirection:'row',
+                                alignItems:'center',
+                                justifyContent:'center'}}>
+                            <Form.Control 
                                 as="textarea"
                                 placeholder="Notes"
                                 style={{height:'100px' ,maxWidth:'500px'}}
@@ -198,6 +201,62 @@ export default function Order (props) {
                           <Button variant="primary" onClick={Next} >Check Out</Button>
                       </Form.Row>
                   </Form>
+                  </div>
+                  <div className="Cart">
+                  <Container className="Orderlist">
+                <Row className="Rows">
+                <h1>Cart</h1>
+                </Row>
+                <Row className="Rows">
+                    <Col xs={4}>Item</Col>
+                    <Col xs={2}>Quantity</Col>
+                    <Col xs={2}>Price</Col>
+                    <Col xs={2}> </Col>
+                </Row>
+                {  
+                    cart.map((item)=>{
+                        let name=""
+                        let price=0;
+                        let type=item.id[0];
+                        if(type==='m')
+                        {
+                         name = meal.find(food=> item.id===food[0].id)[0].name
+                         price = meal.find((food)=> item.id===food[0].id  )[0].price
+                        }
+                        else{
+                         name = drink.find(food=> item.id===food[0].id)[0].name
+                         price = drink.find((food)=> item.id===food[0].id  )[0].price
+                        }
+                       return(
+                        <Row key={item.id} className="Rows">
+                                <Col xs={4} >{name}</Col>
+                                <Col xs={2}>{item.quantity}</Col>
+                                <Col xs={2}>$ {item.quantity * price}</Col> 
+                                <Col xs={2}>
+                                <Button 
+                                variant="primary" 
+                                value={item.id} 
+                                onClick={(e)=>
+                                    RemoveFromCart(e.target.value)
+                                    }>
+                                    Remove
+                                </Button>
+  
+                                </Col>
+                                </Row>
+                       )
+                                
+                     })
+                }
+                <Row className="Rows">
+                    <Col xs={4}></Col>
+                    <Col xs={2}>Total:</Col>
+                    <Col xs={2}>$ {values.total}</Col>
+                    <Col xs={2}> </Col>
+                </Row>
+
+            </Container>
+                  </div>
                   </div>
             </div>
            

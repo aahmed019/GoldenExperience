@@ -15,39 +15,26 @@ useEffect(()=>{
   let option = parseInt(props.checkoutvalues.option)
   switch(option)
   {
-    case 0: setOptionPage(<Row className="Rows">
-                                            <Row className="Rows">
-                                            <h4>Dine In</h4>
-                                            </Row>
-                                                <Col xs="auto">
-                                                <Form.Label>Seat Number:</Form.Label>
-                                                <Form.Label>&ensp;{props.checkoutvalues.seatNumber}</Form.Label>
-                                                </Col >
-                                                <Col xs="auto">
-                                                <Form.Label>Time:</Form.Label>
-                                                <Form.Label>&ensp;{props.checkoutvalues.time}</Form.Label>
-                                                </Col>     
-                                            </Row>);break;
     case 1: setOptionPage(<Row className="Rows">
                                             <Row className="Rows">
                                             <h4>Delivery</h4>
                                             </Row>
                                             <Row className="Rows">
-                                                <Col xs={4}>
+                                                <Col xs="auto">
                                                 <Form.Label>Address: </Form.Label>  
                                                 <Form.Label>
                                                     &ensp; {props.checkoutvalues.address}
                                                 </Form.Label>
                                                 </Col>
-                                                <Col xs={2}>
+                                                <Col xs="auto">
                                                 <Form.Label>City:</Form.Label>
                                                 <Form.Label>&ensp;{props.checkoutvalues.city}</Form.Label>
                                                 </Col>
-                                                <Col xs={2}>
+                                                <Col xs="auto">
                                                 <Form.Label>State: </Form.Label>
                                                 <Form.Label>&ensp;{props.checkoutvalues.state}</Form.Label>
                                                 </Col>
-                                                <Col xs={2}>
+                                                <Col xs="auto">
                                                 <Form.Label>Postal Code: </Form.Label>
                                                 <Form.Label>&ensp;{props.checkoutvalues.postalCode}</Form.Label>
                                                 </Col>

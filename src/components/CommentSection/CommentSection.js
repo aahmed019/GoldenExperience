@@ -72,6 +72,7 @@ export default function CommentSection(props){
     },[])
 
     const deRegisterUser = (email) => {
+        console.log("here in deregsiter")
         database.getCollection('Users').doc(email).delete()
         .then(() =>{
             notify.show('Stop cursing! You have been deregistered!');
@@ -83,10 +84,6 @@ export default function CommentSection(props){
     }
 
     const removeVIP = (email) => {
-        database.getCollection('SignUp').doc(email).update({
-            Vip: "false",
-            warnings: 0
-          })
         database.getCollection('Users').doc(email).update({
             Vip: "false",
             warnings: 0
@@ -106,13 +103,11 @@ export default function CommentSection(props){
               database.getCollection('Users').doc(email).update({
                 warnings: new_warnings,
               })
-              database.getCollection('SignUp').doc(email).update({
-                warnings: new_warnings,
-              })
-              if(new_warnings >= 2 && vip_status == "true"){
+              if(new_warnings >= 2 && (vip_status == "true" || vip_status == true) ){
                 removeVIP(email);
               }
-              else if(new_warnings >= 3 && vip_status == "false"){
+              else if(new_warnings >= 3 && (vip_status == "false" || vip_status == false) ){
+                  console.log("here in if")
                 deRegisterUser(email);
               }else{
                 notify.show('Stop cursing! A warning has been added to your account!');
