@@ -8,8 +8,6 @@ export default function ComplaintCompliment() {
     let tests = Fire.db
 
     const[Complaints, getComplaints] = useState([])
-    const increment = firebase.firestore.FieldValue.increment(1);
-    const decrement = firebase.firestore.FieldValue.increment(-1);
     
     const getData = async() =>{
         const comp = []
@@ -31,11 +29,11 @@ export default function ComplaintCompliment() {
     },[])
 
 
-    async function AddComplaint(requestID, staffmember){
-        await tests.getCollection('Staff').where('Name', '==', staffmember).limit(1).get()
+    async function AddComplaint(requestID, staffmember, VIP){
+    await tests.getCollection('Staff').where('email', '==', staffmember).limit(1).get()
         .then((snapshot) =>{
             const staffInformation = snapshot.docs[0];                                              
-            staffInformation.ref.update({ComplCounter: decrement});
+            staffInformation.ref.update({ComplCounter: firebase.firestore.FieldValue.increment(VIP? -2 : -1)});
         }).then(() =>{
             tests.getCollection('Compls').doc(requestID).delete()
             console.log("Complaint Added")
@@ -47,11 +45,11 @@ export default function ComplaintCompliment() {
         getData()
     }
 
-    async function AddCompliment(requestID, staffmember){
+    async function AddCompliment(requestID, staffmember, VIP){
         await tests.getCollection('Staff').where('Name', '==', staffmember).limit(1).get()
         .then((snapshot) =>{
             const staffInformation = snapshot.docs[0];                                              
-            staffInformation.ref.update({ComplCounter: increment});
+            staffInformation.ref.update({ComplCounter: firebase.firestore.FieldValue.increment(VIP? -2 : -1)});
         }).then(() =>{
             tests.getCollection('Compls').doc(requestID).delete()
             console.log("Compliment Added")
@@ -67,7 +65,7 @@ export default function ComplaintCompliment() {
         await tests.getCollection('Staff').where('name', '==', user).limit(1).get()
         .then((snapshot) =>{
             const userInformation = snapshot.docs[0];                                              
-            userInformation.ref.update({warning: increment});
+            userInformation.ref.update({warning: firebase.firestore.FieldValue.increment(1)});
         }).then(() =>{
             tests.getCollection('Compls').doc(requestID).delete()
             console.log("No Merit Done")
@@ -76,6 +74,11 @@ export default function ComplaintCompliment() {
             console.error("Error: ", error);
         });
 
+        getData()
+    }
+
+    async function deleteReport(requestID){
+        tests.getCollection('Compls').doc(requestID).delete()
         getData()
     }
 
@@ -88,13 +91,14 @@ export default function ComplaintCompliment() {
                 console.log(item);
                 return <div key={i}>
                 <h1>Complaint number: {i + 1}</h1>
-                <h2>From: {item.user}</h2>
-                <h2>To: {item.staff}</h2>
-                <h2>Description: {item.complaint}</h2>
-                <button onClick={() => {AddComplaint(item.id, item.staff)}}>Complaint</button>
+                <h2>From: {item.Complainer} {item.isVIP ? '[VIP]' :''}</h2>
+                <h2>To: {item.Complainee}</h2>
+                <h2>Description: {item.Description}</h2>
+                <button onClick={() => {AddComplaint(item.id, item.Complainee, item.isVIP)}}>Complaint</button>
                 <br/><br/>
-                <button onClick={() => {AddCompliment(item.id, item.staff)}}>Compliment</button>
+                <button onClick={() => {AddCompliment(item.id, item.staff, item.isVIP)}}>Compliment</button>
                 <button onClick={() => {NoMerit(item.id ,item.complainee)}}>No Merit</button>
+                <button onClick={() => {deleteReport(item.id)}}>Delete</button>
                 <br/>
                 <br/>
                 </div>

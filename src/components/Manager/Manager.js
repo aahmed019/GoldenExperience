@@ -17,7 +17,7 @@ export default function ManagerPage() {
     return (     
         <div style={{textAlign:'center'}}>
             <div className='manager-background-boi'>
-                    <Tabs defaultIndex={1} onSelect={index => console.log(index)}>
+                    <Tabs defaultIndex={4} onSelect={index => console.log(index)}>
                         <TabList>
                             <Tab>New Users</Tab>
                             <Tab>Users</Tab>
