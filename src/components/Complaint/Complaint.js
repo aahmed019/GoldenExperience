@@ -137,9 +137,39 @@ export default function Complaint(){
                 }
             })
         }else if(document.getElementById("complaintAbout") === "customer"){
-
+            orders.forEach(order =>{
+                console.log(order)
+                console.log(order.orderID)
+                if(order.orderID == document.getElementById("orderSearchComplaint").value){
+                    console.log(order.user)
+                    complainee = order.user
+                }
+            })
         }else{
-
+            var foodOrDrink = document.getElementById("complaintAbout").value
+            var temp = ""
+            if(String(foodOrDrink) === "m"){
+                fire.getCollection('Food').where('id', '==', String(foodOrDrink)).get().then(querySnapshot => {
+                    querySnapshot.docs.forEach(doc => {
+                        let data = doc.data()
+                        temp = data.Chef
+                    })
+                    complainee = temp
+                }).catch(function(error){
+                    console.log(error)
+                })
+            }else{
+                fire.getCollection('Drink').where('id', '==', String(foodOrDrink)).get().then(querySnapshot => {
+                    querySnapshot.docs.forEach(doc => {
+                        let data = doc.data()
+                        console.log(data.Chef)
+                        temp = data.Chef
+                    })
+                    complainee = temp
+                }).catch(function(error){
+                    console.log(error)
+                })
+            }
         }
         fire.getCollection('Compls').doc().set({
             Complainee: complainee,
@@ -198,7 +228,8 @@ export default function Complaint(){
 
     function dispute(id) {
         fire.getCollection('Compls').doc(id).update({
-            Disputed: true
+            Disputed: true,
+            Dispute: document.getElementById("disputeReason").value
         }).then(function() {// went through
             console.log("Document successfully written!");
             
@@ -207,7 +238,7 @@ export default function Complaint(){
             console.error("Error writing document: ", error);
         });
         toast("complaint disputed")
-        document.getElementById(id).style.display = "none";
+        getComplaintsAgainst()
     }
     return(
         <div>
@@ -220,8 +251,12 @@ export default function Complaint(){
                             <input type="text" id="orderSearchCompliment"/>
                             <input type="button" id="OrderSearhComplimentExecute" value="Search" onClick = {() => findOrderForCompliment()}/><br></br>
                         <form style = {{display: showComplimentForm}}>
+                            <h3>Who/What would you like to compliment?</h3>
                             <select name="complimentTo" id="complimentTo">
-                                <option value="chef">Compliment Chef on this order</option>
+                                {items.map(function(item, i){
+                                    return <option key = {i} id={item[0]} value={item[1]}>{item[1]}</option>
+                                })}
+                                <option value="customer">Compliment Customer on this order</option>
                                 <option value="driver">Compliment Driver on this order</option>
                             </select>
                             <h3>Title</h3>
@@ -237,6 +272,7 @@ export default function Complaint(){
                         <input type="text" id="orderSearchComplaint"/>
                         <input type="button" id="orderSearchComplaintExecute" value="Search" onClick = {() => findOrderForComplaint()}/><br></br>
                         <div style = {{display: showComplaintForm}}>
+                            <h3>Who/What would you like to complain about?</h3>
                             <select id="complaintAbout">
                                 {items.map(function(item, i){
                                     console.log(item[1])
@@ -264,6 +300,8 @@ export default function Complaint(){
                                 <h3>Title: {complaint.Title}</h3>
                                 <h3>Description: </h3>
                                 <p>{complaint.Description}</p><br></br>
+                                <h3>Reason for Dispute:</h3>
+                                <input type="text" className="submissionfield" id="disputeReason"/><br></br>
                                 <button id = {complaint.id} onClick = {() => dispute(complaint.id)}>dispute</button>
                             </div>
                             }
