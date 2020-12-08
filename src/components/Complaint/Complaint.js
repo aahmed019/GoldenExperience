@@ -15,6 +15,7 @@ toast.configure()
 export default function Complaint(props){
     const[showComplimentForm, setShowComplimentForm] = useState('none')
     const[showComplaintForm, setShowComplaintForm] = useState('none')
+    const[showDiscussionComplaintForm, setShowDiscussionComplaintForm] = useState('none')
     const[items, setItems] = useState([])
     const[complaintAgainstUser, setComplaintAgainstUser] = useState([])
     const[orders, setOrders] = useState([])
@@ -260,11 +261,60 @@ export default function Complaint(props){
         toast("complaint disputed")
         getComplaintsAgainst()
     }
+
+    const makeDiscussionFormVisible = () => {
+        setShowDiscussionComplaintForm('block')
+    }
+
+    function getComplaineeEmailDiscussion(){
+        var complainee = ""
+        fire.getCollection("Users").where("username", "==", String(document.getElementById("discussionComplainee").value)).get().then(querySnapshot => {
+            querySnapshot.docs.forEach(doc => {
+                let data = doc.data()
+                complainee = data.email
+            })
+            submitDiscussionComplaint(complainee)
+        }).catch(function(error){
+            console.log(error)
+        })
+    }
+
+    function submitDiscussionComplaint(complainee){
+        console.log(complainee)
+        fire.getCollection('Compls').doc().set({            
+            Complainee: complainee,
+            Complainer: currentUser.email,
+            Description: document.getElementById("discussionComplaintDesciption").value,
+            Disputed: false,
+            OrderID: "DISCUSSION COMPLAINT",
+            Title: document.getElementById("discussionComplaintTitle").value,
+            isVIP: userVIP,
+            isCompliment: false
+        }).then(function() {// went through
+            console.log("Document successfully written!");
+            
+        })
+        .catch(function(error) { //broke down somewhere
+            console.error("Error writing document: ", error);
+        });
+        toast("complaint submitted")
+    }
+
     return(
         <div>
         <div className ='background-boi'>
             <div className = "container bigBoxed">
-                <div className="row" style = {{backgroundColor: "green"}}>
+            <button onClick={() => makeDiscussionFormVisible()}>Complaint against user on discussion page</button>
+                    <form style = {{display: showDiscussionComplaintForm}}>
+                            <h3>Username</h3>
+                            <input type="text" id="discussionComplainee"/>
+                            <h3>Title</h3>
+                            <input type="text" id="discussionComplaintTitle"/>
+                            <h3>Description</h3>
+                            <input type="text" className="submissionfield" id="discussionComplaintDesciption"/><br></br>
+                            <input type="button" id="submitDiscussionComplaint" value="Submit" onClick={() => getComplaineeEmailDiscussion()}></input>
+                        </form>
+                <div className="row" style = {{backgroundColor: "green"}}>                    
                     <div className="column" style = {{backgroundColor: "blue"}} >
                         <h2>Submit Compliment</h2>
                         <h3>Order Number</h3>
