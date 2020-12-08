@@ -27,7 +27,7 @@ export default function DiscussionPage() {
     const getUser = async() =>{
         if(currentUser){
             database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
-                if(!doc.exists){
+                if(!doc.exists && currentUser.email != "manageremail@gmail.com"){
                     setAuthorize(false);
                 }
             })    
