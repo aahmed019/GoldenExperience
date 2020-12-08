@@ -40,34 +40,21 @@ export default function Users() {
         getData()
     }
 
-    //function for changing balance
-    // async function changeBalance(userEmail){
-    //     await tests.getCollection('Users').doc(currentUser.email).update({
-    //         Balance:1
-    //     }).then(function() {// went through
-    //         console.log("Approved!");
-            
-    //     })
-    //     .catch(function(error) { //broke down somewhere
-    //         console.error("Error: ", error);
-    //     });
 
-    //     getData()
-    // }
 
     return (     
         <div style={{textAlign:'center'}}>
             <h1>Users</h1>
-            <div style={{display:'flex', flexDirection:'row'}}>
+            <div>
             {newUsers.map(function(item, i){
                 console.log(item);
                 return <div key={i}>
                 <h1>User number: {i + 1}</h1>
-                <h2>Name: {item.name}</h2>
+                <h2>Name: {item.name} {item.Vip ? '[VIP]' :''}</h2>
                 <h2>Email: {item.email}</h2>
                 <h2>Username: {item.username}</h2>
-            <h2>Balance: {item.Balance}</h2>
-            <h2>Warnings: {item.warnings}</h2>
+                <h2>Balance: {item.Balance}</h2>
+                <h2>Warnings: {item.warnings}</h2>
                 <button onClick={() => {deleteUser(item.username)}}>Delete</button>
                 <br/>
                 <br/>

@@ -61,14 +61,53 @@ export default function ComplaintCompliment() {
         getData()
     }
 
-    async function NoMerit(requestID ,user){
-        await tests.getCollection('Staff').where('name', '==', user).limit(1).get()
-        .then((snapshot) =>{
-            const userInformation = snapshot.docs[0];                                              
-            userInformation.ref.update({warning: firebase.firestore.FieldValue.increment(1)});
-        }).then(() =>{
-            tests.getCollection('Compls').doc(requestID).delete()
-            console.log("No Merit Done")
+    // async function NoMerit(requestID ,user){
+    //     await tests.getCollection('Users').where('name', '==', user).limit(1).get()
+    //     .then(function(snapshot){
+    //         if(snapshot.exists){
+
+    //         }
+    //         const userInformation = snapshot.docs[0];                                              
+    //         userInformation.ref.update({warning: firebase.firestore.FieldValue.increment(1)});
+    //     }).then(() =>{
+    //         tests.getCollection('Compls').doc(requestID).delete()
+    //         console.log("No Merit Done")
+    //     })
+    //     .catch(function(error) { //broke down somewhere
+    //         console.error("Error: ", error);
+    //     });
+
+    //     getData()
+    // }
+
+    async function NoMerit(requestID, email){
+        await tests.getCollection('Users').doc(email).get().then(function(doc){
+            let new_warnings = 0;
+            let vip_status = false;
+            if(doc.exists){
+              new_warnings = doc.data().warnings + 1;
+              vip_status = doc.data().Vip;
+              tests.getCollection('Users').doc(email).update({
+                warnings: new_warnings,
+              })
+              if(new_warnings >= 2 && (vip_status == "true" || vip_status == true) ){
+                tests.getCollection('Users').doc(email).update({
+                    Vip: false,
+                    warnings: 0
+                  })
+              }
+              else if(new_warnings >= 3 && (vip_status == "false" || vip_status == false) ){
+                  console.log("here in if")
+                  deleteUser(email);
+              }
+            }
+        })
+        deleteReport(requestID);
+    }
+    async function deleteUser(user){
+        await tests.getCollection('Users').doc(user).delete()
+        .then(() =>{
+            console.log("User deleted from Database")
         })
         .catch(function(error) { //broke down somewhere
             console.error("Error: ", error);
@@ -76,7 +115,6 @@ export default function ComplaintCompliment() {
 
         getData()
     }
-
     async function deleteReport(requestID){
         tests.getCollection('Compls').doc(requestID).delete()
         getData();
@@ -97,7 +135,7 @@ export default function ComplaintCompliment() {
                 <button onClick={() => {AddComplaint(item.id, item.Complainee, item.isVIP)}}>Complaint</button>
                 <br/><br/>
                 <button onClick={() => {AddCompliment(item.id, item.staff, item.isVIP)}}>Compliment</button>
-                <button onClick={() => {NoMerit(item.id ,item.complainee)}}>No Merit</button>
+                <button onClick={() => {NoMerit(item.id ,item.Complainer)}}>No Merit</button>
                 <button onClick={() => {deleteReport(item.id)}}>Delete</button>
                 <br/>
                 <br/>

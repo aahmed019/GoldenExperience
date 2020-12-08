@@ -48,7 +48,6 @@ class ChefPage extends Component {
                             <Tab>Upload Menu</Tab>
                             <Tab>Menu</Tab>
                             <Tab>Orders</Tab>
-                            <Tab>Disputes</Tab>
                             <Tab>Food Item</Tab>
                         </TabList>
                         <TabPanel>
@@ -66,10 +65,6 @@ class ChefPage extends Component {
 
                         <TabPanel>
                             <NewOrders/>
-                        </TabPanel>
-
-                        <TabPanel>
-                        <h1>Disputes</h1>
                         </TabPanel>
 
                         <TabPanel>
