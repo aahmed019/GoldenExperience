@@ -164,7 +164,8 @@ export default function SuccessPage (props){
                         items: cart,
                         total:total,
                         user: currentUser.email,
-                        userName: UserName
+                        userName: UserName,
+                        notes: notes
                     })
                     .then(function() {// went through
                         console.log("Approved!");
