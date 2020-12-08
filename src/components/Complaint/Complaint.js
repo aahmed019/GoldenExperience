@@ -12,36 +12,24 @@ import { setConfiguration } from 'react-grid-system';
 
 toast.configure()
 
-export default function Complaint(){
+export default function Complaint(props){
     const[showComplimentForm, setShowComplimentForm] = useState('none')
     const[showComplaintForm, setShowComplaintForm] = useState('none')
     const[items, setItems] = useState([])
     const[complaintAgainstUser, setComplaintAgainstUser] = useState([])
     const[orders, setOrders] = useState([])
     const[userVIP, setUserVIP] = useState(false)
-    const[isStaff, setIsStaff] = useState(false)
     const{currentUser} = useAuth()
-
-    let fire = Fire.db
-
-    const checkIsStaff = async() => {
-        fire.getCollection('Staff').get().then(querySnapshot => {
-            querySnapshot.docs.forEach(doc => {
-                let data = doc.data()
-                if(currentUser.email === data.email){
-                    setIsStaff(true)
-                }
-            })
-        }).catch(function(error){
-            console.log(error)
-        })
-    }
+    const query = queryString.parse(props.location.search);
+    const usertype = query.user;
+    let fire = Fire.db 
+    console.log(usertype)
+    console.log(currentUser.name)
 
     const getOrders = async() => {
         console.log(currentUser.email)
         const tempOrders = []
-        console.log(isStaff)
-        if(isStaff){
+        if(usertype === "driver"){
             fire.getCollection('Orders').where('deliverer', '==', String(currentUser.email)).get().then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
                     let currentID = doc.id
@@ -53,6 +41,8 @@ export default function Complaint(){
             }).catch(function(error){
                 console.log(error)
             })
+        }else if(usertype === "chef"){
+            //getFood()
         }else{
             fire.getCollection('Orders').where('user', '==', String(currentUser.email)).get().then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
@@ -95,7 +85,6 @@ export default function Complaint(){
     }
 
     useEffect(() =>{
-        checkIsStaff()
         getOrders()
         getComplaintsAgainst()
         isThisUserVIP()
