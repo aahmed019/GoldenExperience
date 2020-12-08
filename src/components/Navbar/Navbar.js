@@ -34,6 +34,8 @@ export default function NavigationBar(){
               <li className= "nav-item" ><Link to="/Deposit">Deposit</Link></li>&emsp;&emsp;
               <li className= "nav-item" ><Link to="/Discussion">Discussion</Link></li>&emsp;&emsp;
               <li className= "nav-item" ><Link to="/Review">Review</Link></li>&emsp;&emsp;
+              <li className= "nav-item" ><Link to="/Complaint">Complaint</Link></li>&emsp;&emsp;
+
               <li className= "nav-item" ><Link className="profilepage" to="/Profile">Profile</Link></li>&emsp;&emsp;
 
               </Fragment>

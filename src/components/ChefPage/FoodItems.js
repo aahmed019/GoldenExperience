@@ -2,6 +2,7 @@ import React, {useEffect, useState } from 'react';
 import {Button, Modal, Form} from "react-bootstrap";
 import Fire from '../../firebaseConfig';
 import 'react-tabs/style/react-tabs.css';
+import { useAuth } from "../../contexts/AuthContext"
 
 
 export default function FoodItems() {
@@ -14,24 +15,28 @@ export default function FoodItems() {
     const[typeValue, setFoodType] = useState([])
     const[url, setURL] = useState([])
     const[vip, setVIP] = useState(false)
+    const { currentUser, logout } = useAuth()
 
     const[show, setShow] = useState([])
-    const username = "John";
-    // const[newWord, setNewWord] = useState('')
-    
+    // const username = "John";
+    const[username, setUsername] = useState('')
+    const[userAuthorize, setAuthorize] = useState(true)
+    const[email, setEmail] = useState('')
+
     const getData = async() =>{
         const foodItems = []
         tests.getCollection('Food').get()
         .then(querySnapshot => {
             querySnapshot.docs.forEach(doc => {
-                if(doc.data()["Chef"] === username){
+                if(doc.data().Chef == username){
                     foodItems.push(doc.data())
+
                 }
             });
             tests.getCollection('Drink').get()
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
-                    if(doc.data()["Chef"] === username){
+                    if(doc.data().Chef == username){
                         foodItems.push(doc.data())
                     }
                 });
@@ -47,37 +52,41 @@ export default function FoodItems() {
             console.log(error)
         })
     }
+    const getUser = async() =>{
+        if(currentUser){
+            if(currentUser.email == "johndoe321sb@gmail.com"){
+                tests.getCollection('Staff').doc("JohnDoe321sb@gmail.com").get().then(function(doc){
+                    if(!doc.exists || doc.data().Position != "Chef"){
+                        setAuthorize(false);
+                    }
+                    else{
+                        setUsername(doc.data().Name)
+                        setEmail("JohnDoe321sb@gmail.com")
+                    }
+                })    
+            }
+            else{
+                tests.getCollection('Staff').doc(currentUser.email).get().then(function(doc){
+                    if(!doc.exists || doc.data().Position != "Chef"){
+                        setAuthorize(false);
+                    }
+                    else{
+                        setUsername(doc.data().Name)
+                        setEmail(doc.data().email)
+                    }
+                })    
+            }
+         
+        }
+    }
 
     useEffect(() =>{
         setShow(false)
-        getData()
+        getUser()
     },[])
-
-
-
-    // async function deleteWord(word){
-    //     await tests.getCollection('TabooWords').doc(word).delete()
-    //     .then(() =>{
-    //         console.log("User deleted from Database")
-    //     })
-    //     .catch(function(error) { //broke down somewhere
-    //         console.error("Error: ", error);
-    //     });
-
-    //     getData()
-    // }
-
-    // async function addWord(){
-    //     await tests.getCollection('TabooWords').doc(newWord).set({word: newWord})
-    //     .then(() =>{
-    //         console.log("Added word to taboo list")
-    //     })
-    //     .catch(function(error) { //broke down somewhere
-    //         console.error("Error: ", error);
-    //     });
-
-    //     getData()
-    // }
+    useEffect(() =>{
+        getData()
+    },[username])
 
     async function deleteFoodItem(fooditem){
         await tests.getCollection('Food').doc(fooditem.id).delete()
@@ -93,7 +102,7 @@ export default function FoodItems() {
     async function addFooditem(){
         if(typeValue === "drink"){
             let id="d"+foodNameValue.split(" ").join("")
-            await tests.getCollection('Drink').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:[], count:0, vip:vip })
+            await tests.getCollection('Drink').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:[], count:0, vip:vip, email:email })
             .then(() =>{
                 console.log("Added item to drink")
             })
@@ -104,7 +113,7 @@ export default function FoodItems() {
         }
         else{
             let id="m"+foodNameValue.split(" ").join("")
-            await tests.getCollection('Food').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:[], count:0, vip:vip  })
+            await tests.getCollection('Food').doc(id).set({name: foodNameValue, price: foodPriceValue, description: foodDescriptionValue, id: id, Chef: username, url: url, rating:[], count:0, vip:vip, email:email  })
                     .then(() =>{
                         console.log("Added item to food")
                     })
@@ -128,11 +137,10 @@ export default function FoodItems() {
     const handleClose= (e) =>{
         setShow(false)
     }
-    //const handleSubmit= (e) =>{
-        //setShow(false)
-    //}
 
-
+    if(userAuthorize == false || !currentUser){
+        return(<div>You need to be approved to view this page</div>)
+    }
 
 
     return (     
