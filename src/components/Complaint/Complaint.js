@@ -12,7 +12,7 @@ import { setConfiguration } from 'react-grid-system';
 
 toast.configure()
 
-export default function Complaint(){
+export default function Complaint(props){
     const[showComplimentForm, setShowComplimentForm] = useState('none')
     const[showComplaintForm, setShowComplaintForm] = useState('none')
     const[items, setItems] = useState([])
@@ -20,21 +20,41 @@ export default function Complaint(){
     const[orders, setOrders] = useState([])
     const[userVIP, setUserVIP] = useState(false)
     const{currentUser} = useAuth()
-
-    let fire = Fire.db
+    const query = queryString.parse(props.location.search);
+    const usertype = query.user;
+    let fire = Fire.db 
+    console.log(usertype)
+    console.log(currentUser.name)
 
     const getOrders = async() => {
+        console.log(currentUser.email)
         const tempOrders = []
-        fire.getCollection('Orders').where('user', '==', String(currentUser.email)).get().then(querySnapshot => {
-            querySnapshot.docs.forEach(doc => {
-                let currentID = doc.id
-                let data = { ...doc.data(), ['orderID']: currentID}
-                tempOrders.push(data)         
+        if(usertype === "driver"){
+            fire.getCollection('Orders').where('deliverer', '==', String(currentUser.email)).get().then(querySnapshot => {
+                querySnapshot.docs.forEach(doc => {
+                    let currentID = doc.id
+                    let data = { ...doc.data(), ['orderID']: currentID}
+                    console.log(data)
+                    tempOrders.push(data)
+                })
+                setOrders(tempOrders)
+            }).catch(function(error){
+                console.log(error)
             })
-            setOrders(tempOrders)
-        }).catch(function(error){
-            console.log(error)
-        })
+        }else if(usertype === "chef"){
+            //getFood()
+        }else{
+            fire.getCollection('Orders').where('user', '==', String(currentUser.email)).get().then(querySnapshot => {
+                querySnapshot.docs.forEach(doc => {
+                    let currentID = doc.id
+                    let data = { ...doc.data(), ['orderID']: currentID}
+                    tempOrders.push(data)
+                })
+                setOrders(tempOrders)
+            }).catch(function(error){
+                console.log(error)
+            })
+        }
     }
     
     const getComplaintsAgainst = async() => {
@@ -136,10 +156,40 @@ export default function Complaint(){
                     complainee = order.deliverer
                 }
             })
-        }else if(document.getElementById("complaintAbout") === "customer"){
-
+        }else if(document.getElementById("complaintAbout").value === "customer"){
+            orders.forEach(order =>{
+                console.log(order)
+                console.log(order.orderID)
+                if(order.orderID == document.getElementById("orderSearchComplaint").value){
+                    console.log(order.user)
+                    complainee = order.user
+                }
+            })
         }else{
-
+            var foodOrDrink = document.getElementById("complaintAbout").value
+            var temp = ""
+            if(String(foodOrDrink) === "m"){
+                fire.getCollection('Food').where('id', '==', String(foodOrDrink)).get().then(querySnapshot => {
+                    querySnapshot.docs.forEach(doc => {
+                        let data = doc.data()
+                        temp = data.Chef
+                    })
+                    complainee = temp
+                }).catch(function(error){
+                    console.log(error)
+                })
+            }else{
+                fire.getCollection('Drink').where('id', '==', String(foodOrDrink)).get().then(querySnapshot => {
+                    querySnapshot.docs.forEach(doc => {
+                        let data = doc.data()
+                        console.log(data.Chef)
+                        temp = data.Chef
+                    })
+                    complainee = temp
+                }).catch(function(error){
+                    console.log(error)
+                })
+            }
         }
         fire.getCollection('Compls').doc().set({
             Complainee: complainee,
@@ -198,7 +248,8 @@ export default function Complaint(){
 
     function dispute(id) {
         fire.getCollection('Compls').doc(id).update({
-            Disputed: true
+            Disputed: true,
+            Dispute: document.getElementById("disputeReason").value
         }).then(function() {// went through
             console.log("Document successfully written!");
             
@@ -207,7 +258,7 @@ export default function Complaint(){
             console.error("Error writing document: ", error);
         });
         toast("complaint disputed")
-        document.getElementById(id).style.display = "none";
+        getComplaintsAgainst()
     }
     return(
         <div>
@@ -220,9 +271,13 @@ export default function Complaint(){
                             <input type="text" id="orderSearchCompliment"/>
                             <input type="button" id="OrderSearhComplimentExecute" value="Search" onClick = {() => findOrderForCompliment()}/><br></br>
                         <form style = {{display: showComplimentForm}}>
+                            <h3>Who/What would you like to compliment?</h3>
                             <select name="complimentTo" id="complimentTo">
-                                <option value="chef">Compliment Chef on this order</option>
-                                <option value="driver">Compliment Driver on this order</option>
+                                {items.map(function(item, i){
+                                    return <option key = {i} id={item[0]} value={item[1]}>{item[1]}</option>
+                                })}
+                                <option value="customer">Customer</option>
+                                <option value="driver">Driver</option>
                             </select>
                             <h3>Title</h3>
                             <input type="text" id="complimentTitle"/>
@@ -237,13 +292,14 @@ export default function Complaint(){
                         <input type="text" id="orderSearchComplaint"/>
                         <input type="button" id="orderSearchComplaintExecute" value="Search" onClick = {() => findOrderForComplaint()}/><br></br>
                         <div style = {{display: showComplaintForm}}>
+                            <h3>Who/What would you like to complain about?</h3>
                             <select id="complaintAbout">
                                 {items.map(function(item, i){
                                     console.log(item[1])
                                     return <option key = {i} id={item[0]} value={item[1]}>{item[1]}</option>
                                 })}
-                                <option value="driver">Comaplain against Driver on this order</option>
-                                <option value="customer">Comaplain against Customer on this order</option>                                
+                                <option value="driver">Driver</option>
+                                <option value="customer">Customer</option>                                
                             </select>
                             <h3>Title</h3>
                             <input type="text" id="complaintTitle"/>
@@ -257,13 +313,13 @@ export default function Complaint(){
                     <div className = "column">
                         <h2>Complaints Against {currentUser.email.substring(0, currentUser.email.indexOf('@'))}</h2>
                         {complaintAgainstUser.map(function(complaint, i){
-                            console.log(complaint.id)
-                            console.log(complaint.isCompliment)
                             if(!complaint.isCompliment && !complaint.Disputed){
                                 return <div key={i} className = "smallBoxed">
                                 <h3>Title: {complaint.Title}</h3>
                                 <h3>Description: </h3>
                                 <p>{complaint.Description}</p><br></br>
+                                <h3>Reason for Dispute:</h3>
+                                <input type="text" className="submissionfield" id="disputeReason"/><br></br>
                                 <button id = {complaint.id} onClick = {() => dispute(complaint.id)}>dispute</button>
                             </div>
                             }
