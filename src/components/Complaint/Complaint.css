@@ -24,3 +24,14 @@
     border: 1px solid #999999; 
     padding: 5px; 
 }
+.bigBoxed{
+    height:900px;
+    width:100%;
+    overflow:auto;
+}
+.smallBoxed{
+    height:300px;
+    width:100%;
+    padding: 5px;
+    overflow:auto;
+}
