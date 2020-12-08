@@ -71,7 +71,7 @@ export default function Complaint(){
         isThisUserVIP()
     },[])
 
-    const findOrderForCompliment = () => {
+    function findOrderForCompliment() {
         var orderToGet = document.getElementById("OrderSearhCompliment").value
         var orderFound = false
         orders.forEach(order => {
@@ -85,11 +85,11 @@ export default function Complaint(){
         }
     }
     
-    const findOrderForComplaint = async() => {
+    function findOrderForComplaint() {
         var orderToGet = document.getElementById("orderSearchComplaint").value
         var orderFound = false
-        const tempItems = []
         orders.forEach(order => {
+            const tempItems = items
             if(String(order.orderID) === String(orderToGet) && String(order.user) === String(currentUser.email)){
                 orderFound = true
                 order.items.forEach(item => {
@@ -99,6 +99,7 @@ export default function Complaint(){
                                 let data = doc.data()
                                 tempItems.push([item.id, data.name])
                             })
+                            setItems(tempItems)
                         }).catch(function(error){
                             console.log(error)
                         })
@@ -108,14 +109,14 @@ export default function Complaint(){
                                 let data = doc.data()
                                 tempItems.push([item.id, data.name])
                             })
+                            setItems(tempItems)
                         }).catch(function(error){
                             console.log(error)
                         })
                     }
                 })
             }
-        })
-        setItems(tempItems)
+        })        
         if(orderFound){
             setShowComplaintForm('block')
         }else{
@@ -126,7 +127,7 @@ export default function Complaint(){
     function submitComplaint(){
         console.log(document.getElementById("complaintAbout").value)
         if(document.getElementById("complaintAbout").value === "driver"){
-            orders.forEach(function(order){
+            orders.forEach(order =>{
                 console.log(order)
                 console.log(order.orderID)
                 if(order.orderID == document.getElementById("orderSearchComplaint").value){
@@ -134,19 +135,20 @@ export default function Complaint(){
                     setComplainee(order.deliverer)
                 }
             })
-        }else if(document.getElementById("complaintAbout") === "driver"){
+        }else if(document.getElementById("complaintAbout") === "customer"){
 
         }else{
 
         }
-        fire.getCollection('Compls').doc(document.getElementById("complaintTitle").value).set({
+        fire.getCollection('Compls').doc().set({
             Complainee: complainee,
             Complainer: currentUser.email,
             Description: document.getElementById("complaintDescription").value,
             Disputed: false,
             OrderID: document.getElementById("orderSearchComplaint").value,
             Title: document.getElementById("complaintTitle").value,
-            isVIP: userVIP
+            isVIP: userVIP,
+            isCompliment: false
         }).then(function() {// went through
             console.log("Document successfully written!");
             
@@ -161,8 +163,18 @@ export default function Complaint(){
         
     }
 
-    const dispute = () => {
-        toast("does nothing rn")
+    function dispute(id) {
+        fire.getCollection('Compls').doc(id).update({
+            Disputed: true
+        }).then(function() {// went through
+            console.log("Document successfully written!");
+            
+        })
+        .catch(function(error) { //broke down somewhere
+            console.error("Error writing document: ", error);
+        });
+        toast("complaint disputed")
+        document.getElementById(id).style.display = "none";
     }
     // function getFoodNameByID(idToFind){
     //     var toReturn = ""
@@ -188,7 +200,6 @@ export default function Complaint(){
     //     }
     //     return (toReturn)
     // }
-
     return(
         <div>
         <div className ='background-boi'>
@@ -198,7 +209,7 @@ export default function Complaint(){
                         <h2>Submit Compliment</h2>
                         <h3>Order Number</h3>
                             <input type="text" id="OrderSearhCompliment"/>
-                            <input type="button" id="OrderSearhComplimentExecute" value="Search" onClick = {findOrderForCompliment}/><br></br>
+                            <input type="button" id="OrderSearhComplimentExecute" value="Search" onClick = {() => findOrderForCompliment(), () => toast("button clicked")}/><br></br>
                         <form style = {{display: showComplimentForm}}>
                             <select name="complimentTo" id="complimentTo">
                                 <option value="chef">Compliment Chef on this order</option>
@@ -214,38 +225,62 @@ export default function Complaint(){
                         <h2>Submit Complaint</h2>
                         <h3>Order Number</h3>
                         <input type="text" id="orderSearchComplaint"/>
-                        <input type="button" id="orderSearchComplaintExecute" value="Search" onClick = {findOrderForComplaint}/><br></br>
-                        <form style = {{display: showComplaintForm}}>
-                            <select name="complaintAbout" id="complaintAbout">
-                                {items.map(function(item, i){
-                                    return <option key={i} value={item[i][0]}>Complaint about the {item[i][1]} on this order</option>
-                                })}
-                                <option value="driver">Complaint about the Driver on this order</option>
-                                <option value="customer">Complaint about the Customer on this order</option>
+                        <input type="button" id="orderSearchComplaintExecute" value="Search" onClick = {() => findOrderForComplaint()}/><br></br>
+                        <div style = {{display: showComplaintForm}}>
+                            {items.map(function(item, i){
+                                console.log(item[1])
+                                return <div key = {i} style = {{display: "block"}}>
+                                    <button id={item[0]} value={item[1]} onClick={() => toast(item[1] + "button")}>{item[1]}</button>
+                                </div>
+                            })}
+                            {/* <button id="submitComplaint" value="driver" onClick={() => toast("driver button")}>driver</button>
+                            <button id="submitComplaint" value="customer" onClick={() => toast("customer button")}>customer</button> */}
+                            <select id="complaintAbout">
+                                <option value="driver">Comaplain against Driver on this order</option>
+                                <option value="customer">Comaplain against Customer on this order</option>                                
                             </select>
                             <h3>Title</h3>
                             <input type="text" id="complaintTitle"/>
                             <h3>Description</h3>
                             <input type="text" class="submissionfield" id="complaintDescription"/><br></br>
                             <input type="button" id="submitComplaint" value="Submit" onClick={() => submitComplaint()}></input>
-                        </form>
+                        </div>
+                        {/* <form style = {{display: showComplaintForm}}>
+                            <select name="complaintAbout" id="complaintAbout">
+                                {items.map(function(item, i){                                    
+                                    console.log("inside item map function")
+                                    console.log(item[i])
+                                    console.log(item[i+1])
+                                    console.log(items)
+                                    options.push(<option key={i} value={item[0]}>Complaint about the {item} on this order</option>)
+                                    console.log(options)
+                                    return <h1>asfgw</h1>
+                                })}
+                                {options}
+                                <option value="driver">Complaint about the Driver on this order</option>
+                                <option value="customer">Complaint about the Customer on this order</option>
+                            </select>                            
+                        </form> */}
                     </div>
                 </div>
                 <div class = "row">
                     <div class = "column">
                         <h2>Complaints Against {currentUser.email.substring(0, currentUser.email.indexOf('@'))}</h2>
                         {complaintAgainstUser.map(function(complaint, i){
-                            console.log(complaint)
-                            return <div key={i} class = "smallBoxed">
+                            console.log(complaint.id)
+                            console.log(complaint.isCompliment)
+                            if(!complaint.isCompliment && !complaint.Disputed){
+                                return <div key={i} class = "smallBoxed">
                                 <h3>Title: {complaint.Title}</h3>
                                 <h3>Description: </h3>
                                 <p>{complaint.Description}</p><br></br>
-                                <button onClick = {dispute(complaint.id)}>dispute</button>
+                                <button id = {complaint.id} onClick = {() => dispute(complaint.id)}>dispute</button>
                             </div>
+                            }
                         })}
                     </div>
                     <div class = "column">
-                        <h2>Orders For {currentUser.email.substring(0, currentUser.email.indexOf('@'))}</h2>
+                        <h2>Orders placed by {currentUser.email.substring(0, currentUser.email.indexOf('@'))}</h2>
                         {orders.map(function(item, i){
                             return <div key={i} class = "smallBoxed">
                             <h3>Order number: {item.orderID}</h3>
