@@ -266,16 +266,30 @@ export default function Complaint(props){
         setShowDiscussionComplaintForm('block')
     }
 
-    function submitDiscussionComplaint(){
-        fire.getCollection('Compls').doc().set({
-            Complainee: document.getElementById("discussionComplainee").value,
+    function getComplaineeEmailDiscussion(){
+        var complainee = ""
+        fire.getCollection("Users").where("username", "==", String(document.getElementById("discussionComplainee").value)).get().then(querySnapshot => {
+            querySnapshot.docs.forEach(doc => {
+                let data = doc.data()
+                complainee = data.email
+            })
+            submitDiscussionComplaint(complainee)
+        }).catch(function(error){
+            console.log(error)
+        })
+    }
+
+    function submitDiscussionComplaint(complainee){
+        console.log(complainee)
+        fire.getCollection('Compls').doc().set({            
+            Complainee: complainee,
             Complainer: currentUser.email,
             Description: document.getElementById("discussionComplaintDesciption").value,
             Disputed: false,
             OrderID: "DISCUSSION COMPLAINT",
             Title: document.getElementById("discussionComplaintTitle").value,
             isVIP: userVIP,
-            isCompliment: true
+            isCompliment: false
         }).then(function() {// went through
             console.log("Document successfully written!");
             
@@ -298,7 +312,7 @@ export default function Complaint(props){
                             <input type="text" id="discussionComplaintTitle"/>
                             <h3>Description</h3>
                             <input type="text" className="submissionfield" id="discussionComplaintDesciption"/><br></br>
-                            <input type="button" id="submitDiscussionComplaint" value="Submit" onClick={() => submitDiscussionComplaint()}></input>
+                            <input type="button" id="submitDiscussionComplaint" value="Submit" onClick={() => getComplaineeEmailDiscussion()}></input>
                         </form>
                 <div className="row" style = {{backgroundColor: "green"}}>                    
                     <div className="column" style = {{backgroundColor: "blue"}} >
