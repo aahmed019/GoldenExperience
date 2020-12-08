@@ -19,22 +19,52 @@ export default function Complaint(){
     const[complaintAgainstUser, setComplaintAgainstUser] = useState([])
     const[orders, setOrders] = useState([])
     const[userVIP, setUserVIP] = useState(false)
+    const[isStaff, setIsStaff] = useState(false)
     const{currentUser} = useAuth()
 
     let fire = Fire.db
 
-    const getOrders = async() => {
-        const tempOrders = []
-        fire.getCollection('Orders').where('user', '==', String(currentUser.email)).get().then(querySnapshot => {
+    const checkIsStaff = async() => {
+        fire.getCollection('Staff').get().then(querySnapshot => {
             querySnapshot.docs.forEach(doc => {
-                let currentID = doc.id
-                let data = { ...doc.data(), ['orderID']: currentID}
-                tempOrders.push(data)         
+                let data = doc.data()
+                if(currentUser.email === data.email){
+                    setIsStaff(true)
+                }
             })
-            setOrders(tempOrders)
         }).catch(function(error){
             console.log(error)
         })
+    }
+
+    const getOrders = async() => {
+        console.log(currentUser.email)
+        const tempOrders = []
+        console.log(isStaff)
+        if(isStaff){
+            fire.getCollection('Orders').where('deliverer', '==', String(currentUser.email)).get().then(querySnapshot => {
+                querySnapshot.docs.forEach(doc => {
+                    let currentID = doc.id
+                    let data = { ...doc.data(), ['orderID']: currentID}
+                    console.log(data)
+                    tempOrders.push(data)
+                })
+                setOrders(tempOrders)
+            }).catch(function(error){
+                console.log(error)
+            })
+        }else{
+            fire.getCollection('Orders').where('user', '==', String(currentUser.email)).get().then(querySnapshot => {
+                querySnapshot.docs.forEach(doc => {
+                    let currentID = doc.id
+                    let data = { ...doc.data(), ['orderID']: currentID}
+                    tempOrders.push(data)
+                })
+                setOrders(tempOrders)
+            }).catch(function(error){
+                console.log(error)
+            })
+        }
     }
     
     const getComplaintsAgainst = async() => {
@@ -65,6 +95,7 @@ export default function Complaint(){
     }
 
     useEffect(() =>{
+        checkIsStaff()
         getOrders()
         getComplaintsAgainst()
         isThisUserVIP()
@@ -136,7 +167,7 @@ export default function Complaint(){
                     complainee = order.deliverer
                 }
             })
-        }else if(document.getElementById("complaintAbout") === "customer"){
+        }else if(document.getElementById("complaintAbout").value === "customer"){
             orders.forEach(order =>{
                 console.log(order)
                 console.log(order.orderID)
@@ -256,8 +287,8 @@ export default function Complaint(){
                                 {items.map(function(item, i){
                                     return <option key = {i} id={item[0]} value={item[1]}>{item[1]}</option>
                                 })}
-                                <option value="customer">Compliment Customer on this order</option>
-                                <option value="driver">Compliment Driver on this order</option>
+                                <option value="customer">Customer</option>
+                                <option value="driver">Driver</option>
                             </select>
                             <h3>Title</h3>
                             <input type="text" id="complimentTitle"/>
@@ -278,8 +309,8 @@ export default function Complaint(){
                                     console.log(item[1])
                                     return <option key = {i} id={item[0]} value={item[1]}>{item[1]}</option>
                                 })}
-                                <option value="driver">Comaplain against Driver on this order</option>
-                                <option value="customer">Comaplain against Customer on this order</option>                                
+                                <option value="driver">Driver</option>
+                                <option value="customer">Customer</option>                                
                             </select>
                             <h3>Title</h3>
                             <input type="text" id="complaintTitle"/>
@@ -293,8 +324,6 @@ export default function Complaint(){
                     <div className = "column">
                         <h2>Complaints Against {currentUser.email.substring(0, currentUser.email.indexOf('@'))}</h2>
                         {complaintAgainstUser.map(function(complaint, i){
-                            console.log(complaint.id)
-                            console.log(complaint.isCompliment)
                             if(!complaint.isCompliment && !complaint.Disputed){
                                 return <div key={i} className = "smallBoxed">
                                 <h3>Title: {complaint.Title}</h3>
