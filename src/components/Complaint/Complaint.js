@@ -209,30 +209,6 @@ export default function Complaint(){
         toast("complaint disputed")
         document.getElementById(id).style.display = "none";
     }
-    // function getFoodNameByID(idToFind){
-    //     var toReturn = ""
-    //     if(String(idToFind[0]) === "m"){
-    //         fire.getCollection('Food').where('id', '==', String(idToFind)).get().then(querySnapshot => {
-    //             querySnapshot.docs.forEach(doc => {
-    //                 let data = doc.data()
-    //                 toReturn = data.name
-    //                 return data.name
-    //             })       
-    //         }).catch(function(error){
-    //             console.log(error)
-    //         })
-    //     }else{
-    //         fire.getCollection('Drink').where('id', '==', String(idToFind)).get().then(querySnapshot => {
-    //             querySnapshot.docs.forEach(doc => {
-    //                 let data = doc.data()
-    //                 toReturn = data.name
-    //             })
-    //         }).catch(function(error){
-    //             console.log(error)
-    //         })            
-    //     }
-    //     return (toReturn)
-    // }
     return(
         <div>
         <div className ='background-boi'>
