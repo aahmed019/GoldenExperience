@@ -11,7 +11,8 @@ import { useAuth } from '../../contexts/AuthContext'
 
 export default function OrderPage (){
  
-
+    const [userAuthorize, setAuthorize] = useState(true);
+    const [userStatus,setUserStatus] = useState(false);
     const [step,setStep]= useState(1)
     const [cart,setCart]= useState([])
     const [MID,setMID]= useState("")
@@ -26,16 +27,17 @@ export default function OrderPage (){
     const [state,setState]=useState("")
     const [postalCode,setPostalCode]= useState("")
     const [time,setTime]= useState("")
-    const [option,setOption]= useState(1)
+    const [option,setOption]= useState(0)
     const [meal,setMeal]= useState([])
     const [drink,setDrink]= useState([])
     const [UserName,setUserName]= useState("")
+    const [TotalSpent,setTotalSpent] = useState(0)
+    const [totalOrders,setTotalOrders]= useState(0)
     const db =Fire.db;
 
     const{currentUser}=useAuth();
 
-    const getData = async() =>{
-        
+    const getData = async() =>{ 
         db.getCollection("Food").get().then(snapshot => {
             const meal = [];
             snapshot.forEach(doc => {
@@ -55,21 +57,26 @@ export default function OrderPage (){
                 setDrink( drink);
         })}).then(()=>{
             if(currentUser === null)
-            {console.log("NO USER")}
+            {setAuthorize(false)} // check if currentUser is logged in or not 
             else{
             db.getCollection("Users").doc(currentUser.email).get().then(doc => {
-                let usersbalance = 0;
-                let username ="";
-                const data = doc.data();
-                if(data){
-                    usersbalance= data.Balance;
-                    username= data.name;
+
+                if(doc.exists){
+                    const data = doc.data();
+                    //console.log(data.Vip)
+                    setTotalSpent(data.totalSpent);
+                    setUserStatus(data.Vip);
+                    setTotalOrders(data.orderHistory.length);
+                    setUserName(data.name);
+                    setBalance(data.Balance);
                 }
+                else if (!doc.exists)
+                {
+                    setAuthorize(false)
+                }
+            
 
-               // alert(usersbalance);
 
-                setUserName(username);
-                setBalance(usersbalance);
             })
         }}).catch(error => console.log(error))
     }
@@ -158,7 +165,8 @@ export default function OrderPage (){
         setAddress("");
         setTime("");
         setNotes("");
-        setOption(1);
+        setOption(0);
+        setTotal(0);    
     }
     const handleChange = e=> {
         switch(e.target.name)
@@ -208,60 +216,72 @@ export default function OrderPage (){
     }
    
       
-        const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,total}
-        const checkoutvalues={cart,address,city,state,postalCode,time,total,option,notes,balance,UserName}
-        switch(step)
-         {
-        case 1: return (    <div>
-                            <Order 
-                            NextStep={NextStep}
-                            cart={cart}
-                            handleChange={handleChange}
-                            AddToCart={AddToCart}
-                            RemoveFromCart={RemoveFromCart}
-                            values={values}
-                            meal={meal}
-                            drink={drink}
-                            />
-                            <Footer/>
-                            </div>)
-        case 2: return(     <div>
-                            <CheckOut 
-                            CalculateTotal={CalculateTotal}
-                            checkoutvalues={checkoutvalues}
-                            option={option}
-                            meal ={meal}
-                            drink={drink}
-                            NextStep={NextStep}
-                            PrevStep={PrevStep}
-                            handleChange={handleChange}
-                            RemoveFromCart={RemoveFromCart}
-                            UpdateBalance={UpdateBalance}
-                            />
-                            <Footer/>
-                            </div>)
-        case 3: return(
-                            <div>
-                            <Success
-                            checkoutvalues={checkoutvalues}
-                           
-                            startOver={startOver}
-                            />
-                            <Footer/>
-                            </div>
-                        )
-        default: return(
-                            <div>
-                                <Order 
-                                NextStep={NextStep}
+        const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,total,option,time}
+        const checkoutvalues={cart,address,city,state,postalCode,time,total,option,notes,balance,UserName,TotalSpent,totalOrders,userStatus}
+        if(userAuthorize)
+        {   
+            switch(step)
+            {
+           case 1: return (    <div>
+                               <Order 
+                               NextStep={NextStep}
+                               cart={cart}
                                handleChange={handleChange}
-                                AddToCart={AddToCart}
-                                checkoutvalues={checkoutvalues}
-                            />
-                            <Footer/>
-                            </div>
-        )
-    }
+                               AddToCart={AddToCart}
+                               RemoveFromCart={RemoveFromCart}
+                               values={values}
+                               meal={meal}
+                               drink={drink}
+                               />
+                               <Footer/>
+                               </div>)
+           case 2: return(     <div>
+                               <CheckOut 
+                               CalculateTotal={CalculateTotal}
+                               checkoutvalues={checkoutvalues}
+                               option={option}
+                               meal ={meal}
+                               drink={drink}
+                               NextStep={NextStep}
+                               PrevStep={PrevStep}
+                               handleChange={handleChange}
+                               RemoveFromCart={RemoveFromCart}
+                               UpdateBalance={UpdateBalance}
+                               />
+                               <Footer/>
+                               </div>)
+           case 3: return(
+                               <div>
+                               <Success
+                               checkoutvalues={checkoutvalues}
+                                getData={getData}
+                               startOver={startOver}
+                               />
+                               <Footer/>
+                               </div>
+                           )
+           default: return(
+                               <div>
+                                   <Order 
+                                   NextStep={NextStep}
+                                   handleChange={handleChange}
+                                   AddToCart={AddToCart}
+                                   checkoutvalues={checkoutvalues}
+                               />
+                               <Footer/>
+                               </div>
+           )
+         }
+
+        }
+        else
+        {
+            return(
+                <div className="background-boi">
+                <h1>You need to be logged in to view this page</h1>
+                </div>
+           )
+        }
 
     }
     
