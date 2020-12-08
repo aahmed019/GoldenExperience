@@ -5,6 +5,8 @@ import { Container } from 'react-bootstrap';
 import {Link, useHistory} from 'react-router-dom'
 import './Login.css';
 import Footer from '../Footer/Footer';
+import Fire from '../../firebaseConfig'
+
 export default function Login(){
         const emailRef = useRef();
         const passwordRef = useRef();
@@ -12,7 +14,10 @@ export default function Login(){
         const [error, setError] = useState('');
         const [loading, setLoading] = useState(false);
         const history = useHistory();
-        
+        const [staffUser, setStaffUser] = useState('');
+        let database = Fire.db;
+
+
         async function handleSubmit(e){
             e.preventDefault()
 
@@ -20,12 +25,35 @@ export default function Login(){
                 setError('')
                 setLoading(true)
                 await login(emailRef.current.value, passwordRef.current.value)
-                history.push('/Home')
+                await database.getCollection('Staff').doc(emailRef.current.value).get().then(function(doc){
+                    if(doc.exists){
+                        
+                        console.log(doc.data().position)
+                        if(doc.data().Position=== 'Chef'){
+                            console.log("Chef went through")
+                            history.push('/chef')
+                        }
+                        else if(doc.data().Position === 'Driver'){
+                            console.log("Driver went through")
+                            history.push('/DeliveryPage')
+                        }
+                        else if(doc.data().Position === 'Manager'){
+                            console.log("Manager went through")
+                            history.push('/Manager')
+                        }
+                        else{
+                            console.log("Just a normal user")
+                            history.push('/Home')
+                        }
+                    }
+                })
+                
             } catch{
                 setError('Failed to sign in. Please try again!')
             }
             setLoading(false)
         }
+
     return(
         <div className = "background-boi">
         <Container className = "d-flex align-items-center justify-content-center " style ={{minHeight: "80vh"}}>
