@@ -23,6 +23,7 @@ import Posts from './components/Posts/Posts';
 import Complaint from './components/Complaint/Complaint';
 import FoodItemView from './components/FoodItemView/FoodItemView';
 import Review from './components/Review/Review';
+import Routes from './Routes';
 
 function App() {
   return (
@@ -48,8 +49,6 @@ function App() {
               <Route exact path = '/Register' component = {SignUp}/>
               <Route exact path = '/Confirmation' component = {ConfirmationPage}/>
               <Route exact path = '/Order' component = {OrderPage}/>
-              <Route exact path = '/Chef' component={ChefPage}/>
-              <Route exact path = '/Manager' component={ManagerPage}/>
               <Route exact path = '/Profile' component ={ProfilePage}/>
               <Route exact path = '/SignUpV2' component = {SignUpV2}/>
               <Route path = "/forgot-password" component = {ForgotPassword}/>
@@ -61,7 +60,9 @@ function App() {
               <PrivateRoute exact path = '/Complaint' component = {Complaint}/>
               <Route exact path = '/FoodItems' component = {FoodItemView}/>
               <Route exact path = '/Review' component = {Review}/>
-
+              <Routes/>
+              {/* <Route exact path = '/Chef' component={ChefPage}/>
+              <Route exact path = '/Manager' component={ManagerPage}/> */}
 
               
         </Switch>
