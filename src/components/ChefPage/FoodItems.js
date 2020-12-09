@@ -1,5 +1,5 @@
 import React, {useEffect, useState } from 'react';
-import {Button, Modal, Form} from "react-bootstrap";
+import {Button, Modal, Form, Card, Col, Row} from "react-bootstrap";
 import Fire from '../../firebaseConfig';
 import 'react-tabs/style/react-tabs.css';
 import { useAuth } from "../../contexts/AuthContext"
@@ -145,41 +145,52 @@ export default function FoodItems() {
 
     return (     
         <div className='chef-background-boi'>
+            <Row>
              {FoodItems.map(function(item, i){
                  if(item.vip){
-                    return <div style={{paddingRight:'2%', border:"1px solid white"}} key={i}>
-                    {/* <input type="text" value={item.name} onChange={this.handleChange}></input> */}
-                    <p>{item.name}</p>
-                    <p>${item.price}</p>
-                    <p>{item.description}</p>
-                    <p>{item.id}</p>
-                    <h5>FOR VIP ONLY</h5>
-    
-                    <img src={item.url} style={{"width":"200px","height":"200px"}}/>
-                    <br/>
-                    <button onClick={() => {deleteFoodItem(item)}}>Delete</button>
-    
-    
-                    </div>
+                    return <Col> <Card style={{ width: '18rem',  height:"100%", marginLeft: "2%", marginTop:"2%"}}>
+                    <Card.Img style={{height:"50%"}}variant="top" src={item.url} />
+                    <Card.Body>
+                        <Card.Title>{item.name} for ${item.price} FOR VIP ONLY</Card.Title>
+                        <Card.Text>
+                        {item.description}
+                        </Card.Text>
+                        <Button onClick={() => {deleteFoodItem(item)}}>Delete</Button>
+                    </Card.Body>
+                    </Card>
+                    </Col>
                  }
                  else{
-                    return <div style={{paddingRight:'2%', border:"1px solid white"}} key={i}>
-                    {/* <input type="text" value={item.name} onChange={this.handleChange}></input> */}
-                    <p>{item.name}</p>
-                    <p>${item.price}</p>
-                    <p>{item.description}</p>
-                    <p>{item.id}</p>
-                    {/* {item.vip} ? <p>For VIP</p> */}
+                    return <Col><Card style={{ width: '18rem',  height:"100%", marginLeft: "2%", marginTop:"2%"}}>
+                    <Card.Img style={{height:"50%"}}variant="top" src={item.url} />
+                    <Card.Body>
+                        <Card.Title>{item.name} for ${item.price}</Card.Title>
+                        <Card.Text>
+                        {item.description}
+                        </Card.Text>
+                        <Button onClick={() => {deleteFoodItem(item)}}>Delete</Button>
+                    </Card.Body>
+                    </Card>
+                    </Col>
+                    
+                    // <div style={{paddingRight:'2%', border:"1px solid white"}} key={i}>
+                    // {/* <input type="text" value={item.name} onChange={this.handleChange}></input> */}
+                    // <p>{item.name}</p>
+                    // <p>${item.price}</p>
+                    // <p>{item.description}</p>
+                    // <p>{item.id}</p>
+                    // {/* {item.vip} ? <p>For VIP</p> */}
     
-                    <img src={item.url} style={{"width":"200px","height":"200px"}}/>
-                    <br/>
-                    <button onClick={() => {deleteFoodItem(item)}}>Delete</button>
+                    // <img src={item.url} style={{"width":"200px","height":"200px"}}/>
+                    // <br/>
+                    // <button onClick={() => {deleteFoodItem(item)}}>Delete</button>
     
     
-                    </div>
+                    // </div>
                  }
                
             })} 
+            </Row>
             <br/>
             <br/>
 
