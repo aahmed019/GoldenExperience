@@ -19,10 +19,10 @@ export default function Routes(){
     return(
         <>
             <Switch>
-                {user === 'Chef' || 'Manager' ? (<Route exact path = '/Chef' component={ChefPage}/>):
+                {user === 'Chef' || user === 'Manager' ? (<Route exact path = '/Chef' component={ChefPage}/>):
                 (<Route exact path="/" component={LandingPage} />)}
 
-                {user === 'Driver' || 'Manager' ? (<Route exact path = '/DeliveryPage' component={DeliveryPage}/>):
+                {user === 'Driver' || user === 'Manager' ? (<Route exact path = '/DeliveryPage' component={DeliveryPage}/>):
                 <Route exact path="/" component={LandingPage} />}
 
                 {user === 'Manager' ? (<Route exact path = '/Manager' component={ManagerPage}/>):
