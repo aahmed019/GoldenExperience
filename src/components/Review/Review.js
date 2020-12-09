@@ -3,7 +3,7 @@ import { useAuth } from "../../contexts/AuthContext"
 import Fire from '../../firebaseConfig';
 import ReactStars from 'react-stars'
 import Notifications, {notify} from 'react-notify-toast';
-
+import {Card, Row, Col} from "react-bootstrap"
 export default function Review(){
     const [userAuthorize, setAuthorize] = useState(true);
     const { currentUser, logout } = useAuth()
@@ -134,28 +134,45 @@ export default function Review(){
 
     return(
         <div className='chef-background-boi'>
+        <Row>
         {FoodItems.map(function(item, i){
-        return <div style={{paddingRight:'2%', border:"1px solid white"}} key={i}>
-        {/* <input type="text" value={item.name} onChange={this.handleChange}></input> */}
-        <p>{item.name}</p>
-        <p>${item.price}</p>
-        <p>{item.description}</p>
-        <p>{item.id}</p>
-        <img src={item.url} style={{"width":"200px","height":"200px"}}/>
-        <ReactStars
+        return <Card style={{ width: '18rem',  height:"100%", marginLeft: "2%", marginTop:"2%"}}>
+        <Card.Img style={{height:"50%"}}variant="top" src={item.url} />
+        <Card.Body>
+            <Card.Title>{item.name} for ${item.price}</Card.Title>
+            <Card.Text>
+            {item.description}
+            </Card.Text>
+            <ReactStars
             count={5}
             edit={true}
             onChange={e=> changeRating(e, item, username)}
             size={24}
             color2={'#ffd700'}
             color1={'#A9A9A9'} />
+        </Card.Body>
+        </Card>
+        //</div><div style={{paddingRight:'2%', border:"1px solid white"}} key={i}>
+        // {/* <input type="text" value={item.name} onChange={this.handleChange}></input> */}
+        // <p>{item.name}</p>
+        // <p>${item.price}</p>
+        // <p>{item.description}</p>
+        // <p>{item.id}</p>
+        // <img src={item.url} style={{"width":"200px","height":"200px"}}/>
+        // <ReactStars
+        //     count={5}
+        //     edit={true}
+        //     onChange={e=> changeRating(e, item, username)}
+        //     size={24}
+        //     color2={'#ffd700'}
+        //     color1={'#A9A9A9'} />
 
-        <br/>
+        // <br/>
 
 
-        </div>
+        // </div>
     })} 
-  
+  </Row>
     <Notifications/>
 
     </div>
