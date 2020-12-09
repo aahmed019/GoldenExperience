@@ -14,7 +14,6 @@ export default function Login(){
         const [error, setError] = useState('');
         const [loading, setLoading] = useState(false);
         const history = useHistory();
-        const [staffUser, setStaffUser] = useState('');
         let database = Fire.db;
 
 
