@@ -3,26 +3,49 @@ import { useAuth } from '../../contexts/AuthContext';
 import {Row,Col,Button, Container} from 'react-bootstrap'
 import Card from 'react-bootstrap/Card'
 import Fire from '../../firebaseConfig'
+import Footer from '../Footer/Footer'
 
 export default function DeliveryPage(props){
 
-<<<<<<< HEAD
     const db =Fire.db;
-
     const{ currentUser}=useAuth()
     const[orders,setOrder] = useState([])
     const[staffName,setStaffName]=useState("")
-    const [cart,setCart]= useState([])
-=======
-    const db = Fire.db;
->>>>>>> 13ac9467a29de13428b27af5ceb8d74d04072f7b
+    const[meal,setMeal]=useState([])
+    const[drink,setDrink]=useState([])
+    //const [cart,setCart]= useState([])
+
+    const Bid=(OID)=>{
+        alert(OID)
+        let taken="";
+        db.getCollection('Orders').doc(OID).get().then((doc)=>{
+            if(doc.exists)
+            {
+                taken = doc.data().deliverer;
+            }
+        }).then(()=>{
+            // this is to make sure when both deliverers bid for the same order, the later 
+            // guy didnt over write the order thats already taken by the first guy.
+            // I pulled it from db again because state takes longer to refresh and one has to bid for it which would
+            // overwrite the prior data if the order is already taken
+            if(taken!= "")
+            {
+            db.getCollection('Orders').doc(OID).update({
+            deliverer: staffName
+            })
+            }
+            else{
+                alert("The order has already been taken")
+            }
+    }).catch(error=>console.log("Error: ",error))
+        getData();
+    }
 
     useEffect(()=>{
         getData()
 
     },[])
 
-<<<<<<< HEAD
     const getData=()=>{
              db.getCollection("Staff").doc(currentUser.email).get().then(doc => {
 
@@ -46,16 +69,34 @@ export default function DeliveryPage(props){
                 //alert(JSON.stringify(order))
                 order =order.filter(item=> item[0].deliverer === "")
                 setOrder(order)
+        })}).then(()=>{
+            db.getCollection("Drink").get().then(snapshot => {
+                let d = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    d.push([data, doc.id]);
+                })
+                setDrink(d)
+        })}).then(()=>{
+            db.getCollection("Food").get().then(snapshot => {
+                let m = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    m.push([data, doc.id]);
+                })
+            setMeal(m)
         })}).catch(error=> console.log("Error: ",error))
     }
 
     const showorda = orders.filter(item=> item[0].deliverer ==="")
     return(
+    <div>
     <div className="background-boi">
+   
     <h1>Delivery Page</h1>
     
      {showorda && showorda.map((data,i) => {
-        return( <Row className="DRows" >
+        return( <Row className="DRows" key={i} >
                 <Col xs="auto" >
                 <Card
                     bg='Dark'
@@ -63,37 +104,67 @@ export default function DeliveryPage(props){
                     style={{ width: '100%' }}
                      className="mb-2"
                  >
-                    <Card.Header>Order : {data[1]}</Card.Header>
+                    <Card.Header style={{display: 'flex',flexDirection: 'row',alignItems:'center',justifyContent:'space-between' }}>
+                        <span>Order : {data[1]} 
+                        </span>
+                        <span>
+                        <Button variant="primary"   onClick={()=>Bid(data[1])} >Bid</Button>
+                        </span>
+                    </Card.Header>
                     
                     <Card.Body>
                         <p>Name:  {data[0].userName}</p>
                         <p>Address: {data[0].address}</p>
-                        <p>Items</p>
-                        <ol>
-                        {data[0].items.map(item=>{return(<li> {item.id}  x  {item.quantity}</li>)})}
-                        </ol>
-                        <p>Total: {data[0].total}</p>
+                        <Row >
+                            <Col xs={6}>Items</Col>
+                            <Col xs={3}>Quantity</Col>
+                            <Col xs={3}>Price/unit</Col>
+                        </Row>
+                        
+                        {
+                        data[0].items.map(item=>{
+                            let price;
+                            let obj=[];
+                            let q= item.quantity
+                            if(item.id[0]==='m')
+                            {
+                                obj=meal.filter(m=>m[0].id === item.id)[0]
+                                if(obj)
+                                price=obj[0].price
+
+                            }
+                            else{
+                                obj=drink.filter(d=>d[0].id === item.id)[0]
+                                if(obj)
+                                price=obj[0].price
+
+                            }
+                            return(<Row key={item.id} className="DRows"> 
+                                    <Col xs={6}>
+                                        {item.id}
+                                    </Col>  
+                                    <Col xs={3}>
+                                        {item.quantity}
+                                    </Col>
+                                    <Col xs={2}>
+                                        {price} 
+                                    </Col>
+                                   </Row>)})
+                        }
+                        
+                        <Row className="DRows">
+                            <Col xs={6}></Col>
+                            <Col xs={3}><strong>Total:</strong></Col> 
+                            <Col xs={2}>$ {data[0].total}</Col>
+                        </Row>
                     </Card.Body>
                 </Card>
-                </Col>
-                <Col xs="auto"  style={{  
-                                display:'flex', 
-                                flexDirection:'row',
-                                alignItems:'center',
-                                justifyContent:'center'}}>
-                <Button variant="primary" >Bid</Button>
-                </Col>
-                
+                </Col>                
                 </Row>
               )})}
 
-    
+   
+    </div>
+    <Footer/>
     </div>)
-=======
-    return(
-        <div>
-            HELLO
-        </div>
-    )
->>>>>>> 13ac9467a29de13428b27af5ceb8d74d04072f7b
 }
