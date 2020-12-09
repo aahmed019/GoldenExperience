@@ -89,6 +89,8 @@ export default function DeliveryPage(props){
     }
 
     const showorda = orders.filter(item=> item[0].deliverer ==="")
+    if(showorda.length)
+    {
     return(
     <div>
     <div className="background-boi">
@@ -167,4 +169,17 @@ export default function DeliveryPage(props){
     </div>
     <Footer/>
     </div>)
+    }
+    else{
+        return(<div>
+            <div className="background-boi">
+           
+            <h1>Delivery Page</h1>
+            <h4>
+                No orders available
+            </h4>
+            </div>
+            </div>
+            )
+    }
 }
