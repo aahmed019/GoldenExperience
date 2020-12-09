@@ -126,7 +126,7 @@ export default function SuccessPage (props){
                             date: new Date().toLocaleDateString(),
                             timestamp:new Date().toLocaleTimeString(),
                             pickupTime: time,
-                            address:address + city + state+ postalCode,
+                            address:address +", "+ city+" ," + state+", " +postalCode,
                             total:total,
                             notes:notes
                             }
