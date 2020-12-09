@@ -38,48 +38,59 @@ export default function OrderPage (){
     const{currentUser}=useAuth();
 
     const getData = async() =>{ 
+        if(currentUser === null)
+        {setAuthorize(false)} // check if currentUser is logged in or not 
+        else{
+        let VIP=false; // to restrict access on certain meals and drinks
+        db.getCollection("Users").doc(currentUser.email).get().then(doc => {
+
+            if(doc.exists){
+                const data = doc.data();
+                //console.log(data.Vip)
+                VIP= data.Vip;
+                setTotalSpent(data.totalSpent);
+                setUserStatus(data.Vip);
+                setTotalOrders(data.orderHistory.length);
+                setUserName(data.name);
+                setBalance(data.Balance);
+                
+            }
+            else if (!doc.exists)
+            {
+                setAuthorize(false)
+            }
+        }).then(()=>{
+            
         db.getCollection("Food").get().then(snapshot => {
-            const meal = [];
+            let meal = [];
             snapshot.forEach(doc => {
                 const data = doc.data();
                 meal.push([data, doc.id]);
 
             })
+            if(!VIP)
+            {
+                meal=meal.filter(item=>item[0].vip === false)
+            }
             setMeal(meal);
-        }).then(()=>{
+        })}).then(()=>{
+            
             db.getCollection("Drink").get().then(snapshot => {
-                const drink = [];
+                let drink = [];
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     drink.push([data, doc.id]);
-    
                 })
-                setDrink( drink);
-        })}).then(()=>{
-            if(currentUser === null)
-            {setAuthorize(false)} // check if currentUser is logged in or not 
-            else{
-            db.getCollection("Users").doc(currentUser.email).get().then(doc => {
-
-                if(doc.exists){
-                    const data = doc.data();
-                    //console.log(data.Vip)
-                    setTotalSpent(data.totalSpent);
-                    setUserStatus(data.Vip);
-                    setTotalOrders(data.orderHistory.length);
-                    setUserName(data.name);
-                    setBalance(data.Balance);
-                }
-                else if (!doc.exists)
+                if(!VIP)
                 {
-                    setAuthorize(false)
+                    drink= drink.filter(item=>item[0].vip === false)
                 }
-            
-
-
-            })
-        }}).catch(error => console.log(error))
+                setDrink( drink);
+        })}).catch(error => console.log(error))
     }
+
+   
+}
 
     useEffect(()=>{
 
@@ -216,7 +227,7 @@ export default function OrderPage (){
     }
    
       
-        const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,total,option,time}
+        const values= {MID,MNum,DID,DNum,notes,address,city,state,postalCode,total,option,time,userStatus}
         const checkoutvalues={cart,address,city,state,postalCode,time,total,option,notes,balance,UserName,TotalSpent,totalOrders,userStatus}
         if(userAuthorize)
         {   
@@ -284,6 +295,7 @@ export default function OrderPage (){
         }
 
     }
+
     
 
 
