@@ -32,7 +32,8 @@ export default function Dashboard() {
       setVipstatus(doc.data().Vip)
     }
     else{
-      console.log('no doc found')
+      return;
+      //console.log('no doc found')
     }
   })
   database.getCollection('SignUp').doc(currentUser.email).get().then(function(doc){
@@ -40,7 +41,8 @@ export default function Dashboard() {
       setfreshwarn(doc.data().warnings);
     }
     else{
-      console.log('no doc found')
+      return;
+      //console.log('no doc found')
     }
   })
   database.getCollection('Staff').doc(currentUser.email).get().then(function(doc){
