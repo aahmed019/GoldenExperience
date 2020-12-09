@@ -152,25 +152,7 @@ export default function Review(){
             color1={'#A9A9A9'} />
         </Card.Body>
         </Card>
-        //</div><div style={{paddingRight:'2%', border:"1px solid white"}} key={i}>
-        // {/* <input type="text" value={item.name} onChange={this.handleChange}></input> */}
-        // <p>{item.name}</p>
-        // <p>${item.price}</p>
-        // <p>{item.description}</p>
-        // <p>{item.id}</p>
-        // <img src={item.url} style={{"width":"200px","height":"200px"}}/>
-        // <ReactStars
-        //     count={5}
-        //     edit={true}
-        //     onChange={e=> changeRating(e, item, username)}
-        //     size={24}
-        //     color2={'#ffd700'}
-        //     color1={'#A9A9A9'} />
-
-        // <br/>
-
-
-        // </div>
+      
     })} 
   </Row>
     <Notifications/>
