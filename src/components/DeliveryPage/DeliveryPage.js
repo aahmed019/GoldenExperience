@@ -6,18 +6,23 @@ import Fire from '../../firebaseConfig'
 
 export default function DeliveryPage(props){
 
+<<<<<<< HEAD
     const db =Fire.db;
 
     const{ currentUser}=useAuth()
     const[orders,setOrder] = useState([])
     const[staffName,setStaffName]=useState("")
     const [cart,setCart]= useState([])
+=======
+    const db = Fire.db;
+>>>>>>> 13ac9467a29de13428b27af5ceb8d74d04072f7b
 
     useEffect(()=>{
         getData()
 
     },[])
 
+<<<<<<< HEAD
     const getData=()=>{
              db.getCollection("Staff").doc(currentUser.email).get().then(doc => {
 
@@ -84,4 +89,11 @@ export default function DeliveryPage(props){
 
     
     </div>)
+=======
+    return(
+        <div>
+            HELLO
+        </div>
+    )
+>>>>>>> 13ac9467a29de13428b27af5ceb8d74d04072f7b
 }
