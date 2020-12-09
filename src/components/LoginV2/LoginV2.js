@@ -18,6 +18,41 @@ export default function Login(){
         let database = Fire.db;
 
 
+
+        async function checkStaff(){
+            await database.getCollection('Staff').doc(emailRef.current.value).get().then(function(doc){
+                if(doc.exists){
+                    if(doc.data().Position=== 'Chef'){
+                        console.log("Chef went through");
+                        history.push('/chef');
+                        return;
+                    }
+                    else if(doc.data().Position === 'Driver'){
+                        console.log("Driver went through")
+                        history.push('/DeliveryPage')
+                        return;
+                    }
+                    else if(doc.data().Position === 'Manager'){
+                        console.log("Manager went through")
+                        history.push('/Manager')
+                        return;
+                    }
+                    else{
+                        console.log("Just a normal user")
+                        history.push('/Home')
+                        return;
+                    }
+                }
+            })
+        }
+        async function checkUser(){
+            await database.getCollection('Users').doc(emailRef.current.value).get().then(function(doc){
+                if(doc.exists){
+                        console.log("User Went Through")
+                        history.push('/Home')
+                    }
+            })
+        }
         async function handleSubmit(e){
             e.preventDefault()
 
@@ -25,29 +60,8 @@ export default function Login(){
                 setError('')
                 setLoading(true)
                 await login(emailRef.current.value, passwordRef.current.value)
-                await database.getCollection('Staff').doc(emailRef.current.value).get().then(function(doc){
-                    if(doc.exists){
-                        
-                        console.log(doc.data().position)
-                        if(doc.data().Position=== 'Chef'){
-                            console.log("Chef went through")
-                            history.push('/chef')
-                        }
-                        else if(doc.data().Position === 'Driver'){
-                            console.log("Driver went through")
-                            history.push('/DeliveryPage')
-                        }
-                        else if(doc.data().Position === 'Manager'){
-                            console.log("Manager went through")
-                            history.push('/Manager')
-                        }
-                        else{
-                            console.log("Just a normal user")
-                            history.push('/Home')
-                        }
-                    }
-                })
-                
+                checkStaff();
+                checkUser();
             } catch{
                 setError('Failed to sign in. Please try again!')
             }
