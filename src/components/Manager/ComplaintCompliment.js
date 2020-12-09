@@ -61,25 +61,6 @@ export default function ComplaintCompliment() {
         getData()
     }
 
-    // async function NoMerit(requestID ,user){
-    //     await tests.getCollection('Users').where('name', '==', user).limit(1).get()
-    //     .then(function(snapshot){
-    //         if(snapshot.exists){
-
-    //         }
-    //         const userInformation = snapshot.docs[0];                                              
-    //         userInformation.ref.update({warning: firebase.firestore.FieldValue.increment(1)});
-    //     }).then(() =>{
-    //         tests.getCollection('Compls').doc(requestID).delete()
-    //         console.log("No Merit Done")
-    //     })
-    //     .catch(function(error) { //broke down somewhere
-    //         console.error("Error: ", error);
-    //     });
-
-    //     getData()
-    // }
-
     async function NoMerit(requestID, email){
         await tests.getCollection('Users').doc(email).get().then(function(doc){
             let new_warnings = 0;
@@ -104,6 +85,7 @@ export default function ComplaintCompliment() {
         })
         deleteReport(requestID);
     }
+
     async function deleteUser(user){
         await tests.getCollection('Users').doc(user).delete()
         .then(() =>{
@@ -115,6 +97,7 @@ export default function ComplaintCompliment() {
 
         getData()
     }
+    
     async function deleteReport(requestID){
         tests.getCollection('Compls').doc(requestID).delete()
         getData();
