@@ -124,8 +124,11 @@ export default function Review(){
 
     }
 
-    if(userAuthorize == false){
+    if(userAuthorize == false  && currentUser.email != "manageremail@gmail.com"){
         return(<div>You need to be approved to view this page</div>)
+    }
+    if(FoodItems.length == 0){
+        return<div>Please buy food in order to review items</div>
     }
 
 
@@ -152,6 +155,7 @@ export default function Review(){
 
         </div>
     })} 
+  
     <Notifications/>
 
     </div>
