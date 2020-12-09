@@ -44,8 +44,14 @@ export default function Login(){
                     }
                 }
             })
-            console.log("There was no staff memember")
-            history.push('/home')
+        }
+        async function checkUser(){
+            await database.getCollection('Users').doc(emailRef.current.value).get().then(function(doc){
+                if(doc.exists){
+                        console.log("User Went Through")
+                        history.push('/Home')
+                    }
+            })
         }
         async function handleSubmit(e){
             e.preventDefault()
@@ -55,7 +61,7 @@ export default function Login(){
                 setLoading(true)
                 await login(emailRef.current.value, passwordRef.current.value)
                 checkStaff();
-                //checkUser();
+                checkUser();
             } catch{
                 setError('Failed to sign in. Please try again!')
             }
