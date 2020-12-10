@@ -212,6 +212,7 @@ export default function OrderPage (){
         let Drink = drink;
         let reduce 
         let totalnew= total;
+
         if(fid[0]==="m")
         {
             reduce = Meal.find((food)=> fid===food[0].id  )[0].price
@@ -220,6 +221,10 @@ export default function OrderPage (){
         {
             reduce =  Drink.find((food)=> fid===food[0].id  )[0].price
         }
+        if(userStatus)
+        {
+            reduce = reduce - reduce/10
+        }
         totalnew = totalnew - reduce
         console.log("fid :"+fid);
         
@@ -227,7 +232,7 @@ export default function OrderPage (){
 
         setCart( newCart);
         setTotal(totalnew);
-        
+        getData();
         
     }
    
