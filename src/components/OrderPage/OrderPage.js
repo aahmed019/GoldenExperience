@@ -140,6 +140,10 @@ export default function OrderPage (){
           
             totalcost = totalcost + (price* item.quantity)
             })
+
+            if(userStatus){
+                totalcost = totalcost - (totalcost)/10
+            }
          setTotal(totalcost)
         
         
@@ -212,7 +216,8 @@ export default function OrderPage (){
         {
             reduce = Meal.find((food)=> fid===food[0].id  )[0].price
         }
-        else{
+        else
+        {
             reduce =  Drink.find((food)=> fid===food[0].id  )[0].price
         }
         totalnew = totalnew - reduce
@@ -288,8 +293,8 @@ export default function OrderPage (){
         else if(currentUser === null)
         {
             return(
+                <div >
                 <div className="background-boi">
-                <div>
                 <h1>You need to be logged in to view this page</h1>
                 </div>
 
@@ -299,8 +304,8 @@ export default function OrderPage (){
         }
         else{
             return(
-                <div className="background-boi">
-                    <div>
+                <div>
+                <div div className="background-boi">
                 <h1>You need to be approved in to view this page</h1>
                 </div>
                 <Footer/>
