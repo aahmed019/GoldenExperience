@@ -13,6 +13,7 @@ export default function Dashboard() {
   const [userName, setUsername] = useState("");
   const [name, setName] = useState("");
   const [Balance, setBalance] = useState("");
+  const [newBalance, setnewBalance] = useState("");
   const [warnings, setWarnings] = useState("");
   const [vip, setVipstatus] = useState("");
   const [email, setEmail] = useState("");
@@ -39,6 +40,7 @@ export default function Dashboard() {
   database.getCollection('SignUp').doc(currentUser.email).get().then(function(doc){
     if(doc.exists){
       setfreshwarn(doc.data().warnings);
+      setnewBalance(doc.data().Balance);
     }
     else{
       return;
@@ -97,13 +99,14 @@ export default function Dashboard() {
                             <strong>Email:</strong> {email}<br/>
                             <strong>Username:</strong> {userName}<br/>
                             <strong>name:</strong> {name}<br/>
-                            <strong>Balance:</strong> {Balance}<br/>
+                            <strong>Balance:</strong> ${Balance}<br/>
                             <strong>Warnings:</strong> {warnings}<br/>
                             <strong>Vip Status:</strong> {vip.toString()}
                             </div>:
                             <div>
                             <strong>Account Still Pending!</strong><br/>
                             <strong>Warnings:</strong> {freshwarn}<br/>
+                            <strong>Balance:</strong> ${newBalance}<br/>
                             <strong>Minimum Requirement <br/> to achieve an <br/>approved account is $1.00 </strong>
                             </div>}
                     </div>:
