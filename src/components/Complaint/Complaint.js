@@ -22,6 +22,7 @@ export default function Complaint(props){
     const[orders, setOrders] = useState([])
     const[foodAndDrinkByThisChef, setFoodAndDrinkByThisChef] = useState([])
     const[userVIP, setUserVIP] = useState(false)
+    const [userAuthorize, setAuthorize] = useState(true);
     const{currentUser} = useAuth()
     const query = queryString.parse(props.location.search);
     const usertype = query.user;
@@ -71,6 +72,16 @@ export default function Complaint(props){
             }).catch(function(error){
                 console.log(error)
             })
+        }
+    }
+
+    const getUser = async() =>{
+        if(currentUser){
+            fire.getCollection('Users').doc(currentUser.email).get().then(function(doc){
+                if(!doc.exists){
+                    setAuthorize(false);
+                }
+            })    
         }
     }
 
@@ -126,11 +137,18 @@ export default function Complaint(props){
         })
     }
 
+    
     useEffect(() =>{
+        getUser()
         getOrders()
         getComplaintsAgainst()
         isThisUserVIP()
     },[])
+
+    if(userAuthorize == false){
+        return(<div>You need to be approved to view this page</div>)
+    }
+
 
     function findOrderForCompliment() {
         var orderToGet = document.getElementById("orderSearchCompliment").value
