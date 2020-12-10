@@ -62,8 +62,6 @@ export default function NavigationBar(){
                       <li className= "nav-item navItems" ><Link className = "navItems" to="/Home">Home</Link></li>&emsp;&emsp; 
                       <li className= "nav-item" ><Link to="/Menu">Menus</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/Fooditems">Food</Link></li>&emsp;&emsp;
-                      <li className= "nav-item" ><Link to="/Order">Order</Link></li>&emsp;&emsp;
-                      <li className= "nav-item" ><Link to="/Deposit">Deposit</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/Discussion">Discussion</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/Complaint">Complaint</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/DeliveryPage">Delivery</Link></li>&emsp;&emsp;
@@ -92,8 +90,6 @@ export default function NavigationBar(){
                       <li className= "nav-item navItems" ><Link className = "navItems" to="/Home">Home</Link></li>&emsp;&emsp; 
                       <li className= "nav-item" ><Link to="/Menu">Menus</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/Fooditems">Food</Link></li>&emsp;&emsp;
-                      <li className= "nav-item" ><Link to="/Order">Order</Link></li>&emsp;&emsp;
-                      <li className= "nav-item" ><Link to="/Deposit">Deposit</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/Discussion">Discussion</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/Complaint">Complaint</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/Chef">Chef</Link></li>&emsp;&emsp;
@@ -120,8 +116,6 @@ export default function NavigationBar(){
                 <li className= "nav-item navItems" ><Link className = "navItems" to="/Home">Home</Link></li>&emsp;&emsp; 
                 <li className= "nav-item" ><Link to="/Menu">Menus</Link></li>&emsp;&emsp;
                 <li className= "nav-item" ><Link to="/Fooditems">Food</Link></li>&emsp;&emsp;
-                <li className= "nav-item" ><Link to="/Order">Order</Link></li>&emsp;&emsp;
-                <li className= "nav-item" ><Link to="/Deposit">Deposit</Link></li>&emsp;&emsp;
                 <li className= "nav-item" ><Link to="/Discussion">Discussion</Link></li>&emsp;&emsp;
                 <li className= "nav-item" ><Link to="/Complaint">Complaint</Link></li>&emsp;&emsp;
                 <li className= "nav-item" ><Link to="/DeliveryPage">Delivery</Link></li>&emsp;&emsp;
