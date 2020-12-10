@@ -11,7 +11,7 @@ export default function DeliveryPage(props){
     const db =Fire.db;
     const{ currentUser}=useAuth()
     const[orders,setOrder] = useState([])
-    const[staffName,setStaffName]=useState("")
+    const[staffEmail,setStaffEmail]=useState("")
     const[staffType,setType]= useState("")
     const[meal,setMeal]=useState([])
     const[drink,setDrink]=useState([])
@@ -35,7 +35,7 @@ export default function DeliveryPage(props){
             if(taken!= "")
             {
                 db.getCollection('Orders').doc(OID).update({
-                deliverer: staffName
+                deliverer: staffEmail
                 })
                // updateCart(OID)
             }
@@ -65,7 +65,7 @@ export default function DeliveryPage(props){
 
             if(doc.exists){
                 const data = doc.data();
-                setStaffName(data.Name)
+                setStaffEmail(data.email)
                 setType(data.Position)
             }
             else
