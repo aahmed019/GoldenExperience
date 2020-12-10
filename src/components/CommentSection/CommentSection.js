@@ -48,13 +48,19 @@ export default function CommentSection(props){
 
         }
     }   
-
-
     const getUser = async() =>{
         if(currentUser){
             database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
                 if(!doc.exists){
-                    setAuthorize(false);
+                    database.getCollection('Staff').doc(currentUser.email).get().then(function(doc){
+                        if(!doc.exists){
+                            setAuthorize(false);
+                        }
+                        else{
+                            setUsername(doc.data().Name)
+                            setEmail(doc.data().email)        
+                        }
+                    });
                 }
                 else{
                     setUsername(doc.data().username)
@@ -63,11 +69,10 @@ export default function CommentSection(props){
             })    
         }
     }
+
     useEffect(() =>{
         getData()
         getUser()
-        // getPosts()
-        // getComments()
 
     },[])
 
