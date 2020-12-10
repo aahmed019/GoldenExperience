@@ -12,12 +12,15 @@ export default function DeliveryPage(props){
     const{ currentUser}=useAuth()
     const[orders,setOrder] = useState([])
     const[staffName,setStaffName]=useState("")
+    const[staffType,setType]= useState("")
     const[meal,setMeal]=useState([])
     const[drink,setDrink]=useState([])
    // const [cart,setCart]= useState([])
 
     const Bid=(OID)=>{
-        alert(OID)
+        //alert(OID)
+        if(staffType==="Driver")
+        {
         let taken="";
         db.getCollection('Orders').doc(OID).get().then((doc)=>{
             if(doc.exists)
@@ -39,8 +42,12 @@ export default function DeliveryPage(props){
             else{
                 alert("The order has already been taken")
             }
-    }).catch(error=>console.log("Error: ",error))
+        }).catch(error=>console.log("Error: ",error))
         getData();
+        }
+        else{
+            alert("Only driver can bid on the order.")
+        }
     }
    /* function updateCart(ID){
        let c = cart;
@@ -59,6 +66,7 @@ export default function DeliveryPage(props){
             if(doc.exists){
                 const data = doc.data();
                 setStaffName(data.Name)
+                setType(data.Position)
             }
             else
             {
@@ -124,17 +132,17 @@ export default function DeliveryPage(props){
                     <Card.Body>
                         <p>Name:  {data[0].userName}</p>
                         <p>Address: {data[0].address}</p>
-                        <Row >
-                            <Col xs={6}>Items</Col>
-                            <Col xs={3}>Quantity</Col>
-                            <Col xs={3}>Price/unit</Col>
+                        <Row className="DRows">
+                            <Col xs={4}>Items</Col>
+                            <Col xs={4}>Quantity</Col>
+                            <Col xs={4}>Price/unit</Col>
                         </Row>
                         
                         {
                         data[0].items.map(item=>{
                             let price;
                             let obj=[];
-                            let q= item.quantity
+                           
                             if(item.id[0]==='m')
                             {
                                 obj=meal.filter(m=>m[0].id === item.id)[0]
@@ -149,22 +157,22 @@ export default function DeliveryPage(props){
 
                             }
                             return(<Row key={item.id} className="DRows"> 
-                                    <Col xs={6}>
+                                    <Col xs={4}>
                                         {item.id}
                                     </Col>  
-                                    <Col xs={3}>
+                                    <Col xs={4}>
                                         {item.quantity}
                                     </Col>
-                                    <Col xs={2}>
+                                    <Col xs={4}>
                                         {price} 
                                     </Col>
                                    </Row>)})
                         }
                         
                         <Row className="DRows">
-                            <Col xs={6}></Col>
-                            <Col xs={3}><strong>Total:</strong></Col> 
-                            <Col xs={2}>$ {data[0].total}</Col>
+                            <Col xs={4}></Col>
+                            <Col xs={4}><strong>Total:</strong></Col> 
+                            <Col xs={4}>$ {data[0].total}</Col>
                         </Row>
                     </Card.Body>
                 </Card>
