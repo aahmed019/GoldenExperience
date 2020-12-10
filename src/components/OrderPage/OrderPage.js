@@ -285,15 +285,28 @@ export default function OrderPage (){
          }
 
         }
-        else
+        else if(currentUser === null)
         {
             return(
                 <div className="background-boi">
+                <div>
                 <h1>You need to be logged in to view this page</h1>
+                </div>
+
+                <Footer/>
                 </div>
            )
         }
-
+        else{
+            return(
+                <div className="background-boi">
+                    <div>
+                <h1>You need to be approved in to view this page</h1>
+                </div>
+                <Footer/>
+                </div>
+           )
+        }
     }
 
     
