@@ -87,7 +87,7 @@ export default function Complaint(props){
     const getUser = async() =>{
         if(currentUser){
             fire.getCollection('Users').doc(currentUser.email).get().then(function(doc){
-                if(!doc.exists && (!position == "driver" || !position == "chef")){
+                if(!doc.exists && !position == "driver" && !position == "chef"){
                     setAuthorize(false);
                 }
             })    
