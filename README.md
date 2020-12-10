@@ -6,6 +6,31 @@ The goal of this project was to create a web app for a resturant. Functionality 
 
 ## Project Requirements
 
+### System Users
+
+There are three groups of users in this system:
+
+#### Resturant
+
+- [x] At least two chefs who independently decide the menus
+- [ ] At least two delivery people who compete for food deliery
+- [x] The manager/superuser who process customer registrations, handles customer compliments and complaints, hire/fire/raise or cut pay for chef(s) and deliver people
+
+#### Customers
+
+- [x] Registered customers can browse/search, order and vote (lowest 1 star to highest 5 stars) food delivered (on food and delivery quality/manners individually).
+- [x] They can start/participate a discussion topic on cooks/dishes/deliver people.
+
+- [x] Registered customers who spent more than $500 or placed 50 orders, whichever comes first, are promoted to VIP customers
+- [x] In addition to the actions of registered customers, they will receive 10% discount of their ordinary orders, have access to specially developed dishes, and their complaints/compliments are counted twice as important as ordinary ones. 
+
+#### Surfers
+
+- [x] Can browse the menus and ratings only.
+- [x] Can apply to be the registered customers with fixed amount of deposit money and checked by the manager.
+
+### System Features
+
 ## Getting Started
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
