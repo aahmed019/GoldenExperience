@@ -52,6 +52,14 @@ export default function Login(){
                     }
             })
         }
+        async function checkSignUp(){
+            await database.getCollection('SignUp').doc(emailRef.current.value).get().then(function(doc){
+                if(doc.exists){
+                        console.log("Unregistered person Went Through")
+                        history.push('/Profile')
+                    }
+            })
+        }
         async function handleSubmit(e){
             e.preventDefault()
 
@@ -61,6 +69,7 @@ export default function Login(){
                 await login(emailRef.current.value, passwordRef.current.value)
                 checkStaff();
                 checkUser();
+                checkSignUp()
             } catch{
                 setError('Failed to sign in. Please try again!')
             }
