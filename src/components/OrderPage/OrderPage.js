@@ -285,7 +285,7 @@ export default function OrderPage (){
          }
 
         }
-        else
+        else if(currentUser === null)
         {
             return(
                 <div className="background-boi">
@@ -293,7 +293,13 @@ export default function OrderPage (){
                 </div>
            )
         }
-
+        else{
+            return(
+                <div className="background-boi">
+                <h1>You need to be approved in to view this page</h1>
+                </div>
+           )
+        }
     }
 
     
