@@ -153,7 +153,18 @@ export default function Order (props) {
 
                       <Form.Row className="Rows">
                           
-                           
+                      <Form.Check
+                            inline
+                            type="radio"
+                            label="Dine in (unavailable due to pandemic)" 
+                            id="EatOptions"
+                            value={1}
+                            name="option"
+                            onClick={handleChange}
+                            onChange={UpdateOption}
+                            disabled="true"
+                            />
+
                             <Form.Check
                             inline
                             type="radio"
