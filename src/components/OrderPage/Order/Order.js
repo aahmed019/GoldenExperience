@@ -241,7 +241,7 @@ export default function Order (props) {
                                     }>
                                     Remove
                                 </Button>
-  
+                                    
                                 </Col>
                                 </Row>
                        )
