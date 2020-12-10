@@ -4,6 +4,7 @@ import {Row,Col,Button, Container} from 'react-bootstrap'
 import Card from 'react-bootstrap/Card'
 import Fire from '../../firebaseConfig'
 import Footer from '../Footer/Footer'
+import { setConfiguration } from 'react-grid-system';
 
 export default function DeliveryPage(props){
 
@@ -13,7 +14,7 @@ export default function DeliveryPage(props){
     const[staffName,setStaffName]=useState("")
     const[meal,setMeal]=useState([])
     const[drink,setDrink]=useState([])
-    //const [cart,setCart]= useState([])
+   // const [cart,setCart]= useState([])
 
     const Bid=(OID)=>{
         alert(OID)
@@ -30,9 +31,10 @@ export default function DeliveryPage(props){
             // overwrite the prior data if the order is already taken
             if(taken!= "")
             {
-            db.getCollection('Orders').doc(OID).update({
-            deliverer: staffName
-            })
+                db.getCollection('Orders').doc(OID).update({
+                deliverer: staffName
+                })
+                updateCart(OID)
             }
             else{
                 alert("The order has already been taken")
@@ -40,6 +42,11 @@ export default function DeliveryPage(props){
     }).catch(error=>console.log("Error: ",error))
         getData();
     }
+   /* function updateCart(ID){
+       let c = cart;
+       c.push(ID)
+       setCart(c);
+    }*/
 
     useEffect(()=>{
         getData()
@@ -161,7 +168,9 @@ export default function DeliveryPage(props){
                         </Row>
                     </Card.Body>
                 </Card>
-                </Col>                
+                </Col>
+                    
+                        
                 </Row>
               )})}
 
