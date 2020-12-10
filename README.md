@@ -31,6 +31,17 @@ There are three groups of users in this system:
 
 ### System Features
 
+- [x] Provide a GUI, not necessarily web-based, with pictures to show the components and descriptions of each dish and price; each registered customer/VIP has a password to login, when they log in, based on the history of their prior choices, different registered customer/VIP will have different top 3 listing dishes. For new customers or surfers, the top 3 most popular (ordered most) dishes and top 3 highest rated dishes are listed on the page.
+- [x] The chef whose dishes received consistently low ratings or 3 complaints, or no order at all for 3 days, will be demoted (less salsary), a chef demoted twice is fired. Conversely, a chef whose dishes received high ratings or 3 compliments, will be promoted (higher salary). One compliment can be used to cancel one complaint. The delivery people are handled the same way
+- [x] A customer can choose to 1) eat the food in the restraint, 2) pick up the dishes by self or 3) by delivery. For 1) s/he need to fix the available time and seating in the restraint; for case 1) and 2) s/he can only complain/compliment the chef.
+- [x] Customers can file complaints/compliments to chef of the food s/he purchased and deliver person who delivered the dish or other customers who didn’t behave in the discussion forums. Delivery person can complain/compliment customers s/he delivered dishes, all are handled by the manager. The complained person has the right to dispute the complaint, the manager made the final call to dismiss the complaint or convert it to one formal warning and inform the impacted parties. Customers/delivery people whose complaints are decided without merit by the manager will receive one warning.
+- [x] Registered customers having 3 warnings are de-registered. VIPs having 2 warnings are put back to registered customers (with warnings cleared). The warnings should be displayed in the personalized page when the customers log in.
+- [x] If the price of the order is more expensive than the deposited money in the account, the order is frozen until the customer put more money in the account.
+- [x] Customers who are kicked out of the system or choose to quit the system will be handled by the manager: clear the deposit and close the account.
+- [x] The chef is the one who put in the description and keywords for people to search and browse. The average ratings for each food/dish by customers are available for all. 
+- [x] The manager keeps a taboo list of words, any customer who used those taboo words will receive one warning automatically and the words are replaced by \*\*\*, a message with more than 3 taboo words are blocked automatically. 
+- [x] Each team comes up with a creativity feature of the system to make it more exciting, which is worth 10% of overall score of the final project. Details that are not found in this requirement list are up to your team’s call: you fill in the details to your own liking.
+
 ## Getting Started
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
