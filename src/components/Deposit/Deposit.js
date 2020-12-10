@@ -31,6 +31,8 @@ export default function Deposit() {
   
           database.getCollection('Users').doc(currentUser.email).update({
             Balance: newBalance,
+          }).then(() => {
+            notify.show('Money Deposited!');
           })
         }
         else{

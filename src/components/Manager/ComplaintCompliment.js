@@ -107,7 +107,11 @@ export default function ComplaintCompliment() {
     return (     
         <div style={{textAlign:'center'}}>
             <h1>Complaints and Compliments</h1>
-            <div style={{display:'flex', flexDirection:'row' }}>
+            <div style={{display:'flex', flexDirection:'row',
+            height:'900px',
+            width:'100%',
+            overflow:'auto'
+        }}>
             {Complaints.map(function(item, i){
                 console.log(item);
                 return <div key={i}>
@@ -115,6 +119,7 @@ export default function ComplaintCompliment() {
                 <h2>From: {item.Complainer} {item.isVIP ? '[VIP]' :''}</h2>
                 <h2>To: {item.Complainee}</h2>
                 <h2>Description: {item.Description}</h2>
+                <h2>Disputee: {item.Dispute}</h2>
                 <button onClick={() => {AddComplaint(item.id, item.Complainee, item.isVIP)}}>Complaint</button>
                 <br/><br/>
                 <button onClick={() => {AddCompliment(item.id, item.staff, item.isVIP)}}>Compliment</button>

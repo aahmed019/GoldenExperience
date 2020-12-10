@@ -15,6 +15,7 @@ export default function Review(){
     const getUser = async() =>{
         if(currentUser){
             let tempData = [];
+            let hash = {};
             database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
                 if(!doc.exists){
                     setAuthorize(false);
@@ -25,7 +26,8 @@ export default function Review(){
                     for(let i = 0; i < tempOH.length; i++){
                         let cart = tempOH[i].cart;
                         for(let j = 0; j < cart.length; j++){
-                            if(cart[j].id.includes("m")){
+                            if(cart[j].id.includes("m") && !hash[cart[j].id]){
+                                hash[cart[j].id] = true;
                                 database.getCollection('Food').doc(cart[j].id).get().then(function(doc){
                                     tempData.push(doc.data())
                                     if(j == cart.length - 1){
@@ -35,12 +37,16 @@ export default function Review(){
                                 });
                             }
                             else{
-                                database.getCollection('Drink').doc(cart[j].id).get().then(function(doc){
-                                    tempData.push(doc.data())
-                                    if(j == cart.length - 1){
-                                        setFoodItems(tempData)
-                                    }
-                                });
+                                if(!hash[cart[j].id]){
+                                    hash[cart[j].id] = true;
+                                    database.getCollection('Drink').doc(cart[j].id).get().then(function(doc){
+                                        tempData.push(doc.data())
+                                        if(j == cart.length - 1){
+                                            setFoodItems(tempData)
+                                        }
+                                    });
+                                }
+                              
                             }
                            
 

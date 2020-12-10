@@ -22,18 +22,27 @@ export default function Complaint(props){
     const[orders, setOrders] = useState([])
     const[foodAndDrinkByThisChef, setFoodAndDrinkByThisChef] = useState([])
     const[userVIP, setUserVIP] = useState(false)
-    const [userAuthorize, setAuthorize] = useState(true);
+    const [userAuthorize, setAuthorize] = useState(true)
+    const [position, setPosition] = useState("")
     const{currentUser} = useAuth()
-    const query = queryString.parse(props.location.search);
-    const usertype = query.user;
     let fire = Fire.db 
-    console.log(usertype)
     console.log(currentUser.name)
+
+    async function checkStaff(){
+        if(currentUser !== null){
+            await fire.getCollection('Staff').doc(currentUser.email).get().then(function(doc){
+                if(doc.exists){
+                setPosition(doc.data().Position);        
+                }
+                else{console.log('no doc found')}
+            })
+        }
+    }
 
     const getOrders = async() => {
         console.log(currentUser.email)
         const tempOrders = []
-        if(usertype === "driver"){
+        if(position === "Driver"){
             fire.getCollection('Orders').where('deliverer', '==', String(currentUser.email)).get().then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
                     let currentID = doc.id
@@ -45,7 +54,7 @@ export default function Complaint(props){
             }).catch(function(error){
                 console.log(error)
             })
-        }else if(usertype === "chef"){
+        }else if(position === "Chef"){
             getFoodAndDrink()
             await fire.getCollection('Orders').get().then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
@@ -78,7 +87,7 @@ export default function Complaint(props){
     const getUser = async() =>{
         if(currentUser){
             fire.getCollection('Users').doc(currentUser.email).get().then(function(doc){
-                if(!doc.exists){
+                if(!doc.exists && !position == "driver" && !position == "chef"){
                     setAuthorize(false);
                 }
             })    
@@ -137,18 +146,13 @@ export default function Complaint(props){
         })
     }
 
-    
     useEffect(() =>{
+        checkStaff()
         getUser()
         getOrders()
         getComplaintsAgainst()
         isThisUserVIP()
     },[])
-
-    if(userAuthorize == false){
-        return(<div>You need to be approved to view this page</div>)
-    }
-
 
     function findOrderForCompliment() {
         var orderToGet = document.getElementById("orderSearchCompliment").value
@@ -420,101 +424,105 @@ export default function Complaint(props){
         toast("complaint submitted")
     }
 
-    return(
-        <div>
-        <div className ='background-boi'>
-            <div className = "container bigBoxed">
-            <button onClick={() => makeDiscussionFormVisible()}>Complaint against user on discussion page</button>
-                    <form style = {{display: showDiscussionComplaintForm}}>
-                            <h3>Username</h3>
-                            <input type="text" id="discussionComplainee"/>
-                            <h3>Title</h3>
-                            <input type="text" id="discussionComplaintTitle"/>
-                            <h3>Description</h3>
-                            <input type="text" className="submissionfield" id="discussionComplaintDesciption"/><br></br>
-                            <input type="button" id="submitDiscussionComplaint" value="Submit" onClick={() => getComplaineeEmailDiscussion()}></input>
-                        </form>
-                <div className="row" style = {{backgroundColor: "green"}}>                    
-                    <div className="column" style = {{backgroundColor: "blue"}} >
-                        <h2>Submit Compliment</h2>
-                        <h3>Order Number</h3>
-                            <input type="text" id="orderSearchCompliment"/>
-                            <input type="button" id="OrderSearhComplimentExecute" value="Search" onClick = {() => findOrderForCompliment()}/><br></br>
-                        <form style = {{display: showComplimentForm}}>
-                            <h3>Who/What would you like to compliment?</h3>
-                            <select name="complimentTo" id="complimentTo">
-                                {items.map(function(item, i){                                    
-                                    return <option key = {i} id={item[0]} value={item[0]}>{item[1]}</option>
-                                })}
-                                <option value="customer">Customer</option>
-                                <option value="driver">Driver</option>
-                            </select>
-                            <h3>Title</h3>
-                            <input type="text" id="complimentTitle"/>
-                            <h3>Description</h3>
-                            <input type="text" className="submissionfield" id="complimentDescription"/><br></br>
-                            <input type="button" id="submitCompliment" value="Submit" onClick={() =>  getEmailCompliment()}></input>
-                        </form>
+    if(userAuthorize == false){
+        return(<div>You need to be approved to view this page</div>)
+    }else{
+        return(
+            <div>
+            <div className ='background-boi'>
+                <div className = "container bigBoxed">
+                <button onClick={() => makeDiscussionFormVisible()}>Complaint against user on discussion page</button>
+                        <form style = {{display: showDiscussionComplaintForm}}>
+                                <h3>Username</h3>
+                                <input type="text" id="discussionComplainee"/>
+                                <h3>Title</h3>
+                                <input type="text" id="discussionComplaintTitle"/>
+                                <h3>Description</h3>
+                                <input type="text" className="submissionfield" id="discussionComplaintDesciption"/><br></br>
+                                <input type="button" id="submitDiscussionComplaint" value="Submit" onClick={() => getComplaineeEmailDiscussion()}></input>
+                            </form>
+                    <div className="row" style = {{backgroundColor: "green"}}>                    
+                        <div className="column" style = {{backgroundColor: "blue"}} >
+                            <h2>Submit Compliment</h2>
+                            <h3>Order Number</h3>
+                                <input type="text" id="orderSearchCompliment"/>
+                                <input type="button" id="OrderSearhComplimentExecute" value="Search" onClick = {() => findOrderForCompliment()}/><br></br>
+                            <form style = {{display: showComplimentForm}}>
+                                <h3>Who/What would you like to compliment?</h3>
+                                <select name="complimentTo" id="complimentTo">
+                                    {items.map(function(item, i){                                    
+                                        return <option key = {i} id={item[0]} value={item[0]}>{item[1]}</option>
+                                    })}
+                                    <option value="customer">Customer</option>
+                                    <option value="driver">Driver</option>
+                                </select>
+                                <h3>Title</h3>
+                                <input type="text" id="complimentTitle"/>
+                                <h3>Description</h3>
+                                <input type="text" className="submissionfield" id="complimentDescription"/><br></br>
+                                <input type="button" id="submitCompliment" value="Submit" onClick={() =>  getEmailCompliment()}></input>
+                            </form>
+                        </div>
+                        <div className="column" style = {{backgroundColor: "purple"}} >
+                            <h2>Submit Complaint</h2>
+                            <h3>Order Number</h3>
+                            <input type="text" id="orderSearchComplaint"/>
+                            <input type="button" id="orderSearchComplaintExecute" value="Search" onClick = {() => findOrderForComplaint()}/><br></br>
+                            <div style = {{display: showComplaintForm}}>
+                                <h3>Who/What would you like to complain about?</h3>
+                                <select id="complaintAbout">
+                                    {items.map(function(item, i){                                    
+                                        return <option key = {i} id={item[0]} value={item[0]}>{item[1]}</option>
+                                    })}
+                                    <option value="driver">Driver</option>
+                                    <option value="customer">Customer</option>                                
+                                </select>
+                                <h3>Title</h3>
+                                <input type="text" id="complaintTitle"/>
+                                <h3>Description</h3>
+                                <input type="text" className="submissionfield" id="complaintDescription"/><br></br>
+                                <input type="button" id="submitComplaint" value="Submit" onClick={() => getEmailComplaint()}></input>
+                            </div>
+                        </div>
                     </div>
-                    <div className="column" style = {{backgroundColor: "purple"}} >
-                        <h2>Submit Complaint</h2>
-                        <h3>Order Number</h3>
-                        <input type="text" id="orderSearchComplaint"/>
-                        <input type="button" id="orderSearchComplaintExecute" value="Search" onClick = {() => findOrderForComplaint()}/><br></br>
-                        <div style = {{display: showComplaintForm}}>
-                            <h3>Who/What would you like to complain about?</h3>
-                            <select id="complaintAbout">
-                                {items.map(function(item, i){                                    
-                                    return <option key = {i} id={item[0]} value={item[0]}>{item[1]}</option>
-                                })}
-                                <option value="driver">Driver</option>
-                                <option value="customer">Customer</option>                                
-                            </select>
-                            <h3>Title</h3>
-                            <input type="text" id="complaintTitle"/>
-                            <h3>Description</h3>
-                            <input type="text" className="submissionfield" id="complaintDescription"/><br></br>
-                            <input type="button" id="submitComplaint" value="Submit" onClick={() => getEmailComplaint()}></input>
+                    <div className = "row">
+                        <div className = "column">
+                            <h2>Complaints Against {currentUser.email.substring(0, currentUser.email.indexOf('@'))}</h2>
+                            {complaintAgainstUser.map(function(complaint, i){
+                                if(!complaint.isCompliment && !complaint.Disputed){
+                                    return <div key={i} className = "smallBoxed">
+                                    <h3>Title: {complaint.Title}</h3>
+                                    <h3>Description: </h3>
+                                    <p>{complaint.Description}</p><br></br>
+                                    <h3>Reason for Dispute:</h3>
+                                    <input type="text" className="submissionfield" id="disputeReason"/><br></br>
+                                    <button id = {complaint.id} onClick = {() => dispute(complaint.id)}>dispute</button>
+                                </div>
+                                }
+                            })}
+                        </div>
+                        <div className = "column">
+                            <h2>Orders {currentUser.email.substring(0, currentUser.email.indexOf('@'))} is involved in</h2>
+                            {orders.map(function(item, i){
+                                return <div key={i} className = "smallBoxed">
+                                <h3>Order number: {item.orderID}</h3>
+                                <h4>Address: {item.address}</h4>
+                                <h4>Total: ${item.total}</h4>
+                                <div>
+                                    {item.items.map(function(cart, j){
+                                        return <div key = {j}>
+                                            <h2>{cart.id} : {cart.quantity}</h2>
+                                        </div>
+                                    })}
+                                </div>
+                                </div>
+                            })}
                         </div>
                     </div>
                 </div>
-                <div className = "row">
-                    <div className = "column">
-                        <h2>Complaints Against {currentUser.email.substring(0, currentUser.email.indexOf('@'))}</h2>
-                        {complaintAgainstUser.map(function(complaint, i){
-                            if(!complaint.isCompliment && !complaint.Disputed){
-                                return <div key={i} className = "smallBoxed">
-                                <h3>Title: {complaint.Title}</h3>
-                                <h3>Description: </h3>
-                                <p>{complaint.Description}</p><br></br>
-                                <h3>Reason for Dispute:</h3>
-                                <input type="text" className="submissionfield" id="disputeReason"/><br></br>
-                                <button id = {complaint.id} onClick = {() => dispute(complaint.id)}>dispute</button>
-                            </div>
-                            }
-                        })}
-                    </div>
-                    <div className = "column">
-                        <h2>Orders {currentUser.email.substring(0, currentUser.email.indexOf('@'))} is involved in</h2>
-                        {orders.map(function(item, i){
-                            return <div key={i} className = "smallBoxed">
-                            <h3>Order number: {item.orderID}</h3>
-                            <h4>Address: {item.address}</h4>
-                            <h4>Total: ${item.total}</h4>
-                            <div>
-                                {item.items.map(function(cart, j){
-                                    return <div key = {j}>
-                                        <h2>{cart.id} : {cart.quantity}</h2>
-                                    </div>
-                                })}
-                            </div>
-                            </div>
-                        })}
-                    </div>
-                </div>
             </div>
-        </div>
-        <Footer/>
-        </div>
-    )
+            <Footer/>
+            </div>
+        )
+    }    
 }
