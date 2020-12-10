@@ -34,7 +34,7 @@ export default function DeliveryPage(props){
                 db.getCollection('Orders').doc(OID).update({
                 deliverer: staffName
                 })
-                updateCart(OID)
+               // updateCart(OID)
             }
             else{
                 alert("The order has already been taken")
