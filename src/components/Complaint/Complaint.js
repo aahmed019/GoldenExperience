@@ -10,6 +10,7 @@ import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { setConfiguration } from 'react-grid-system';
 import { Next } from 'react-bootstrap/esm/PageItem';
+import { getByTestId } from '@testing-library/react';
 
 toast.configure()
 
@@ -22,27 +23,27 @@ export default function Complaint(props){
     const[orders, setOrders] = useState([])
     const[foodAndDrinkByThisChef, setFoodAndDrinkByThisChef] = useState([])
     const[userVIP, setUserVIP] = useState(false)
-    const [userAuthorize, setAuthorize] = useState(true)
-    const [position, setPosition] = useState("")
+    const [userAuthorize, setAuthorize] = useState(false)
     const{currentUser} = useAuth()
-    let fire = Fire.db 
-    console.log(currentUser.name)
+    let fire = Fire.db
 
-    async function checkStaff(){
-        if(currentUser !== null){
-            await fire.getCollection('Staff').doc(currentUser.email).get().then(function(doc){
-                if(doc.exists){
-                setPosition(doc.data().Position);        
-                }
-                else{console.log('no doc found')}
-            })
-        }
-    }
+    // async function checkStaff(){
+        
+    //     getOrders()
+    // }
 
     const getOrders = async() => {
+        var tempPosition = ""
         console.log(currentUser.email)
         const tempOrders = []
-        if(position === "Driver"){
+        await fire.getCollection("Staff").doc(currentUser.email).get().then(doc => {
+            if(doc.exists){
+                const data = doc.data()
+                tempPosition = data.Position
+            }
+        })
+        console.log(tempPosition)
+        if(tempPosition === "Driver"){
             fire.getCollection('Orders').where('deliverer', '==', String(currentUser.email)).get().then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
                     let currentID = doc.id
@@ -54,7 +55,7 @@ export default function Complaint(props){
             }).catch(function(error){
                 console.log(error)
             })
-        }else if(position === "Chef"){
+        }else if(tempPosition === "Chef"){
             getFoodAndDrink()
             await fire.getCollection('Orders').get().then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
@@ -82,13 +83,15 @@ export default function Complaint(props){
                 console.log(error)
             })
         }
+        getUser(tempPosition)
     }
 
-    const getUser = async() =>{
+    const getUser = async(position) =>{
+        console.log(position)
         if(currentUser){
             fire.getCollection('Users').doc(currentUser.email).get().then(function(doc){
-                if(!doc.exists && !position == "driver" && !position == "chef"){
-                    setAuthorize(false);
+                if(doc.exists || position === "Driver" || position === "Chef"){
+                    setAuthorize(true);
                 }
             })    
         }
@@ -147,11 +150,9 @@ export default function Complaint(props){
     }
 
     useEffect(() =>{
-        checkStaff()
-        getUser()
-        getOrders()
         getComplaintsAgainst()
         isThisUserVIP()
+        getOrders()
     },[])
 
     function findOrderForCompliment() {
