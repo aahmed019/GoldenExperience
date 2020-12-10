@@ -22,18 +22,27 @@ export default function Complaint(props){
     const[orders, setOrders] = useState([])
     const[foodAndDrinkByThisChef, setFoodAndDrinkByThisChef] = useState([])
     const[userVIP, setUserVIP] = useState(false)
-    const [userAuthorize, setAuthorize] = useState(true);
+    const [userAuthorize, setAuthorize] = useState(true)
+    const [position, setPosition] = useState("")
     const{currentUser} = useAuth()
-    const query = queryString.parse(props.location.search);
-    const usertype = query.user;
     let fire = Fire.db 
-    console.log(usertype)
     console.log(currentUser.name)
+
+    async function checkStaff(){
+        if(currentUser !== null){
+            await fire.getCollection('Staff').doc(currentUser.email).get().then(function(doc){
+                if(doc.exists){
+                setPosition(doc.data().Position);        
+                }
+                else{console.log('no doc found')}
+            })
+        }
+    }
 
     const getOrders = async() => {
         console.log(currentUser.email)
         const tempOrders = []
-        if(usertype === "driver"){
+        if(position === "driver"){
             fire.getCollection('Orders').where('deliverer', '==', String(currentUser.email)).get().then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
                     let currentID = doc.id
@@ -45,7 +54,7 @@ export default function Complaint(props){
             }).catch(function(error){
                 console.log(error)
             })
-        }else if(usertype === "chef"){
+        }else if(position === "chef"){
             getFoodAndDrink()
             await fire.getCollection('Orders').get().then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
@@ -78,7 +87,7 @@ export default function Complaint(props){
     const getUser = async() =>{
         if(currentUser){
             fire.getCollection('Users').doc(currentUser.email).get().then(function(doc){
-                if(!doc.exists){
+                if(!doc.exists && (!position == "driver" || !position == "chef")){
                     setAuthorize(false);
                 }
             })    
@@ -137,8 +146,8 @@ export default function Complaint(props){
         })
     }
 
-    
     useEffect(() =>{
+        checkStaff()
         getUser()
         getOrders()
         getComplaintsAgainst()
