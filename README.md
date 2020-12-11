@@ -13,7 +13,7 @@ There are three groups of users in this system:
 #### Resturant
 
 - [x] At least two chefs who independently decide the menus
-- [ ] At least two delivery people who compete for food deliery
+- [x] At least two delivery people who compete for food deliery
 - [x] The manager/superuser who process customer registrations, handles customer compliments and complaints, hire/fire/raise or cut pay for chef(s) and deliver people
 
 #### Customers
@@ -35,8 +35,10 @@ There are three groups of users in this system:
 - [x] Each registered customer/VIP has a password to login, when they log in, based on the history of their prior choices, different registered customer/VIP will have different top 3 listing dishes.
 - [x] For new customers or surfers, the top 3 most popular (ordered most) dishes and top 3 highest rated dishes are listed on the page.
 - [x] The chef whose dishes received consistently low ratings or 3 complaints, or no order at all for 3 days, will be demoted (less salsary), a chef demoted twice is fired.
+- Handled manually by the manager
 - [x] Conversely, a chef whose dishes received high ratings or 3 compliments, will be promoted (higher salary). One compliment can be used to cancel one complaint. The delivery people are handled the same way.
-- [x] A customer can choose to 1) eat the food in the restraint, 2) pick up the dishes by self or 3) by delivery. For 1) s/he need to fix the available time and seating in the restraint; for case 1) and 2) s/he can only complain/compliment the chef.
+- [x] A customer can choose to ~~1) eat the food in the resturant,~~ 2) pick up the dishes by self or 3) by delivery. For 1) s/he need to fix the available time and seating in the resturant; for case 1) and 2) s/he can only complain/compliment the chef.
+- Indoor dining not available due to covid-19
 - [x] Customers can file complaints/compliments to chef of the food s/he purchased and deliver person who delivered the dish or other customers who didn’t behave in the discussion forums. 
 - [x] Delivery person can complain/compliment customers s/he delivered dishes, all are handled by the manager. 
 - [x] The complained person has the right to dispute the complaint, the manager made the final call to dismiss the complaint or convert it to one formal warning and inform the impacted parties. 
@@ -46,7 +48,7 @@ There are three groups of users in this system:
 - [x] The warnings should be displayed in the personalized page when the customers log in.
 - [x] If the price of the order is more expensive than the deposited money in the account, the order is frozen until the customer put more money in the account.
 - [x] Customers who are kicked out of the system or choose to quit the system will be handled by the manager: clear the deposit and close the account.
-- [x] The chef is the one who put in the description and keywords for people to search and browse. 
+- [x] The chef is the one who put in the description and keywords for people to browse. 
 - [x] The average ratings for each food/dish by customers are available for all. 
 - [x] The manager keeps a taboo list of words, any customer who used those taboo words will receive one warning automatically and the words are replaced by \*\*\*, a message with more than 3 taboo words are blocked automatically. 
 - [x] Each team comes up with a creativity feature of the system to make it more exciting, which is worth 10% of overall score of the final project. 
@@ -139,5 +141,5 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 - Ali Ahmed
 - Phyo Zaw Hein
 - Eram Manasia
-- Mitchu Mui
+- Mitchell Mui
 - Ravid Rahman
