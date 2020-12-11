@@ -83,6 +83,7 @@ export default function Staff() {
             {staff.map(function(item, i){
                 console.log(item);
                 return <div key={i} className='color-text complaint' >
+                <br/>
                 <h5>Name: {item.Name}</h5>
                 <h5>Position: {item.Position}</h5>
                 <h5>Salary: {item.Salary}</h5>
@@ -94,7 +95,10 @@ export default function Staff() {
                 <button className="btn btn-outline-dark w-20  font-text" onClick={() => Demote(item.email)}>Demote: </button>
                 <input type='number' onChange={e => setDemote(e.target.value)}></input>
                 <br/>
-                <button className="btn btn-outline-dark w-20 font-text" onClick={() => fire(item.email)}>Fire</button>
+                <button hidden = {item.Position === 'Manager' ? true : false} className="btn btn-outline-dark w-20 font-text" onClick={() => fire(item.email)}>Fire</button>
+                <br/>
+                <br/>
+                <br/>
 
                 </div>
             })}
