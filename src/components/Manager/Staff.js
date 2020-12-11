@@ -82,22 +82,26 @@ export default function Staff() {
             <div style={{textAlign:'center', display:'flex', flexDirection:'column'}}>
             {staff.map(function(item, i){
                 console.log(item);
-                return <div key={i} className='color-text' >
+                return <div key={i} className='color-text complaint' >
+                <br/>
                 <h5>Name: {item.Name}</h5>
                 <h5>Position: {item.Position}</h5>
                 <h5>Salary: {item.Salary}</h5>
                 <h5>Complaints/Compliments: {item.ComplCounter}</h5>
                 <h5>Demoted Counter: {item.DemotionCounter} </h5>
-                <button className="btn btn-outline-dark w-20  font-text" onClick={() => Promote(item.email)}>Promote</button>
-                <input type='number' onChange={e => setPromote(e.target.value)}></input>
+                <input type='number' onChange={e => setPromote(e.target.value)}></input><br/>
+                <button className="btn btn-outline-dark w-20  font-text mt-1" onClick={() => Promote(item.email)}>Promote</button><br/>
                 <br/>
-                <button className="btn btn-outline-dark w-20  font-text" onClick={() => Demote(item.email)}>Demote: </button>
-                <input type='number' onChange={e => setDemote(e.target.value)}></input>
+                <input type='number' onChange={e => setDemote(e.target.value)}></input><br/>
+                <button className="btn btn-outline-dark w-20  font-text mt-1" onClick={() => Demote(item.email)}>Demote: </button>
                 <br/>
-                <button className="btn btn-outline-dark w-20 font-text" onClick={() => fire(item.email)}>Fire</button>
+                <button hidden = {item.Position === 'Manager' ? true : false} className="btn btn-outline-dark w-20 font-text mt-3" onClick={() => fire(item.email)}>Fire</button>
+                <br/>
+                
                 <br/>
                 <br/>
                 <br/>
+
                 </div>
             })}
             </div>
