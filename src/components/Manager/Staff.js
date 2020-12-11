@@ -89,16 +89,15 @@ export default function Staff() {
                 <h5>Salary: {item.Salary}</h5>
                 <h5>Complaints/Compliments: {item.ComplCounter}</h5>
                 <h5>Demoted Counter: {item.DemotionCounter} </h5>
-                <div>
-                <button className="btn btn-outline-dark w-20  font-text" onClick={() => Promote(item.email)}>Promote</button>
-                <input type='number' onChange={e => setPromote(e.target.value)}></input>
-                </div>
-                <div>
-                <button className="btn btn-outline-dark w-20  font-text" onClick={() => Demote(item.email)}>Demote: </button>
-                <input type='number' onChange={e => setDemote(e.target.value)}></input>
-                </div>
+                <input type='number' onChange={e => setPromote(e.target.value)}></input><br/>
+                <button className="btn btn-outline-dark w-20  font-text mt-1" onClick={() => Promote(item.email)}>Promote</button><br/>
                 <br/>
-                <button hidden = {item.Position === 'Manager' ? true : false} className="btn btn-outline-dark w-20 font-text" onClick={() => fire(item.email)}>Fire</button>
+                <input type='number' onChange={e => setDemote(e.target.value)}></input><br/>
+                <button className="btn btn-outline-dark w-20  font-text mt-1" onClick={() => Demote(item.email)}>Demote: </button>
+                <br/>
+                <button hidden = {item.Position === 'Manager' ? true : false} className="btn btn-outline-dark w-20 font-text mt-3" onClick={() => fire(item.email)}>Fire</button>
+                <br/>
+                
                 <br/>
                 <br/>
                 <br/>
