@@ -41,12 +41,12 @@ export default function NewOrders() {
 
     
     return (     
-        <div style={{textAlign:'center'}}>
+        <div style={{textAlign:'center'}} className = "bigBoxed">
             <h1>Orders</h1>
-            <div style={{display:'flex', flexDirection:'row'}} className = "bigBoxed">
+            <div style={{display:'flex', flexDirection:'row'}}>
             {newOrders.map(function(item, i){
                 console.log(item);
-                return <div key={i}  className = "smallBozed">
+                return <div key={i}  className = "smallBoxed">
                 <h1>Order number: {i + 1}</h1>
                 <h2>Name: {item.user}</h2>
                 <h2>Address: {item.address}</h2>
