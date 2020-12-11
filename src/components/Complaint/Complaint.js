@@ -442,8 +442,8 @@ export default function Complaint(props){
                                 <input type="text" className="submissionfield" id="discussionComplaintDesciption"/><br></br>
                                 <input type="button" id="submitDiscussionComplaint" value="Submit" onClick={() => getComplaineeEmailDiscussion()}></input>
                             </form>
-                    <div className="row" style = {{backgroundColor: "green"}}>                    
-                        <div className="column" style = {{backgroundColor: "blue"}} >
+                    <div className="row">                    
+                        <div className="column">
                             <h2>Submit Compliment</h2>
                             <h3>Order Number</h3>
                                 <input type="text" id="orderSearchCompliment"/>
@@ -464,7 +464,7 @@ export default function Complaint(props){
                                 <input type="button" id="submitCompliment" value="Submit" onClick={() =>  getEmailCompliment()}></input>
                             </form>
                         </div>
-                        <div className="column" style = {{backgroundColor: "purple"}} >
+                        <div className="column">
                             <h2>Submit Complaint</h2>
                             <h3>Order Number</h3>
                             <input type="text" id="orderSearchComplaint"/>

@@ -58,6 +58,19 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### Cloning the Repository
+
+To save the project locally, clone it by running the following in the terminal of your choice:<br />
+ ```
+ git clone https://github.com/aahmed019/CSC322-Project.git
+ ```
+
+### `npm install`
+
+npm install downloads a package and it's dependencies.<br />
+It install can be run with or without arguments. <br />
+When run without arguments, npm install downloads dependencies defined in a package.json file and generates a node_modules folder with the installed modules.
+
 ### `npm start`
 
 Runs the app in the development mode.<br />
@@ -125,6 +138,6 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 - Ali Ahmed
 - Phyo Zaw Hein
-- Eram Ma
+- Eram Manasia
 - Mitchu Mui
 - Ravid Rahman
