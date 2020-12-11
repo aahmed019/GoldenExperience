@@ -77,7 +77,7 @@ export default function NewUsers() {
                 <h2>Warnings: {item.warnings}</h2>
                 <button onClick={() => {Approve(item.username, item.email, item.password, item.name ,item.Balance, item.warnings)}}>Approve</button>
                 <br/><br/>
-                <button onClick={() => {deleteNewSignUp(item.username)}}>Deny</button>
+                <button onClick={() => {deleteNewSignUp(item.email)}}>Deny</button>
                 <br/>
                 <br/>
                 </div>
