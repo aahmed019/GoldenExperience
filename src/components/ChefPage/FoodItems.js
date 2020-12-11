@@ -54,18 +54,18 @@ export default function FoodItems() {
     }
     const getUser = async() =>{
         if(currentUser){
-            if(currentUser.email == "johndoe321sb@gmail.com"){
-                tests.getCollection('Staff').doc("JohnDoe321sb@gmail.com").get().then(function(doc){
-                    if(!doc.exists || doc.data().Position != "Chef"){
-                        setAuthorize(false);
-                    }
-                    else{
-                        setUsername(doc.data().Name)
-                        setEmail("JohnDoe321sb@gmail.com")
-                    }
-                })    
-            }
-            else{
+            // if(currentUser.email == "johndoe321sb@gmail.com"){
+            //     tests.getCollection('Staff').doc("JohnDoe321sb@gmail.com").get().then(function(doc){
+            //         if(!doc.exists || doc.data().Position != "Chef"){
+            //             setAuthorize(false);
+            //         }
+            //         else{
+            //             setUsername(doc.data().Name)
+            //             setEmail("JohnDoe321sb@gmail.com")
+            //         }
+            //     })    
+            // }
+            // else{
                 tests.getCollection('Staff').doc(currentUser.email).get().then(function(doc){
                     if(!doc.exists || doc.data().Position != "Chef"){
                         setAuthorize(false);
@@ -75,7 +75,7 @@ export default function FoodItems() {
                         setEmail(doc.data().email)
                     }
                 })    
-            }
+            // }
          
         }
     }
@@ -89,15 +89,31 @@ export default function FoodItems() {
     },[username])
 
     async function deleteFoodItem(fooditem){
-        await tests.getCollection('Food').doc(fooditem.id).delete()
-        .then(() =>{
-            console.log("Food item from Database")
-        })
-        .catch(function(error) { //broke down somewhere
-            console.error("Error: ", error);
-        });
+        if(fooditem.id.includes("d")){
+            await tests.getCollection('Drink').doc(fooditem.id).delete()
+            .then(() =>{
+                console.log("Removed drink item from Database")
+                getData()
 
-        getData()
+            })
+            .catch(function(error) { //broke down somewhere
+                console.error("Error: ", error);
+            });
+    
+        }
+        else{
+            await tests.getCollection('Food').doc(fooditem.id).delete()
+            .then(() =>{
+                console.log("Removed food item from Database")
+                getData()
+
+            })
+            .catch(function(error) { //broke down somewhere
+                console.error("Error: ", error);
+            });
+
+        }
+       
     }
     async function addFooditem(){
         if(typeValue === "drink"){

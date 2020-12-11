@@ -63,7 +63,6 @@ export default function NavigationBar(){
                       <li className= "nav-item" ><Link to="/Menu">Menus</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/Fooditems">Food</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/Discussion">Discussion</Link></li>&emsp;&emsp;
-                      <li className= "nav-item" ><Link to="/Complaint">Complaint</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/DeliveryPage">Delivery</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/Chef">Chef</Link></li>&emsp;&emsp;
                       <li className= "nav-item" ><Link to="/Manager">Managing</Link></li>&emsp;&emsp;

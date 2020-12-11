@@ -18,21 +18,23 @@ export default function DeliveryPage(props){
    // const [cart,setCart]= useState([])
 
     const Bid=(OID)=>{
-        //alert(OID)
+        let taken="a";
+       // alert(taken)
         if(staffType==="Driver")
         {
-        let taken="";
+        
         db.getCollection('Orders').doc(OID).get().then((doc)=>{
             if(doc.exists)
             {
                 taken = doc.data().deliverer;
+               // alert(taken)
             }
         }).then(()=>{
             // this is to make sure when both deliverers bid for the same order, the later 
             // guy didnt over write the order thats already taken by the first guy.
             // I pulled it from db again because state takes longer to refresh and one has to bid for it which would
             // overwrite the prior data if the order is already taken
-            if(taken!= "")
+            if(!taken)
             {
                 db.getCollection('Orders').doc(OID).update({
                 deliverer: staffEmail
