@@ -26,7 +26,7 @@ export default function Review(){
                     for(let i = 0; i < tempOH.length; i++){
                         let cart = tempOH[i].cart;
                         for(let j = 0; j < cart.length; j++){
-                            if(cart[j].id.includes("m") && !hash[cart[j].id]){
+                            if(cart[j].id[0] == ("m") && !hash[cart[j].id]){
                                 hash[cart[j].id] = true;
                                 database.getCollection('Food').doc(cart[j].id).get().then(function(doc){
                                     tempData.push(doc.data())
@@ -78,7 +78,7 @@ export default function Review(){
         let temp_rating = [];
         database.getCollection('Reviews').doc(id).get().then((doc) =>{
            if(doc.exists){
-               if(item.id.includes("m")){
+               if(item.id[0] == ("m")){
                 database.getCollection('Food').doc(item.id).get().then((fooddoc) =>{
                     temp_rating = fooddoc.data().rating;
                     let idx = temp_rating.indexOf(doc.data().rating)
@@ -107,7 +107,7 @@ export default function Review(){
            }
 
            else{
-            if(item.id.includes("m")){
+            if(item.id[0] == ("m")){
                 database.getCollection('Food').doc(item.id).get().then((fooddoc) =>{
                     temp_rating = fooddoc.data().rating;
                     temp_rating.push(event);
