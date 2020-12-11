@@ -90,7 +90,6 @@ export default function Staff() {
                 <h5>Name: {item.Name}</h5>
                 <h5>Email: {item.Position}</h5>
                 <h5>Salary: {item.Salary}</h5>
-                <h5>Rating: {item.Rating}</h5>
                 <h5>Complaints/Compliments: {item.ComplCounter}</h5>
                 <h5>Demoted Counter: {item.DemotionCounter} </h5>
                 <hr></hr>
