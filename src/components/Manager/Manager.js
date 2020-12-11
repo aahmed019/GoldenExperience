@@ -10,6 +10,7 @@ import Menu from '../Menu/Menu';
 import Users from './Users'
 import TabooWords from './Taboo'
 import ComplaintCompliment from './ComplaintCompliment'
+import Hire from './Hire';
 
 
 export default function ManagerPage() {
@@ -25,6 +26,7 @@ export default function ManagerPage() {
                             <Tab>Staff</Tab>
                             <Tab>Complaints/Compliments</Tab>
                             <Tab>Taboo words</Tab>
+                            <Tab>Hire</Tab>
                         </TabList>
 
                         <TabPanel>
@@ -49,6 +51,10 @@ export default function ManagerPage() {
 
                         <TabPanel>
                             <TabooWords/>
+                        </TabPanel>
+
+                        <TabPanel>
+                            <Hire/>
                         </TabPanel>
                     </Tabs>
                     
