@@ -48,25 +48,21 @@ export default function Staff() {
         getData()
     }
 
-    async function Demote(staffer, demotionCount){
-        if(demotionCount === 2){
-            fire(staffer)
-        }
-        else{
-        tests.getCollection('Staff').doc(staffer).update({
-            Salary: demote,
-            DemotionCounter: increment,
-            ComplCounter: 0
-        }).then(() =>{
-            console.log("User information removed from Database")
+    async function Demote(staffer){
+        await tests.getCollection('Staff').doc(staffer).get().then(function(doc){
+            let new_Demote = 0;
+            if(doc.exists){
+              new_Demote = doc.data().DemotionCounter + 1;
+              tests.getCollection('Staff').doc(staffer).update({
+                DemotionCounter: new_Demote,
+              })
+              if(new_Demote === 2){
+                fire(staffer)
+              }
+            }
         })
-        .catch(function(error) { //broke down somewhere
-            console.error("Error: ", error);
-        });
-
-        getData()
+        getData();
     }
-}
 
     async function fire(staffer){
         await tests.getCollection('Staff').doc(staffer).delete()
@@ -83,22 +79,24 @@ export default function Staff() {
     return (     
         <div style={{textAlign:'center'}}>
             <h1>Staff</h1>
-            <div style={{textAlign:'center', display:'flex', flexDirection:'row'}}>
+            <div style={{textAlign:'center', display:'flex', flexDirection:'column'}}>
             {staff.map(function(item, i){
                 console.log(item);
                 return <div key={i} className='color-text' >
                 <h5>Name: {item.Name}</h5>
-                <h5>Email: {item.Position}</h5>
+                <h5>Position: {item.Position}</h5>
                 <h5>Salary: {item.Salary}</h5>
                 <h5>Complaints/Compliments: {item.ComplCounter}</h5>
                 <h5>Demoted Counter: {item.DemotionCounter} </h5>
-                <hr></hr>
                 <button className="btn btn-outline-dark w-20  font-text" onClick={() => Promote(item.email)}>Promote</button>
                 <input type='number' onChange={e => setPromote(e.target.value)}></input>
-                <button className="btn btn-outline-dark w-20  font-text" onClick={() => Demote(item.email, item.DemotionCounter)}>Demote: </button>
+                <br/>
+                <button className="btn btn-outline-dark w-20  font-text" onClick={() => Demote(item.email)}>Demote: </button>
                 <input type='number' onChange={e => setDemote(e.target.value)}></input>
                 <br/>
                 <button className="btn btn-outline-dark w-20 font-text" onClick={() => fire(item.email)}>Fire</button>
+                <br/>
+                <br/>
                 <br/>
                 </div>
             })}
