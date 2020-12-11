@@ -82,7 +82,7 @@ export default function Staff() {
             <div style={{textAlign:'center', display:'flex', flexDirection:'column'}}>
             {staff.map(function(item, i){
                 console.log(item);
-                return <div key={i} className='color-text' >
+                return <div key={i} className='color-text complaint' >
                 <h5>Name: {item.Name}</h5>
                 <h5>Position: {item.Position}</h5>
                 <h5>Salary: {item.Salary}</h5>
@@ -95,9 +95,7 @@ export default function Staff() {
                 <input type='number' onChange={e => setDemote(e.target.value)}></input>
                 <br/>
                 <button className="btn btn-outline-dark w-20 font-text" onClick={() => fire(item.email)}>Fire</button>
-                <br/>
-                <br/>
-                <br/>
+
                 </div>
             })}
             </div>
