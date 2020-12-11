@@ -86,7 +86,7 @@ export default function Staff() {
             <div style={{textAlign:'center', display:'flex', flexDirection:'row'}}>
             {staff.map(function(item, i){
                 console.log(item);
-                return <div key={i} >
+                return <div key={i} className='color-text' >
                 <h5>Name: {item.Name}</h5>
                 <h5>Email: {item.Position}</h5>
                 <h5>Salary: {item.Salary}</h5>
@@ -94,12 +94,12 @@ export default function Staff() {
                 <h5>Complaints/Compliments: {item.ComplCounter}</h5>
                 <h5>Demoted Counter: {item.DemotionCounter} </h5>
                 <hr></hr>
-                <button onClick={() => Promote(item.email)}>Promote</button>
+                <button className="btn btn-outline-dark w-20  font-text" onClick={() => Promote(item.email)}>Promote</button>
                 <input type='number' onChange={e => setPromote(e.target.value)}></input>
-                <button onClick={() => Demote(item.email, item.DemotionCounter)}>Demote: </button>
+                <button className="btn btn-outline-dark w-20  font-text" onClick={() => Demote(item.email, item.DemotionCounter)}>Demote: </button>
                 <input type='number' onChange={e => setDemote(e.target.value)}></input>
                 <br/>
-                <button onClick={() => fire(item.email)}>Fire</button>
+                <button className="btn btn-outline-dark w-20 font-text" onClick={() => fire(item.email)}>Fire</button>
                 <br/>
                 </div>
             })}

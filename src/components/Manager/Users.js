@@ -48,14 +48,14 @@ export default function Users() {
             <div>
             {newUsers.map(function(item, i){
                 console.log(item);
-                return <div key={i}>
+                return <div key={i} className='complaint'>
                 <h1>User number: {i + 1}</h1>
                 <h2>Name: {item.name} {item.Vip ? '[VIP]' :''}</h2>
                 <h2>Email: {item.email}</h2>
                 <h2>Username: {item.username}</h2>
                 <h2>Balance: {item.Balance}</h2>
                 <h2>Warnings: {item.warnings}</h2>
-                <button onClick={() => {deleteUser(item.email)}}>Delete</button>
+                <button className="btn btn-outline-dark w-20 mt-3 font-text" onClick={() => {deleteUser(item.email)}}>Delete</button>
                 <br/>
                 <br/>
                 </div>

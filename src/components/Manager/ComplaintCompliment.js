@@ -107,25 +107,25 @@ export default function ComplaintCompliment() {
     return (     
         <div style={{textAlign:'center'}}>
             <h1>Complaints and Compliments</h1>
-            <div style={{display:'flex', flexDirection:'row',
+            <div style={{display:'flex', flexDirection:'column',
             height:'900px',
             width:'100%',
             overflow:'auto'
         }}>
             {Complaints.map(function(item, i){
                 console.log(item);
-                return <div key={i}>
+                return <div key={i} className='complaint'>
                 <h1>Complaint number: {i + 1}</h1>
                 <h2>From: {item.Complainer} {item.isVIP ? '[VIP]' :''}</h2>
                 <h2>To: {item.Complainee}</h2>
                 <h2>Title {item.Title}</h2>
                 <h2>Description: {item.Description}</h2>
                 <h2>Disputee: {item.Dispute}</h2>
-                <button onClick={() => {AddComplaint(item.id, item.Complainee, item.isVIP)}}>Complaint</button>
+                <button className="btn btn-outline-dark w-20 mt-3 font-text" onClick={() => {AddComplaint(item.id, item.Complainee, item.isVIP)}}>Complaint</button>
                 <br/><br/>
-                <button onClick={() => {AddCompliment(item.id, item.staff, item.isVIP)}}>Compliment</button>
-                <button onClick={() => {NoMerit(item.id ,item.Complainer)}}>No Merit</button>
-                <button onClick={() => {deleteReport(item.id)}}>Delete</button>
+                <button className="btn btn-outline-dark w-20 mt-1 font-text" onClick={() => {AddCompliment(item.id, item.staff, item.isVIP)}}>Compliment</button>
+                <button className="btn btn-outline-dark w-20 mt-1 font-text" onClick={() => {NoMerit(item.id ,item.Complainer)}}>No Merit</button>
+                <button className="btn btn-outline-dark w-20 mt-1 font-text" onClick={() => {deleteReport(item.id)}}>Delete</button>
                 <br/>
                 <br/>
                 </div>
