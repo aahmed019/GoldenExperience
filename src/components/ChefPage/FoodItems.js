@@ -89,7 +89,7 @@ export default function FoodItems() {
     },[username])
 
     async function deleteFoodItem(fooditem){
-        if(fooditem.id.includes("d")){
+        if(fooditem.id[0] == ("d")){
             await tests.getCollection('Drink').doc(fooditem.id).delete()
             .then(() =>{
                 console.log("Removed drink item from Database")
