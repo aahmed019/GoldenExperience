@@ -4,3 +4,23 @@
     min-height: 100vh;
     background: linear-gradient(180deg, rgba(204, 177, 177, 0) 0%, #424242 100%), linear-gradient(180deg, #666565 0%, rgba(255, 255, 255, 0) 100%), radial-gradient(50% 50% at 50% 50%, rgba(238, 215, 12, 0.979) 80.37%, rgba(251, 224, 84, 0) 100%);
 }
+
+.complaint{
+    text-align: center;
+    position: relative;
+    border: 3px solid black !important;
+    width: 100%;
+    color:#161616 !important;
+}
+.btn-primary{
+    background-color: #161616 !important;
+}
+.btn{
+    background-color: #161616 !important;
+}
+.font-text{
+    color: #9C9523 !important;
+}
+.color-text{
+    color:#161616 ;
+}

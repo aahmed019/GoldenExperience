@@ -63,13 +63,13 @@ export default function TabooWords() {
             {BadWords.map(function(item, i){
                 return <div style={{paddingRight:'2%'}} key={i}>
                 <h2>{item}</h2>
-                <button onClick={() => {deleteWord(item)}}>Delete</button>
+                <button className="btn btn-outline-dark w-20 mt-3 font-text" onClick={() => {deleteWord(item)}}>Delete</button>
                 <br/>
                 <br/>
                 </div>
             })}
             <input style={{width: '15%'}}type='text' value={newWord} onChange={e => setNewWord(e.target.value)}></input>
-            <button onClick={() => addWord()} style={{position:'bottom'}}>Add word</button>
+            <button className="btn btn-outline-dark w-20 mt-3 font-text" onClick={() => addWord()} style={{position:'bottom'}}>Add word</button>
             </div>
             
         </div>
