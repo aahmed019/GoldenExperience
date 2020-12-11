@@ -55,7 +55,7 @@ export default function Users() {
                 <h2>Username: {item.username}</h2>
                 <h2>Balance: {item.Balance}</h2>
                 <h2>Warnings: {item.warnings}</h2>
-                <button onClick={() => {deleteUser(item.username)}}>Delete</button>
+                <button onClick={() => {deleteUser(item.email)}}>Delete</button>
                 <br/>
                 <br/>
                 </div>
