@@ -170,6 +170,8 @@ export default function FoodItems() {
                         <Card.Title>{item.name} for ${item.price} FOR VIP ONLY</Card.Title>
                         <Card.Text>
                         {item.description}
+                        <br/>
+                        ID: {item.id}
                         </Card.Text>
                         <Button onClick={() => {deleteFoodItem(item)}}>Delete</Button>
                     </Card.Body>
@@ -183,6 +185,8 @@ export default function FoodItems() {
                         <Card.Title>{item.name} for ${item.price}</Card.Title>
                         <Card.Text>
                         {item.description}
+                        <br/>
+                        ID: {item.id}
                         </Card.Text>
                         <Button onClick={() => {deleteFoodItem(item)}}>Delete</Button>
                     </Card.Body>
