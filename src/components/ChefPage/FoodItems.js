@@ -54,18 +54,18 @@ export default function FoodItems() {
     }
     const getUser = async() =>{
         if(currentUser){
-            if(currentUser.email == "johndoe321sb@gmail.com"){
-                tests.getCollection('Staff').doc("JohnDoe321sb@gmail.com").get().then(function(doc){
-                    if(!doc.exists || doc.data().Position != "Chef"){
-                        setAuthorize(false);
-                    }
-                    else{
-                        setUsername(doc.data().Name)
-                        setEmail("JohnDoe321sb@gmail.com")
-                    }
-                })    
-            }
-            else{
+            // if(currentUser.email == "johndoe321sb@gmail.com"){
+            //     tests.getCollection('Staff').doc("JohnDoe321sb@gmail.com").get().then(function(doc){
+            //         if(!doc.exists || doc.data().Position != "Chef"){
+            //             setAuthorize(false);
+            //         }
+            //         else{
+            //             setUsername(doc.data().Name)
+            //             setEmail("JohnDoe321sb@gmail.com")
+            //         }
+            //     })    
+            // }
+            // else{
                 tests.getCollection('Staff').doc(currentUser.email).get().then(function(doc){
                     if(!doc.exists || doc.data().Position != "Chef"){
                         setAuthorize(false);
@@ -75,7 +75,7 @@ export default function FoodItems() {
                         setEmail(doc.data().email)
                     }
                 })    
-            }
+            // }
          
         }
     }
