@@ -37,7 +37,7 @@ There are three groups of users in this system:
 - [x] The chef whose dishes received consistently low ratings or 3 complaints, or no order at all for 3 days, will be demoted (less salsary), a chef demoted twice is fired.
 - Handled manually by the manager
 - [x] Conversely, a chef whose dishes received high ratings or 3 compliments, will be promoted (higher salary). One compliment can be used to cancel one complaint. The delivery people are handled the same way.
-- [x] A customer can choose to ~~~1) eat the food in the resturant,~~~ 2) pick up the dishes by self or 3) by delivery. For 1) s/he need to fix the available time and seating in the resturant; for case 1) and 2) s/he can only complain/compliment the chef.
+- [x] A customer can choose to ~~1) eat the food in the resturant,~~ 2) pick up the dishes by self or 3) by delivery. For 1) s/he need to fix the available time and seating in the resturant; for case 1) and 2) s/he can only complain/compliment the chef.
 - Indoor dining not available due to covid-19
 - [x] Customers can file complaints/compliments to chef of the food s/he purchased and deliver person who delivered the dish or other customers who didn’t behave in the discussion forums. 
 - [x] Delivery person can complain/compliment customers s/he delivered dishes, all are handled by the manager. 
