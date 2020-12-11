@@ -16,11 +16,11 @@ class Footer extends Component{
                             <p>
                             <li><Link to="/Home">Home</Link></li>
                             
-                            <li><Link to="/Home">Orders</Link></li>
+                            <li><Link to="/Order">Orders</Link></li>
                             
-                            <li><Link to="/Home">Menu</Link></li>
+                            <li><Link to="/Menu">Menu</Link></li>
                             
-                            <li><Link to="/Home">Discussion</Link></li>
+                            <li><Link to="/Discussion">Discussion</Link></li>
                             
                             </p>
                             </ul>
