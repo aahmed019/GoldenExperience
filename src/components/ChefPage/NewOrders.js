@@ -43,10 +43,10 @@ export default function NewOrders() {
     return (     
         <div style={{textAlign:'center'}}>
             <h1>Orders</h1>
-            <div style={{display:'flex', flexDirection:'row'}}>
+            <div style={{display:'flex', flexDirection:'row'}} className = "bigBoxed">
             {newOrders.map(function(item, i){
                 console.log(item);
-                return <div key={i}>
+                return <div key={i}  className = "smallBozed">
                 <h1>Order number: {i + 1}</h1>
                 <h2>Name: {item.user}</h2>
                 <h2>Address: {item.address}</h2>
