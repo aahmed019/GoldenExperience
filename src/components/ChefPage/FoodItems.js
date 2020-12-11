@@ -89,15 +89,31 @@ export default function FoodItems() {
     },[username])
 
     async function deleteFoodItem(fooditem){
-        await tests.getCollection('Food').doc(fooditem.id).delete()
-        .then(() =>{
-            console.log("Food item from Database")
-        })
-        .catch(function(error) { //broke down somewhere
-            console.error("Error: ", error);
-        });
+        if(fooditem.id.includes("d")){
+            await tests.getCollection('Drink').doc(fooditem.id).delete()
+            .then(() =>{
+                console.log("Removed drink item from Database")
+                getData()
 
-        getData()
+            })
+            .catch(function(error) { //broke down somewhere
+                console.error("Error: ", error);
+            });
+    
+        }
+        else{
+            await tests.getCollection('Food').doc(fooditem.id).delete()
+            .then(() =>{
+                console.log("Removed food item from Database")
+                getData()
+
+            })
+            .catch(function(error) { //broke down somewhere
+                console.error("Error: ", error);
+            });
+
+        }
+       
     }
     async function addFooditem(){
         if(typeValue === "drink"){
