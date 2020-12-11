@@ -118,6 +118,7 @@ export default function ComplaintCompliment() {
                 <h1>Complaint number: {i + 1}</h1>
                 <h2>From: {item.Complainer} {item.isVIP ? '[VIP]' :''}</h2>
                 <h2>To: {item.Complainee}</h2>
+                <h2>Title {item.Title}</h2>
                 <h2>Description: {item.Description}</h2>
                 <h2>Disputee: {item.Dispute}</h2>
                 <button className="btn btn-outline-dark w-20 mt-3 font-text" onClick={() => {AddComplaint(item.id, item.Complainee, item.isVIP)}}>Complaint</button>
