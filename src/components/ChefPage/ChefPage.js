@@ -42,7 +42,7 @@ class ChefPage extends Component {
     render(){
         return (
             <div className='chef-background-boi'>
-                <div>
+                <div>                    
                     <Tabs defaultIndex={1} onSelect={index => console.log(index)}>
                         <TabList>
                             <Tab>Upload Menu</Tab>
@@ -52,6 +52,7 @@ class ChefPage extends Component {
                             <Tab>Food Item</Tab>
                         </TabList>
                         <TabPanel>
+                            <h1>Upload menu files should be titled morningMen.jpg or EveningMenu.jpg</h1>
                             <div style={{textAlign:'center'}}>
                                 <br />
                                 <br />
