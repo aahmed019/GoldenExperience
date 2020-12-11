@@ -141,5 +141,5 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 - Ali Ahmed
 - Phyo Zaw Hein
 - Eram Manasia
-- Mitchu Mui
+- Mitchell Mui
 - Ravid Rahman
