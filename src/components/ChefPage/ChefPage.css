@@ -10,8 +10,7 @@
     overflow:auto;
 }
 .smallBoxed{
-    height:300px;
     width:100%;
-    padding: 5px;
+    margin-left: 5px !important;
     overflow:auto;
 }
