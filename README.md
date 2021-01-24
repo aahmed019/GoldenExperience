@@ -2,7 +2,7 @@
 
 ## Overview
 
-The goal of this project was to create a web app for a resturant. Functionality was created for First-Time Visitors, Customers, VIP Custoemrs, Chefs, Drivers, and Managers. React was used for the core functionality of the app and Cloud Firestore (Google Firebase) was used as the database to store necessary information. Additionally, a live version of the website, hosted via Amazon Web Services (AWS) can be found [here.](https://master.d1v9tmlnzqp25u.amplifyapp.com/Home) Specific functionality for each user is outlined in the project requirements section.
+The goal of this project was to create a web app for a resturant. Functionality was created for First-Time Visitors, Customers, VIP Customers, Chefs, Drivers, and Managers. React was used for the core functionality of the app and Cloud Firestore (Google Firebase) was used as the database to store necessary information. Additionally, a live version of the website, hosted via Amazon Web Services (AWS) can be found [here.](https://master.d1v9tmlnzqp25u.amplifyapp.com/Home) Specific functionality for each user is outlined in the project requirements section.
 
 ## Project Requirements
 
