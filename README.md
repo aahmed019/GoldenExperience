@@ -1,4 +1,4 @@
-# CSc 322 - Software Engineering Resturant Application Project
+# CSc 322 - Software Engineering Restaurant Application Project
 
 ## Overview
 
